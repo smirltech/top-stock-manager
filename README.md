@@ -138,3 +138,22 @@ Backup features may include database exporting and importing, as well as online 
 
 ## Database Modeling
 ![db_model.png](db_model.png)
+
+## Technologies used
+
+### 1. Framework
+- [x] Flutter 3, 
+
+### 2. Platforms
+- [x] Windows
+- [x] Linux
+- [x] MacOS
+
+### 3. Packagies
+- [x] Database : Drift (sqlite3_flutter_libs)
+- [x] State Management : GetX
+- [x] Navigation Management : GetX
+- [x] Dependencies Management : GetX
+- [x] Local Storage Manager : GetStorage
+
+This software is the product of [Smirltech](https://www.smirltech.com) sarl
