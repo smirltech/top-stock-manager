@@ -18,7 +18,7 @@ Each action of the system will be bundled with a permission. These permissions w
 
 ### 2. Roles
 Each user role will group a set of permissions. These permissions can overlap among roles.
-One permission will be preset and cannot be modified nor deleted, and permissions attached will not be changed.
+One role will be preset and cannot be modified nor deleted, and permissions attached will not be changed.
 This will generally be the role of `Manager`.
 - [ ] View all roles ;
 - [ ] View one role ;
