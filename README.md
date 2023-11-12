@@ -141,10 +141,12 @@ Backup features may include database exporting and importing, as well as online 
 
 ## Technologies used
 
-### 1. Framework
-- [x] Flutter 3, 
+### 1. Language and Framework
+- [x] Dart, 
+- [x] Flutter 3,
 
 ### 2. Platforms
+The software will be compatible with :
 - [x] Windows
 - [x] Linux
 - [x] MacOS
