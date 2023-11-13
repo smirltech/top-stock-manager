@@ -1,0 +1,3 @@
+get fr => {
+      'Add': 'Ajouter',
+    };

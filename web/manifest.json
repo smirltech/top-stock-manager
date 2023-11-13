@@ -1,6 +1,6 @@
 {
-    "name": "top_stock_manager",
-    "short_name": "top_stock_manager",
+    "name": "Top Stock Manager",
+    "short_name": "Top Stock Manager",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
