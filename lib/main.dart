@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:top_stock_manager/application/ui/home/home_screen.dart';
 import 'package:top_stock_manager/routes.dart';
 import 'package:top_stock_manager/system/configs/constants.dart';
 import 'package:top_stock_manager/system/configs/theming.dart';
@@ -51,7 +52,8 @@ class MyApp extends StatelessWidget {
         ),
       ),
       // home: const SplashScreen(),
-      initialRoute: Routes.splash,
+      // initialRoute: SplashScreen.route,
+      initialRoute: HomeScreen.route,
       getPages: Routes.routes,
     );
   }

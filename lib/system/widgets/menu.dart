@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:menu_bar/menu_bar.dart';
+import 'package:top_stock_manager/application/ui/home/home_screen.dart';
+import 'package:top_stock_manager/application/ui/products/products_screen.dart';
 
 List<BarButton> _menuBarButtons() {
   return [
@@ -12,6 +13,10 @@ List<BarButton> _menuBarButtons() {
       ),
       submenu: SubMenu(
         menuItems: [
+          MenuButton(
+            onTap: () => Get.toNamed(HomeScreen.route),
+            text: Text('Home'.tr),
+          ),
           MenuButton(
             onTap: () {},
             text: Text('Logout'.tr),
@@ -44,7 +49,7 @@ List<BarButton> _menuBarButtons() {
           MenuButton(
             onTap: () {},
             shortcutText: 'Ctrl+Q',
-            text: const Text('Exit'),
+            text: Text('Exit'.tr),
             icon: const Icon(Icons.exit_to_app),
           ),
         ],
@@ -59,7 +64,7 @@ List<BarButton> _menuBarButtons() {
       submenu: SubMenu(
         menuItems: [
           MenuButton(
-            onTap: () {},
+            onTap: () => Get.toNamed(ProductsScreen.route),
             text: Text('Products'.tr),
           ),
           MenuButton(
@@ -84,14 +89,10 @@ List<BarButton> _menuBarButtons() {
           MenuButton(
             onTap: () {},
             text: Text('Users'.tr),
-            shortcutText: 'Ctrl+Shift+U',
-            shortcut:
-                const SingleActivator(LogicalKeyboardKey.keyU, control: true),
           ),
           MenuButton(
             onTap: () {},
             text: Text('Roles'.tr),
-            shortcutText: 'Ctrl+Shift+R',
           ),
         ],
       ),
@@ -215,7 +216,8 @@ class WindowMenu extends StatelessWidget {
       barButtons: _menuBarButtons(),
       // Style the menu bar itself. Hover over [MenuStyle] for all the options
       barStyle: const MenuStyle(
-        padding: MaterialStatePropertyAll(EdgeInsets.zero),
+        padding: MaterialStatePropertyAll(
+            EdgeInsets.symmetric(horizontal: 6.0, vertical: 40.0)),
         backgroundColor: MaterialStatePropertyAll(Color(0xFF2b2b2b)),
         maximumSize: MaterialStatePropertyAll(Size(double.infinity, 28.0)),
       ),

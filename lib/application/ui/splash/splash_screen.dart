@@ -11,6 +11,8 @@ import '../../../system/configs/theming.dart';
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
+  static String route = "/splash";
+
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
@@ -19,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-     _startTimer();
+    _startTimer();
   }
 
   Future<Timer> _startTimer() async {
