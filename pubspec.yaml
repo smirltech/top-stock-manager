@@ -1,7 +1,7 @@
 name: top_stock_manager
 description: Stock Management system for a small shop that runs locally.
 
-publish_to: 'none' 
+publish_to: 'none'
 
 version: 0.0.1+1
 
@@ -33,7 +33,7 @@ dependencies:
 
   # windows format of menus and submenus
   menu_bar: ^0.5.3
-  window_manager: ^0.2.7
+  window_manager: ^0.2.9
 
 
 dev_dependencies:

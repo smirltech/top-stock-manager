@@ -5,15 +5,15 @@ class Products extends Table {
 
   TextColumn get name => text().unique()();
 
-  TextColumn get description => text()();
+  TextColumn get description => text().nullable()();
 
-  IntColumn get min => integer()();
+  IntColumn get min => integer().nullable().withDefault(const Constant(0))();
 
-  IntColumn get max => integer()();
+  IntColumn get max => integer().nullable().withDefault(const Constant(0))();
 
-  TextColumn get unit => text()();
+  TextColumn get unit => text().nullable()();
 
-  IntColumn get productId => integer()();
+  IntColumn get productId => integer().references(Products, #id).nullable()();
 
   DateTimeColumn get createdAt =>
       dateTime().nullable().withDefault(currentDateAndTime)();

@@ -360,29 +360,36 @@ class $ProductsTable extends Products with TableInfo<$ProductsTable, Product> {
       const VerificationMeta('description');
   @override
   late final GeneratedColumn<String> description = GeneratedColumn<String>(
-      'description', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+      'description', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   static const VerificationMeta _minMeta = const VerificationMeta('min');
   @override
   late final GeneratedColumn<int> min = GeneratedColumn<int>(
-      'min', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      'min', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
   static const VerificationMeta _maxMeta = const VerificationMeta('max');
   @override
   late final GeneratedColumn<int> max = GeneratedColumn<int>(
-      'max', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      'max', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
   static const VerificationMeta _unitMeta = const VerificationMeta('unit');
   @override
   late final GeneratedColumn<String> unit = GeneratedColumn<String>(
-      'unit', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+      'unit', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   static const VerificationMeta _productIdMeta =
       const VerificationMeta('productId');
   @override
   late final GeneratedColumn<int> productId = GeneratedColumn<int>(
-      'product_id', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      'product_id', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES products (id)'));
   static const VerificationMeta _createdAtMeta =
       const VerificationMeta('createdAt');
   @override
@@ -426,32 +433,22 @@ class $ProductsTable extends Products with TableInfo<$ProductsTable, Product> {
           _descriptionMeta,
           description.isAcceptableOrUnknown(
               data['description']!, _descriptionMeta));
-    } else if (isInserting) {
-      context.missing(_descriptionMeta);
     }
     if (data.containsKey('min')) {
       context.handle(
           _minMeta, min.isAcceptableOrUnknown(data['min']!, _minMeta));
-    } else if (isInserting) {
-      context.missing(_minMeta);
     }
     if (data.containsKey('max')) {
       context.handle(
           _maxMeta, max.isAcceptableOrUnknown(data['max']!, _maxMeta));
-    } else if (isInserting) {
-      context.missing(_maxMeta);
     }
     if (data.containsKey('unit')) {
       context.handle(
           _unitMeta, unit.isAcceptableOrUnknown(data['unit']!, _unitMeta));
-    } else if (isInserting) {
-      context.missing(_unitMeta);
     }
     if (data.containsKey('product_id')) {
       context.handle(_productIdMeta,
           productId.isAcceptableOrUnknown(data['product_id']!, _productIdMeta));
-    } else if (isInserting) {
-      context.missing(_productIdMeta);
     }
     if (data.containsKey('created_at')) {
       context.handle(_createdAtMeta,
@@ -475,15 +472,15 @@ class $ProductsTable extends Products with TableInfo<$ProductsTable, Product> {
       name: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
       description: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}description'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}description']),
       min: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}min'])!,
+          .read(DriftSqlType.int, data['${effectivePrefix}min']),
       max: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}max'])!,
+          .read(DriftSqlType.int, data['${effectivePrefix}max']),
       unit: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}unit'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}unit']),
       productId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}product_id'])!,
+          .read(DriftSqlType.int, data['${effectivePrefix}product_id']),
       createdAt: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at']),
       updatedAt: attachedDatabase.typeMapping
@@ -500,21 +497,21 @@ class $ProductsTable extends Products with TableInfo<$ProductsTable, Product> {
 class Product extends DataClass implements Insertable<Product> {
   final int id;
   final String name;
-  final String description;
-  final int min;
-  final int max;
-  final String unit;
-  final int productId;
+  final String? description;
+  final int? min;
+  final int? max;
+  final String? unit;
+  final int? productId;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   const Product(
       {required this.id,
       required this.name,
-      required this.description,
-      required this.min,
-      required this.max,
-      required this.unit,
-      required this.productId,
+      this.description,
+      this.min,
+      this.max,
+      this.unit,
+      this.productId,
       this.createdAt,
       this.updatedAt});
   @override
@@ -522,11 +519,21 @@ class Product extends DataClass implements Insertable<Product> {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['name'] = Variable<String>(name);
-    map['description'] = Variable<String>(description);
-    map['min'] = Variable<int>(min);
-    map['max'] = Variable<int>(max);
-    map['unit'] = Variable<String>(unit);
-    map['product_id'] = Variable<int>(productId);
+    if (!nullToAbsent || description != null) {
+      map['description'] = Variable<String>(description);
+    }
+    if (!nullToAbsent || min != null) {
+      map['min'] = Variable<int>(min);
+    }
+    if (!nullToAbsent || max != null) {
+      map['max'] = Variable<int>(max);
+    }
+    if (!nullToAbsent || unit != null) {
+      map['unit'] = Variable<String>(unit);
+    }
+    if (!nullToAbsent || productId != null) {
+      map['product_id'] = Variable<int>(productId);
+    }
     if (!nullToAbsent || createdAt != null) {
       map['created_at'] = Variable<DateTime>(createdAt);
     }
@@ -540,11 +547,15 @@ class Product extends DataClass implements Insertable<Product> {
     return ProductsCompanion(
       id: Value(id),
       name: Value(name),
-      description: Value(description),
-      min: Value(min),
-      max: Value(max),
-      unit: Value(unit),
-      productId: Value(productId),
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
+      min: min == null && nullToAbsent ? const Value.absent() : Value(min),
+      max: max == null && nullToAbsent ? const Value.absent() : Value(max),
+      unit: unit == null && nullToAbsent ? const Value.absent() : Value(unit),
+      productId: productId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(productId),
       createdAt: createdAt == null && nullToAbsent
           ? const Value.absent()
           : Value(createdAt),
@@ -560,11 +571,11 @@ class Product extends DataClass implements Insertable<Product> {
     return Product(
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
-      description: serializer.fromJson<String>(json['description']),
-      min: serializer.fromJson<int>(json['min']),
-      max: serializer.fromJson<int>(json['max']),
-      unit: serializer.fromJson<String>(json['unit']),
-      productId: serializer.fromJson<int>(json['productId']),
+      description: serializer.fromJson<String?>(json['description']),
+      min: serializer.fromJson<int?>(json['min']),
+      max: serializer.fromJson<int?>(json['max']),
+      unit: serializer.fromJson<String?>(json['unit']),
+      productId: serializer.fromJson<int?>(json['productId']),
       createdAt: serializer.fromJson<DateTime?>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
     );
@@ -575,11 +586,11 @@ class Product extends DataClass implements Insertable<Product> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'name': serializer.toJson<String>(name),
-      'description': serializer.toJson<String>(description),
-      'min': serializer.toJson<int>(min),
-      'max': serializer.toJson<int>(max),
-      'unit': serializer.toJson<String>(unit),
-      'productId': serializer.toJson<int>(productId),
+      'description': serializer.toJson<String?>(description),
+      'min': serializer.toJson<int?>(min),
+      'max': serializer.toJson<int?>(max),
+      'unit': serializer.toJson<String?>(unit),
+      'productId': serializer.toJson<int?>(productId),
       'createdAt': serializer.toJson<DateTime?>(createdAt),
       'updatedAt': serializer.toJson<DateTime?>(updatedAt),
     };
@@ -588,21 +599,21 @@ class Product extends DataClass implements Insertable<Product> {
   Product copyWith(
           {int? id,
           String? name,
-          String? description,
-          int? min,
-          int? max,
-          String? unit,
-          int? productId,
+          Value<String?> description = const Value.absent(),
+          Value<int?> min = const Value.absent(),
+          Value<int?> max = const Value.absent(),
+          Value<String?> unit = const Value.absent(),
+          Value<int?> productId = const Value.absent(),
           Value<DateTime?> createdAt = const Value.absent(),
           Value<DateTime?> updatedAt = const Value.absent()}) =>
       Product(
         id: id ?? this.id,
         name: name ?? this.name,
-        description: description ?? this.description,
-        min: min ?? this.min,
-        max: max ?? this.max,
-        unit: unit ?? this.unit,
-        productId: productId ?? this.productId,
+        description: description.present ? description.value : this.description,
+        min: min.present ? min.value : this.min,
+        max: max.present ? max.value : this.max,
+        unit: unit.present ? unit.value : this.unit,
+        productId: productId.present ? productId.value : this.productId,
         createdAt: createdAt.present ? createdAt.value : this.createdAt,
         updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
       );
@@ -643,11 +654,11 @@ class Product extends DataClass implements Insertable<Product> {
 class ProductsCompanion extends UpdateCompanion<Product> {
   final Value<int> id;
   final Value<String> name;
-  final Value<String> description;
-  final Value<int> min;
-  final Value<int> max;
-  final Value<String> unit;
-  final Value<int> productId;
+  final Value<String?> description;
+  final Value<int?> min;
+  final Value<int?> max;
+  final Value<String?> unit;
+  final Value<int?> productId;
   final Value<DateTime?> createdAt;
   final Value<DateTime?> updatedAt;
   const ProductsCompanion({
@@ -664,19 +675,14 @@ class ProductsCompanion extends UpdateCompanion<Product> {
   ProductsCompanion.insert({
     this.id = const Value.absent(),
     required String name,
-    required String description,
-    required int min,
-    required int max,
-    required String unit,
-    required int productId,
+    this.description = const Value.absent(),
+    this.min = const Value.absent(),
+    this.max = const Value.absent(),
+    this.unit = const Value.absent(),
+    this.productId = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
-  })  : name = Value(name),
-        description = Value(description),
-        min = Value(min),
-        max = Value(max),
-        unit = Value(unit),
-        productId = Value(productId);
+  }) : name = Value(name);
   static Insertable<Product> custom({
     Expression<int>? id,
     Expression<String>? name,
@@ -704,11 +710,11 @@ class ProductsCompanion extends UpdateCompanion<Product> {
   ProductsCompanion copyWith(
       {Value<int>? id,
       Value<String>? name,
-      Value<String>? description,
-      Value<int>? min,
-      Value<int>? max,
-      Value<String>? unit,
-      Value<int>? productId,
+      Value<String?>? description,
+      Value<int?>? min,
+      Value<int?>? max,
+      Value<String?>? unit,
+      Value<int?>? productId,
       Value<DateTime?>? createdAt,
       Value<DateTime?>? updatedAt}) {
     return ProductsCompanion(

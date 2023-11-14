@@ -1,9 +1,12 @@
 import 'dart:developer';
 
+import 'package:drift/drift.dart' as d;
 import 'package:get/get.dart';
 import 'package:top_stock_manager/application/database/offline/app_database.dart';
-import 'package:top_stock_manager/application/ui/products/products_screen.dart';
+import 'package:top_stock_manager/application/database/offline/models/product_model.dart';
 import 'package:top_stock_manager/main.dart';
+
+import '../../../system/configs/theming.dart';
 
 class DataServices extends GetxService {
   // ------- static methods ------- //
@@ -15,24 +18,46 @@ class DataServices extends GetxService {
 
 // ------- ./static methods ------- //
   var product = Rxn<Product>();
-  var products = <Product>[].obs;
+  var products = <ProductModel>[].obs;
 
   saveProduct(Map<String, dynamic> data) async {
     if (product.value == null) {
       await DB.productsDao.insertProduct(data);
-      Get.snackbar('Product', 'Product added successfully');
+      Get.back();
+      Get.snackbar('Product'.tr, 'Product added successfully'.tr);
     } else {
       ProductsCompanion c = product.value!
           .copyWith(
-            description: data['description'],
+            name: data['name'],
+            description: d.Value(data['description']),
+            min: d.Value(data['min']),
+            max: d.Value(data['max']),
+            unit: d.Value(data['unit']),
+            updatedAt: d.Value(DateTime.now()),
           )
           .toCompanion(true);
 
       await DB.productsDao.updateProduct(c);
-      Get.snackbar('Product', 'Product updated successfully');
+      Get.back();
+      Get.snackbar('Product'.tr, 'Product updated successfully'.tr);
     }
     product.value = null;
-    Get.toNamed(ProductsScreen.route);
+  }
+
+  deleteProduct(Product prodct) {
+    Get.defaultDialog(
+      title: "Delete Product".tr,
+      middleText:
+          "${"Are you sure you want to delete product".tr} : \"${prodct.name}\"",
+      textConfirm: "Delete".tr,
+      buttonColor: kDanger,
+      onConfirm: () {
+        DB.productsDao.deleteProduct(prodct);
+        product.value = null;
+        Get.back();
+        Get.snackbar('Product'.tr, 'Product deleted successfully'.tr);
+      },
+    );
   }
 
   @override

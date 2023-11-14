@@ -1,4 +1,5 @@
 import 'package:drift/drift.dart';
+import 'package:top_stock_manager/application/database/offline/models/product_model.dart';
 import 'package:top_stock_manager/application/database/offline/tables/products.dart';
 
 import '../../app_database.dart';
@@ -13,7 +14,8 @@ class ProductsDao extends DatabaseAccessor<AppDatabase>
   ProductsDao(this.db) : super(db);
 
   // stream all users
-  Stream<List<Product>> watchAllProducts() => select(products).watch();
+  Stream<List<ProductModel>> watchAllProducts() =>
+      select(products).map((product) => ProductModel(product: product)).watch();
 
   Future<int> insertProduct(Map<String, dynamic> product) =>
       into(products).insert(
