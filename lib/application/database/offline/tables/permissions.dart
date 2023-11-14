@@ -12,4 +12,5 @@ class Permissions extends Table {
 
   DateTimeColumn get updatedAt =>
       dateTime().nullable().withDefault(currentDateAndTime)();
+  
 }

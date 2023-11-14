@@ -27,4 +27,18 @@ class RolesDao extends DatabaseAccessor<AppDatabase> with _$RolesDaoMixin {
   Future updateRole(RolesCompanion role) => update(roles).replace(role);
 
   Future deleteRole(Role role) => delete(roles).delete(role);
+
+  Future<int> insertOrAbortRole(Map<String, dynamic> role) =>
+      into(roles).insert(
+        RolesCompanion(
+          name: Value(role['name']),
+          description: Value(role['description']),
+          createdAt: Value(DateTime.now()),
+          updatedAt: Value(DateTime.now()),
+        ),
+        onConflict: DoNothing(
+          target: <Column>[roles.name],
+        ),
+        mode: InsertMode.insertOrAbort,
+      );
 }

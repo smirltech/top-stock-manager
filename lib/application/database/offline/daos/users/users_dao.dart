@@ -16,7 +16,8 @@ class UsersDao extends DatabaseAccessor<AppDatabase> with _$UsersDaoMixin {
   Stream<List<UserModel>> watchAllUsers() =>
       select(users).map((user) => UserModel(user: user)).watch();
 
-  Future<int> insertUser(Map<String, dynamic> user) => into(users).insert(
+  Future<int> insertUser(Map<String, dynamic> user) =>
+      into(users).insert(
         UsersCompanion(
           name: Value(user['name']),
           username: Value(user['username']),
@@ -30,9 +31,25 @@ class UsersDao extends DatabaseAccessor<AppDatabase> with _$UsersDaoMixin {
 
   Future deleteUser(User user) => delete(users).delete(user);
 
-  Future<UserModel> login(String username, String password) => (select(users)
-        ..where((usr) => usr.username.equals(username))
-        ..where((usr) => usr.password.equals(password)))
-      .map((user) => UserModel(user: user))
-      .getSingle();
+  Future<int> insertOrAbortUser(Map<String, dynamic> user) =>
+      into(users).insert(
+        UsersCompanion(
+          name: Value(user['name']),
+          username: Value(user['username']),
+          password: Value(user['password']),
+          createdAt: Value(DateTime.now()),
+          updatedAt: Value(DateTime.now()),
+        ),
+        onConflict: DoNothing(
+          target: <Column>[users.username],
+        ),
+        mode: InsertMode.insertOrAbort,
+      );
+
+  Future<UserModel> login(String username, String password) =>
+      (select(users)
+        ..where((usr) => usr.username.equals(username))..where((usr) =>
+            usr.password.equals(password)))
+          .map((user) => UserModel(user: user))
+          .getSingle();
 }

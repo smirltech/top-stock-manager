@@ -44,81 +44,85 @@ class _ProductsScreenState extends State<ProductsScreen> {
           ),
           Obx(() {
             return SingleChildScrollView(
-              child: DataTable(
-                sortAscending: true,
-                sortColumnIndex: 0,
-                showBottomBorder: true,
-                columns: [
-                  DataColumn(
-                    label: Text('Name'.tr),
-                  ),
-                  DataColumn(
-                    label: Text('Description'.tr),
-                  ),
-                  DataColumn(
-                    label: Text('Min'.tr),
-                    numeric: true,
-                  ),
-                  DataColumn(
-                    label: Text('Max'.tr),
-                    numeric: true,
-                  ),
-                  DataColumn(
-                    label: Text('Stock'.tr),
-                    numeric: true,
-                  ),
-                  DataColumn(
-                    label: Text('Price'.tr),
-                    numeric: true,
-                  ),
-                  DataColumn(
-                    label: Text(''.tr),
-                  ),
-                ],
-                rows: DataServices.to.products.map((prod) {
-                  return DataRow(
-                    cells: [
-                      DataCell(Text(prod.name)),
-                      DataCell(Text(prod.description ?? '')),
-                      DataCell(Text(prod.minStringed)),
-                      DataCell(Text(prod.maxStringed)),
-                      DataCell(Text(prod.quantityStringed)),
-                      DataCell(Text(prod.priceStringed)),
-                      DataCell(
-                        Row(
-                          children: [
-                            Expanded(
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  DataServices.to.product.value = prod.product;
-                                  productAdd(title: prod.product.name);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                    foregroundColor: kWhite,
-                                    backgroundColor: kWarning),
-                                child: Text('Edit'.tr),
+              child: Container(
+                width: Get.width - 50,
+                child: DataTable(
+                  sortAscending: true,
+                  sortColumnIndex: 0,
+                  showBottomBorder: true,
+                  columns: [
+                    DataColumn(
+                      label: Text('Name'.tr),
+                    ),
+                    DataColumn(
+                      label: Text('Description'.tr),
+                    ),
+                    DataColumn(
+                      label: Text('Min'.tr),
+                      numeric: true,
+                    ),
+                    DataColumn(
+                      label: Text('Max'.tr),
+                      numeric: true,
+                    ),
+                    DataColumn(
+                      label: Text('Stock'.tr),
+                      numeric: true,
+                    ),
+                    DataColumn(
+                      label: Text('Price'.tr),
+                      numeric: true,
+                    ),
+                    DataColumn(
+                      label: Text(''.tr),
+                    ),
+                  ],
+                  rows: DataServices.to.products.map((prod) {
+                    return DataRow(
+                      cells: [
+                        DataCell(Text(prod.name)),
+                        DataCell(Text(prod.description ?? '')),
+                        DataCell(Text(prod.minStringed)),
+                        DataCell(Text(prod.maxStringed)),
+                        DataCell(Text(prod.quantityStringed)),
+                        DataCell(Text(prod.priceStringed)),
+                        DataCell(
+                          Row(
+                            children: [
+                              Expanded(
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    DataServices.to.product.value =
+                                        prod.product;
+                                    productAdd(title: prod.product.name);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                      foregroundColor: kWhite,
+                                      backgroundColor: kWarning),
+                                  child: Text('Edit'.tr),
+                                ),
                               ),
-                            ),
-                            const SizedBox(
-                              width: 5.0,
-                            ),
-                            Expanded(
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  DataServices.to.deleteProduct(prod.product);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                    foregroundColor: kWhite,
-                                    backgroundColor: kDanger),
-                                child: Text('Delete'.tr),
+                              const SizedBox(
+                                width: 5.0,
                               ),
-                            ),
-                          ],
+                              Expanded(
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    DataServices.to.deleteProduct(prod.product);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                      foregroundColor: kWhite,
+                                      backgroundColor: kDanger),
+                                  child: Text('Delete'.tr),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  );
-                }).toList(),
+                      ],
+                    );
+                  }).toList(),
+                ),
               ),
             );
           }),
