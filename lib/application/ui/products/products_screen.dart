@@ -92,7 +92,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
                             Expanded(
                               child: ElevatedButton(
                                 onPressed: () {
-                                  DataServices.to.deleteProduct(prod.product);
+                                  DataServices.to.product.value = prod.product;
+                                  productAdd(title: prod.product.name);
                                 },
                                 style: ElevatedButton.styleFrom(
                                     foregroundColor: kWhite,
@@ -106,8 +107,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                             Expanded(
                               child: ElevatedButton(
                                 onPressed: () {
-                                  DataServices.to.product.value = prod.product;
-                                  productDelete(prod.product);
+                                  DataServices.to.deleteProduct(prod.product);
                                 },
                                 style: ElevatedButton.styleFrom(
                                     foregroundColor: kWhite,

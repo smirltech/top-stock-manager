@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:top_stock_manager/application/core/services/auth_services.dart';
 import 'package:top_stock_manager/application/database/offline/app_database.dart';
-import 'package:top_stock_manager/application/ui/home/home_screen.dart';
-import 'package:top_stock_manager/application/ui/products/products_screen.dart';
+import 'package:top_stock_manager/application/ui/auth/login/login_screen.dart';
 import 'package:top_stock_manager/routes.dart';
 import 'package:top_stock_manager/system/configs/constants.dart';
 import 'package:top_stock_manager/system/configs/theming.dart';
@@ -26,17 +26,19 @@ Locale _initLang() {
 const uuid = Uuid();
 
 final DB = AppDatabase();
+final GetStorage InnerStorage = GetStorage(kInnerStorage);
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   setFrameSize();
-  await GetStorage.init();
+  await GetStorage.init(kInnerStorage);
   await _initServices();
   runApp(MyApp());
 }
 
 Future<void> _initServices() async {
+  await AuthServices.init();
   await DataServices.init();
 }
 
@@ -67,7 +69,7 @@ class MyApp extends StatelessWidget {
       ),
       // home: const SplashScreen(),
       // initialRoute: SplashScreen.route,
-      initialRoute: ProductsScreen.route,
+      initialRoute: LoginScreen.route,
       getPages: Routes.routes,
     );
   }

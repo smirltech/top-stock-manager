@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:top_stock_manager/application/ui/auth/login/login_screen.dart';
 
-import '../../../routes.dart';
 import '../../../system/configs/constants.dart';
 import '../../../system/configs/theming.dart';
 
@@ -27,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<Timer> _startTimer() async {
     var duration = const Duration(seconds: 2);
     return Timer(duration, () {
-      Get.offNamed(Routes.login);
+      Get.offNamed(LoginScreen.route);
     });
   }
 

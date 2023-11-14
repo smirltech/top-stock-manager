@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 
 import '../../app_database.dart';
+import '../../models/user_model.dart';
 import '../../tables/users.dart';
 
 part 'users_dao.g.dart';
@@ -12,18 +13,26 @@ class UsersDao extends DatabaseAccessor<AppDatabase> with _$UsersDaoMixin {
   UsersDao(this.db) : super(db);
 
   // stream all users
-  Stream<List<User>> watchAllUsers() => select(users).watch();
+  Stream<List<UserModel>> watchAllUsers() =>
+      select(users).map((user) => UserModel(user: user)).watch();
 
   Future<int> insertUser(Map<String, dynamic> user) => into(users).insert(
         UsersCompanion(
           name: Value(user['name']),
           username: Value(user['username']),
+          password: Value(user['password']),
           createdAt: Value(DateTime.now()),
           updatedAt: Value(DateTime.now()),
         ),
       );
 
-  Future updateUser(User user) => update(users).replace(user);
+  Future updateUser(UsersCompanion user) => update(users).replace(user);
 
   Future deleteUser(User user) => delete(users).delete(user);
+
+  Future<UserModel> login(String username, String password) => (select(users)
+        ..where((usr) => usr.username.equals(username))
+        ..where((usr) => usr.password.equals(password)))
+      .map((user) => UserModel(user: user))
+      .getSingle();
 }

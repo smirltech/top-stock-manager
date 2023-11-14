@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:drift/drift.dart' as d;
 import 'package:get/get.dart';
 import 'package:top_stock_manager/application/database/offline/app_database.dart';
@@ -17,6 +15,7 @@ class DataServices extends GetxService {
   }
 
 // ------- ./static methods ------- //
+  int user_id = 1;
   var product = Rxn<Product>();
   var products = <ProductModel>[].obs;
 
@@ -64,7 +63,7 @@ class DataServices extends GetxService {
   void onReady() {
     DB.productsDao.watchAllProducts().listen((event) {
       products.value = event;
-      log(event.toString());
+      // log(event.toString());
     });
 
     super.onReady();

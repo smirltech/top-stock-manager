@@ -1,8 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:menu_bar/menu_bar.dart';
+import 'package:top_stock_manager/application/core/services/auth_services.dart';
+import 'package:top_stock_manager/application/ui/auth/users/users_screen.dart';
 import 'package:top_stock_manager/application/ui/home/home_screen.dart';
 import 'package:top_stock_manager/application/ui/products/products_screen.dart';
+import 'package:window_manager/window_manager.dart';
 
 List<BarButton> _menuBarButtons() {
   return [
@@ -18,7 +23,9 @@ List<BarButton> _menuBarButtons() {
             text: Text('Home'.tr),
           ),
           MenuButton(
-            onTap: () {},
+            onTap: () {
+              AuthServices.to.logout();
+            },
             text: Text('Logout'.tr),
           ),
           MenuButton(
@@ -45,13 +52,26 @@ List<BarButton> _menuBarButtons() {
               ],
             ),
           ),
-          const MenuDivider(),
-          MenuButton(
-            onTap: () {},
-            shortcutText: 'Ctrl+Q',
-            text: Text('Exit'.tr),
-            icon: const Icon(Icons.exit_to_app),
-          ),
+          if (Platform.isWindows || Platform.isLinux || Platform.isMacOS)
+            const MenuDivider(),
+          if (Platform.isWindows || Platform.isLinux || Platform.isMacOS)
+            MenuButton(
+              onTap: () {
+                WindowManager.instance.close();
+              },
+              shortcutText: 'Ctrl+Q',
+              text: Text('Exit'.tr),
+              icon: const Icon(Icons.exit_to_app),
+            ),
+          if (Platform.isWindows || Platform.isLinux || Platform.isMacOS)
+            MenuButton(
+              onTap: () {
+                AuthServices.to.logout(exit: true);
+              },
+              shortcutText: 'Ctrl+Shift+Q',
+              text: Text('Logout and Exit'.tr),
+              icon: const Icon(Icons.exit_to_app),
+            ),
         ],
       ),
     ),
@@ -87,7 +107,7 @@ List<BarButton> _menuBarButtons() {
       submenu: SubMenu(
         menuItems: [
           MenuButton(
-            onTap: () {},
+            onTap: () => Get.toNamed(UsersScreen.route),
             text: Text('Users'.tr),
           ),
           MenuButton(

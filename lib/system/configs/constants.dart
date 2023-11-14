@@ -5,3 +5,4 @@ const double kLeftMenuWidth = 250.0;
 const double kBlocCardMultiplier = 0.29;
 const double kPopupMenuIconSize = 14.0;
 const String kAppName = "Top Stock Manager";
+const String kInnerStorage = "tsmanager";
