@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:top_stock_manager/application/core/controllers/clients_controller.dart';
+import 'package:top_stock_manager/application/core/controllers/suppliers_controller.dart';
 import 'package:top_stock_manager/application/core/services/auth_services.dart';
 import 'package:top_stock_manager/application/database/offline/app_database.dart';
 import 'package:top_stock_manager/application/ui/auth/login/login_screen.dart';
@@ -42,7 +44,10 @@ Future<void> _initServices() async {
   await DataServices.init();
 }
 
-Future<void> _initControllers() async {}
+Future<void> _initControllers() async {
+  await SuppliersController.init();
+  await ClientsController.init();
+}
 
 class MyApp extends StatelessWidget {
   MyApp({super.key}) {

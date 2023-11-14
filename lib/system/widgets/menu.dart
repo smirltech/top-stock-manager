@@ -4,9 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:menu_bar/menu_bar.dart';
 import 'package:top_stock_manager/application/core/services/auth_services.dart';
+import 'package:top_stock_manager/application/ui/auth/roles/roles_screen.dart';
 import 'package:top_stock_manager/application/ui/auth/users/users_screen.dart';
+import 'package:top_stock_manager/application/ui/clients/clients_screen.dart';
 import 'package:top_stock_manager/application/ui/home/home_screen.dart';
 import 'package:top_stock_manager/application/ui/products/products_screen.dart';
+import 'package:top_stock_manager/application/ui/suppliers/suppliers_screen.dart';
 import 'package:window_manager/window_manager.dart';
 
 List<BarButton> _menuBarButtons() {
@@ -111,7 +114,7 @@ List<BarButton> _menuBarButtons() {
             text: Text('Users'.tr),
           ),
           MenuButton(
-            onTap: () {},
+            onTap: () => Get.toNamed(RolesScreen.route),
             text: Text('Roles'.tr),
           ),
         ],
@@ -126,11 +129,11 @@ List<BarButton> _menuBarButtons() {
       submenu: SubMenu(
         menuItems: [
           MenuButton(
-            onTap: () {},
+            onTap: () => Get.toNamed(SuppliersScreen.route),
             text: Text('Suppliers'.tr),
           ),
           MenuButton(
-            onTap: () {},
+            onTap: () => Get.toNamed(ClientsScreen.route),
             text: Text('Clients'.tr),
           ),
         ],

@@ -3,16 +3,16 @@ import 'package:get/get.dart';
 import 'package:top_stock_manager/application/core/services/auth_services.dart';
 import 'package:top_stock_manager/system/configs/theming.dart';
 
-class UsersScreen extends StatefulWidget {
-  const UsersScreen({super.key});
+class RolesScreen extends StatefulWidget {
+  const RolesScreen({super.key});
 
-  static String route = "/users";
+  static String route = "/roles";
 
   @override
-  State<UsersScreen> createState() => _UsersScreenState();
+  State<RolesScreen> createState() => _RolesScreenState();
 }
 
-class _UsersScreenState extends State<UsersScreen> {
+class _RolesScreenState extends State<RolesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,19 +25,19 @@ class _UsersScreenState extends State<UsersScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Users Screen'.tr,
+                  'Roles Screen'.tr,
                   style: const TextStyle(
                       fontSize: 30, fontWeight: FontWeight.bold),
                 ),
                 OutlinedButton(
                   onPressed: () {
-                    AuthServices.to.user.value = null;
-                    userAdd();
+                    AuthServices.to.role.value = null;
+                    roleAdd();
                   },
                   style: OutlinedButton.styleFrom(
                       foregroundColor: kWhite, backgroundColor: kPrimary),
                   child: Text(
-                    'Add User'.tr,
+                    'Add Role'.tr,
                   ),
                 )
               ],
@@ -56,22 +56,22 @@ class _UsersScreenState extends State<UsersScreen> {
                       label: Text('Name'.tr),
                     ),
                     DataColumn(
-                      label: Text('Username'.tr),
+                      label: Text('Description'.tr),
                     ),
                     DataColumn(
-                      label: Text('Role'.tr),
+                      label: Text('Permissions'.tr),
                       numeric: true,
                     ),
                     DataColumn(
                       label: Text(''.tr),
                     ),
                   ],
-                  rows: AuthServices.to.users.map((usr) {
+                  rows: AuthServices.to.roles.map((rol) {
                     return DataRow(
                       cells: [
-                        DataCell(Text(usr.name)),
-                        DataCell(Text(usr.username ?? '')),
-                        DataCell(Text(usr.role)),
+                        DataCell(Text(rol.name)),
+                        DataCell(Text(rol.description ?? '')),
+                        DataCell(Text(rol.permissions)),
                         DataCell(
                           SizedBox(
                             width: 200.0,
@@ -80,8 +80,8 @@ class _UsersScreenState extends State<UsersScreen> {
                                 Expanded(
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      AuthServices.to.user.value = usr.user;
-                                      userAdd(title: usr.user.name);
+                                      AuthServices.to.role.value = rol.role;
+                                      roleAdd(title: rol.role.name);
                                     },
                                     style: ElevatedButton.styleFrom(
                                         foregroundColor: kWhite,
@@ -94,12 +94,9 @@ class _UsersScreenState extends State<UsersScreen> {
                                 ),
                                 Expanded(
                                   child: ElevatedButton(
-                                    onPressed: AuthServices.to.isMe(usr)
-                                        ? null
-                                        : () {
-                                            AuthServices.to
-                                                .deleteUser(usr.user);
-                                          },
+                                    onPressed: () {
+                                      AuthServices.to.deleteRole(rol.role);
+                                    },
                                     style: ElevatedButton.styleFrom(
                                         foregroundColor: kWhite,
                                         backgroundColor: kDanger),
@@ -122,26 +119,24 @@ class _UsersScreenState extends State<UsersScreen> {
     );
   }
 
-  userAdd({String title = "Add a new user"}) {
-    final _userAddFormKey = GlobalKey<FormState>();
-    late Map<String, dynamic> _user = {
+  roleAdd({String title = "Add a new role"}) {
+    final _roleAddFormKey = GlobalKey<FormState>();
+    late Map<String, dynamic> _role = {
       'name': '',
-      'username': '',
-      'password': '',
+      'description': '',
     };
 
-    if (AuthServices.to.user.value != null) {
-      _user = {
-        'name': AuthServices.to.user.value?.name,
-        'username': AuthServices.to.user.value?.username,
-        'password': '',
+    if (AuthServices.to.role.value != null) {
+      _role = {
+        'name': AuthServices.to.role.value?.name,
+        'description': AuthServices.to.role.value?.description,
       };
     }
     Get.bottomSheet(
       Container(
         margin: const EdgeInsets.symmetric(horizontal: 5.0),
         child: Form(
-            key: _userAddFormKey,
+            key: _roleAddFormKey,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -157,7 +152,7 @@ class _UsersScreenState extends State<UsersScreen> {
                     height: 20,
                   ),
                   TextFormField(
-                    initialValue: _user['name'],
+                    initialValue: _role['name'],
                     validator: (va) {
                       if (va!.isEmpty) {
                         return "Name must not be empty".tr;
@@ -167,7 +162,7 @@ class _UsersScreenState extends State<UsersScreen> {
                       return null;
                     },
                     onSaved: (String? value) {
-                      _user['name'] = value.toString();
+                      _role['name'] = value.toString();
                     },
                     decoration: InputDecoration(
                       hintText: "Name".tr,
@@ -179,51 +174,27 @@ class _UsersScreenState extends State<UsersScreen> {
                     height: 10,
                   ),
                   TextFormField(
-                    initialValue: _user['username'],
+                    initialValue: _role['description'],
                     onSaved: (String? value) {
-                      _user['username'] = value.toString();
+                      _role['description'] = value.toString();
                     },
                     decoration: InputDecoration(
-                      hintText: "User identifier".tr,
-                      labelText: "Username".tr,
+                      hintText: "Role Description".tr,
+                      labelText: "Description".tr,
                       border: const OutlineInputBorder(),
                     ),
                   ),
                   const SizedBox(
                     height: 10,
                   ),
-                  if (AuthServices.to.user.value == null)
-                    TextFormField(
-                      initialValue: _user['password'],
-                      onSaved: (String? value) {
-                        _user['password'] = value.toString();
-                      },
-                      validator: (va) {
-                        if (va!.isEmpty) {
-                          return "Password must not be empty".tr;
-                        } else if (va.length < 4) {
-                          return "Length of password must be 4 characters and above";
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                        hintText: "User password".tr,
-                        labelText: "Password".tr,
-                        border: const OutlineInputBorder(),
-                      ),
-                    ),
-                  if (AuthServices.to.user.value == null)
-                    const SizedBox(
-                      height: 10,
-                    ),
                   Center(
                     child: ElevatedButton(
                       onPressed: () {
-                        if (!_userAddFormKey.currentState!.validate()) {
+                        if (!_roleAddFormKey.currentState!.validate()) {
                           return;
                         }
-                        _userAddFormKey.currentState!.save();
-                        AuthServices.to.saveUser(_user);
+                        _roleAddFormKey.currentState!.save();
+                        AuthServices.to.saveRole(_role);
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: kWhite,

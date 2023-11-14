@@ -15,7 +15,7 @@ class DataServices extends GetxService {
   }
 
 // ------- ./static methods ------- //
-  int user_id = 1;
+
   var product = Rxn<Product>();
   var products = <ProductModel>[].obs;
 

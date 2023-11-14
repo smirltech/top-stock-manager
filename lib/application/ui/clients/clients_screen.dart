@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:top_stock_manager/application/core/services/auth_services.dart';
 import 'package:top_stock_manager/system/configs/theming.dart';
 
-class UsersScreen extends StatefulWidget {
-  const UsersScreen({super.key});
+import '../../core/controllers/clients_controller.dart';
 
-  static String route = "/users";
+class ClientsScreen extends StatefulWidget {
+  const ClientsScreen({super.key});
+
+  static String route = "/clients";
 
   @override
-  State<UsersScreen> createState() => _UsersScreenState();
+  State<ClientsScreen> createState() => _ClientsScreenState();
 }
 
-class _UsersScreenState extends State<UsersScreen> {
+class _ClientsScreenState extends State<ClientsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,19 +26,18 @@ class _UsersScreenState extends State<UsersScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Users Screen'.tr,
+                  'Clients Screen'.tr,
                   style: const TextStyle(
                       fontSize: 30, fontWeight: FontWeight.bold),
                 ),
                 OutlinedButton(
                   onPressed: () {
-                    AuthServices.to.user.value = null;
-                    userAdd();
+                    clientAdd();
                   },
                   style: OutlinedButton.styleFrom(
                       foregroundColor: kWhite, backgroundColor: kPrimary),
                   child: Text(
-                    'Add User'.tr,
+                    'Add Client'.tr,
                   ),
                 )
               ],
@@ -56,22 +56,27 @@ class _UsersScreenState extends State<UsersScreen> {
                       label: Text('Name'.tr),
                     ),
                     DataColumn(
-                      label: Text('Username'.tr),
+                      label: Text('Sex'.tr),
+                      numeric: true,
                     ),
                     DataColumn(
-                      label: Text('Role'.tr),
+                      label: Text('Contact'.tr),
                       numeric: true,
+                    ),
+                    DataColumn(
+                      label: Text('Description'.tr),
                     ),
                     DataColumn(
                       label: Text(''.tr),
                     ),
                   ],
-                  rows: AuthServices.to.users.map((usr) {
+                  rows: ClientsController.to.clients.map((cl) {
                     return DataRow(
                       cells: [
-                        DataCell(Text(usr.name)),
-                        DataCell(Text(usr.username ?? '')),
-                        DataCell(Text(usr.role)),
+                        DataCell(Text(cl.name)),
+                        DataCell(Text(cl.sex)),
+                        DataCell(Text(cl.contact)),
+                        DataCell(Text(cl.description ?? '')),
                         DataCell(
                           SizedBox(
                             width: 200.0,
@@ -80,8 +85,9 @@ class _UsersScreenState extends State<UsersScreen> {
                                 Expanded(
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      AuthServices.to.user.value = usr.user;
-                                      userAdd(title: usr.user.name);
+                                      ClientsController.to.client.value =
+                                          cl.client;
+                                      clientAdd(title: cl.client.name);
                                     },
                                     style: ElevatedButton.styleFrom(
                                         foregroundColor: kWhite,
@@ -94,12 +100,10 @@ class _UsersScreenState extends State<UsersScreen> {
                                 ),
                                 Expanded(
                                   child: ElevatedButton(
-                                    onPressed: AuthServices.to.isMe(usr)
-                                        ? null
-                                        : () {
-                                            AuthServices.to
-                                                .deleteUser(usr.user);
-                                          },
+                                    onPressed: () {
+                                      ClientsController.to
+                                          .deleteClient(cl.client);
+                                    },
                                     style: ElevatedButton.styleFrom(
                                         foregroundColor: kWhite,
                                         backgroundColor: kDanger),
@@ -122,26 +126,28 @@ class _UsersScreenState extends State<UsersScreen> {
     );
   }
 
-  userAdd({String title = "Add a new user"}) {
-    final _userAddFormKey = GlobalKey<FormState>();
-    late Map<String, dynamic> _user = {
+  clientAdd({String title = "Add a new client"}) {
+    final _clientAddFormKey = GlobalKey<FormState>();
+    late Map<String, dynamic> _client = {
       'name': '',
-      'username': '',
-      'password': '',
+      'sex': '',
+      'contact': '',
+      'description': '',
     };
 
-    if (AuthServices.to.user.value != null) {
-      _user = {
-        'name': AuthServices.to.user.value?.name,
-        'username': AuthServices.to.user.value?.username,
-        'password': '',
+    if (ClientsController.to.client.value != null) {
+      _client = {
+        'name': ClientsController.to.client.value?.name,
+        'sex': ClientsController.to.client.value?.sex,
+        'contact': ClientsController.to.client.value?.contact,
+        'description': ClientsController.to.client.value?.description,
       };
     }
     Get.bottomSheet(
       Container(
         margin: const EdgeInsets.symmetric(horizontal: 5.0),
         child: Form(
-            key: _userAddFormKey,
+            key: _clientAddFormKey,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -157,7 +163,7 @@ class _UsersScreenState extends State<UsersScreen> {
                     height: 20,
                   ),
                   TextFormField(
-                    initialValue: _user['name'],
+                    initialValue: _client['name'],
                     validator: (va) {
                       if (va!.isEmpty) {
                         return "Name must not be empty".tr;
@@ -167,10 +173,10 @@ class _UsersScreenState extends State<UsersScreen> {
                       return null;
                     },
                     onSaved: (String? value) {
-                      _user['name'] = value.toString();
+                      _client['name'] = value.toString();
                     },
                     decoration: InputDecoration(
-                      hintText: "Name".tr,
+                      hintText: "Client Name".tr,
                       labelText: "Name".tr,
                       border: const OutlineInputBorder(),
                     ),
@@ -179,51 +185,65 @@ class _UsersScreenState extends State<UsersScreen> {
                     height: 10,
                   ),
                   TextFormField(
-                    initialValue: _user['username'],
+                    initialValue: _client['description'],
                     onSaved: (String? value) {
-                      _user['username'] = value.toString();
+                      _client['description'] = value.toString();
                     },
                     decoration: InputDecoration(
-                      hintText: "User identifier".tr,
-                      labelText: "Username".tr,
+                      hintText: "Client Description".tr,
+                      labelText: "Description".tr,
                       border: const OutlineInputBorder(),
                     ),
                   ),
                   const SizedBox(
                     height: 10,
                   ),
-                  if (AuthServices.to.user.value == null)
-                    TextFormField(
-                      initialValue: _user['password'],
-                      onSaved: (String? value) {
-                        _user['password'] = value.toString();
-                      },
-                      validator: (va) {
-                        if (va!.isEmpty) {
-                          return "Password must not be empty".tr;
-                        } else if (va.length < 4) {
-                          return "Length of password must be 4 characters and above";
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                        hintText: "User password".tr,
-                        labelText: "Password".tr,
-                        border: const OutlineInputBorder(),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Flexible(
+                        child: TextFormField(
+                          initialValue: _client['sex'].toString(),
+                          onSaved: (String? value) {
+                            _client['sex'] = value.toString();
+                          },
+                          decoration: InputDecoration(
+                            hintText: "Sex".tr,
+                            labelText: "Sex".tr,
+                            border: const OutlineInputBorder(),
+                          ),
+                        ),
                       ),
-                    ),
-                  if (AuthServices.to.user.value == null)
-                    const SizedBox(
-                      height: 10,
-                    ),
+                      const SizedBox(
+                        width: 10.0,
+                      ),
+                      Flexible(
+                        child: TextFormField(
+                          initialValue: _client['contact'],
+                          onSaved: (String? value) {
+                            _client['contact'] = value.toString();
+                          },
+                          decoration: InputDecoration(
+                            hintText: "Contact".tr,
+                            labelText: "Contact".tr,
+                            border: const OutlineInputBorder(),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   Center(
                     child: ElevatedButton(
                       onPressed: () {
-                        if (!_userAddFormKey.currentState!.validate()) {
+                        if (!_clientAddFormKey.currentState!.validate()) {
                           return;
                         }
-                        _userAddFormKey.currentState!.save();
-                        AuthServices.to.saveUser(_user);
+                        _clientAddFormKey.currentState!.save();
+                        ClientsController.to.saveClient(_client);
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: kWhite,

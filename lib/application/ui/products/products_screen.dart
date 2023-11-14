@@ -3,8 +3,6 @@ import 'package:get/get.dart';
 import 'package:top_stock_manager/application/core/services/data_services.dart';
 import 'package:top_stock_manager/system/configs/theming.dart';
 
-import '../../database/offline/app_database.dart';
-
 class ProductsScreen extends StatefulWidget {
   const ProductsScreen({super.key});
 
@@ -293,9 +291,5 @@ class _ProductsScreenState extends State<ProductsScreen> {
         borderRadius: BorderRadius.circular(10),
       ),
     );
-  }
-
-  productDelete(Product product) {
-    DataServices.to.deleteProduct(product);
   }
 }
