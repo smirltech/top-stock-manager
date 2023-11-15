@@ -9,6 +9,8 @@ import 'package:top_stock_manager/application/ui/suppliers/suppliers_screen.dart
 import 'package:top_stock_manager/system/widgets/menu.dart';
 
 import 'application/ui/auth/users/users_screen.dart';
+import 'application/ui/purchases/purchase_add_edit_screen.dart';
+import 'application/ui/purchases/purchases_screen.dart';
 
 class Routes {
   static List<GetPage> routes = [
@@ -69,6 +71,24 @@ class Routes {
       name: ClientsScreen.route,
       page: () => const WindowMenu(
         child: ClientsScreen(),
+      ),
+      middlewares: [
+        //  AuthMiddleware(),
+      ],
+    ),
+    GetPage(
+      name: PurchasesScreen.route,
+      page: () => const WindowMenu(
+        child: PurchasesScreen(),
+      ),
+      middlewares: [
+        //  AuthMiddleware(),
+      ],
+    ),
+    GetPage(
+      name: PurchaseAddEditScreen.route,
+      page: () => const WindowMenu(
+        child: PurchaseAddEditScreen(),
       ),
       middlewares: [
         //  AuthMiddleware(),

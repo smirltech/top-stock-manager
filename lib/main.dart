@@ -13,6 +13,7 @@ import 'package:top_stock_manager/system/configs/utils.dart';
 import 'package:top_stock_manager/system/lang/locales.dart';
 import 'package:uuid/uuid.dart';
 
+import 'application/core/controllers/purchases_controller.dart';
 import 'application/core/services/data_services.dart';
 
 Locale _initLang() {
@@ -47,6 +48,7 @@ Future<void> _initServices() async {
 Future<void> _initControllers() async {
   await SuppliersController.init();
   await ClientsController.init();
+  await PurchasesController.init();
 }
 
 class MyApp extends StatelessWidget {

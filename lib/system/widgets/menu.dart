@@ -12,6 +12,8 @@ import 'package:top_stock_manager/application/ui/products/products_screen.dart';
 import 'package:top_stock_manager/application/ui/suppliers/suppliers_screen.dart';
 import 'package:window_manager/window_manager.dart';
 
+import '../../application/ui/purchases/purchases_screen.dart';
+
 List<BarButton> _menuBarButtons() {
   return [
     BarButton(
@@ -33,23 +35,24 @@ List<BarButton> _menuBarButtons() {
           ),
           MenuButton(
             text: Text('Database'.tr),
+            onTap: null,
             //icon: const Icon(Icons.settings),
             submenu: SubMenu(
               menuItems: [
                 MenuButton(
-                  onTap: () {},
+                  onTap: null,
                   text: Text('Export to'.tr),
                 ),
                 MenuButton(
-                  onTap: () {},
+                  onTap: null,
                   text: Text('Import from'.tr),
                 ),
                 MenuButton(
-                  onTap: () {},
+                  onTap: null,
                   text: Text('Backup Offline'.tr),
                 ),
                 MenuButton(
-                  onTap: () {},
+                  onTap: null,
                   text: Text('Backup Online'.tr),
                 ),
               ],
@@ -91,11 +94,11 @@ List<BarButton> _menuBarButtons() {
             text: Text('Products'.tr),
           ),
           MenuButton(
-            onTap: () {},
+            onTap: () => Get.toNamed(PurchasesScreen.route),
             text: Text('Purchases'.tr),
           ),
           MenuButton(
-            onTap: () {},
+            onTap: null,
             text: Text('Sales'.tr),
           ),
         ],
@@ -148,19 +151,19 @@ List<BarButton> _menuBarButtons() {
       submenu: SubMenu(
         menuItems: [
           MenuButton(
-            onTap: () {},
+            onTap: null,
             text: Text('Sales Reports'.tr),
           ),
           MenuButton(
-            onTap: () {},
+            onTap: null,
             text: Text('Purchases Reports'.tr),
           ),
           MenuButton(
-            onTap: () {},
+            onTap: null,
             text: Text('Stocks Reports'.tr),
           ),
           MenuButton(
-            onTap: () {},
+            onTap: null,
             text: Text('Users Performances'.tr),
           ),
         ],
@@ -175,19 +178,19 @@ List<BarButton> _menuBarButtons() {
       submenu: SubMenu(
         menuItems: [
           MenuButton(
-            onTap: () {},
+            onTap: null,
             text: Text('Settings'.tr),
           ),
           MenuButton(
-            onTap: () {},
+            onTap: null,
             text: Text('Check Updates'.tr),
           ),
           MenuButton(
-            onTap: () {},
+            onTap: null,
             text: Text('Notifications'.tr),
           ),
           MenuButton(
-            onTap: () {},
+            onTap: null,
             text: Text('Log'.tr),
           ),
         ],
@@ -203,23 +206,23 @@ List<BarButton> _menuBarButtons() {
       submenu: SubMenu(
         menuItems: [
           MenuButton(
-            onTap: () {},
+            onTap: null,
             text: Text("What's New".tr),
           ),
           MenuButton(
-            onTap: () {},
+            onTap: null,
             text: Text('Contact Support'.tr),
           ),
           MenuButton(
-            onTap: () {},
+            onTap: null,
             text: Text('Submit Feedback'.tr),
           ),
           MenuButton(
-            onTap: () {},
+            onTap: null,
             text: Text('Help'.tr),
           ),
           MenuButton(
-            onTap: () {},
+            onTap: null,
             text: Text('About'.tr),
           ),
         ],

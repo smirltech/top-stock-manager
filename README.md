@@ -84,7 +84,7 @@ Clients will be registered. Goods that are sold will be recorded with their clie
 A purchase is a set of different products purchased at once, usually from the same supplier. A purchase can have no
 supplier if that is not necessary
 
-- [ ] View all purchases ;
+- [x] View all purchases ;
 - [ ] View one purchase ;
 - [ ] Create a purchase ;
 - [ ] Update a purchase ;

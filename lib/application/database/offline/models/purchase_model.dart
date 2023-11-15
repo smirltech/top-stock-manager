@@ -11,5 +11,7 @@ class PurchaseModel {
 
   get date => purchase.date;
 
+  get supplierId => purchase.supplierId;
+
   get description => purchase.description;
 }
