@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:top_stock_manager/application/ui/purchases/purchases_screen.dart';
 import 'package:top_stock_manager/system/configs/theming.dart';
 
@@ -16,6 +17,9 @@ class PurchaseAddEditScreen extends StatefulWidget {
 
 class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
   final _purchaseAddFormKey = GlobalKey<FormState>();
+  final TextEditingController dateEC = TextEditingController();
+  final TextEditingController supplierEC = TextEditingController();
+  final TextEditingController descriptionEC = TextEditingController();
   late Map<String, dynamic> _purchase = {
     'date': '',
     'supplierId': '',
@@ -30,7 +34,13 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
         'supplierId': PurchasesController.to.purchase.value?.supplierId,
         'description': PurchasesController.to.purchase.value?.description,
       };
+      dateEC.text = PurchasesController.to.purchase.value!.date.toString();
+      supplierEC.text =
+          PurchasesController.to.purchase.value!.supplierId.toString();
+      descriptionEC.text =
+          PurchasesController.to.purchase.value!.description.toString();
     }
+
     super.initState();
   }
 
@@ -95,15 +105,39 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
                       Row(children: [
                         Flexible(
                           child: TextFormField(
-                            initialValue: _purchase['date'],
-                            onSaved: (String? value) {
-                              _purchase['date'] = value.toString();
-                            },
+                            controller: dateEC,
+                            readOnly: true,
                             decoration: InputDecoration(
                               hintText: "Date of purchase".tr,
                               labelText: "Date".tr,
                               border: const OutlineInputBorder(),
                             ),
+                            onTap: () {
+                              Get.dialog(
+                                Center(
+                                  child: SizedBox(
+                                    width: Get.width / 3,
+                                    child: Card(
+                                      child: CalendarDatePicker(
+                                        initialDate: DateTime.tryParse(
+                                                _purchase['date']) ??
+                                            DateTime.now(),
+                                        firstDate: DateTime.now()
+                                            .subtract(const Duration(days: 30)),
+                                        lastDate: DateTime.now(),
+                                        onDateChanged: (DateTime value) {
+                                          dateEC.text =
+                                              DateFormat('y-M-d').format(value);
+                                          Get.back();
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ).then((value) {
+                                // setState(() {});
+                              });
+                            },
                           ),
                         ),
                         const SizedBox(
@@ -111,10 +145,7 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
                         ),
                         Flexible(
                           child: TextFormField(
-                            initialValue: _purchase['supplierId'],
-                            onSaved: (String? value) {
-                              // _purchase['supplierId'] = value.toString();
-                            },
+                            controller: supplierEC,
                             decoration: InputDecoration(
                               hintText: "Supplier".tr,
                               labelText: "Supplier".tr,
@@ -132,10 +163,7 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
                         children: [
                           Flexible(
                             child: TextFormField(
-                              initialValue: _purchase['description'].toString(),
-                              onSaved: (String? value) {
-                                _purchase['description'] = value.toString();
-                              },
+                              controller: descriptionEC,
                               decoration: InputDecoration(
                                 hintText: "Description".tr,
                                 labelText: "Description".tr,
