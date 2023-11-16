@@ -27,7 +27,7 @@ class PurchasesController extends GetxController {
     } else {
       PurchasesCompanion c = purchase.value!
           .copyWith(
-            date: data['date'],
+            date: d.Value(data['date']),
             supplierId: d.Value(data['supplierId']),
             description: d.Value(data['description']),
             updatedAt: d.Value(DateTime.now()),

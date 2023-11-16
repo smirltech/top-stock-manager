@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -81,7 +83,18 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
                         ),
                         OutlinedButton(
                           onPressed: () {
-                            // purchaseAdd();
+                            log('save purchase');
+                            if (!_purchaseAddFormKey.currentState!.validate()) {
+                              log('failed');
+                              return;
+                            }
+                            _purchaseAddFormKey.currentState!.save();
+                            Map<String, dynamic> _purchase = {
+                              'date': DateTime.parse(dateEC.text),
+                              'supplierId': int.tryParse(supplierEC.text),
+                              'description': descriptionEC.text,
+                            };
+                            PurchasesController.to.savePurchase(_purchase);
                           },
                           style: OutlinedButton.styleFrom(
                               foregroundColor: kWhite,
@@ -107,6 +120,12 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
                           child: TextFormField(
                             controller: dateEC,
                             readOnly: true,
+                            validator: (va) {
+                              if (va!.isEmpty) {
+                                return "Date must not be empty".tr;
+                              }
+                              return null;
+                            },
                             decoration: InputDecoration(
                               hintText: "Date of purchase".tr,
                               labelText: "Date".tr,
@@ -146,6 +165,12 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
                         Flexible(
                           child: TextFormField(
                             controller: supplierEC,
+                            validator: (va) {
+                              if (va!.isEmpty) {
+                                return "Supplier must not be empty".tr;
+                              }
+                              return null;
+                            },
                             decoration: InputDecoration(
                               hintText: "Supplier".tr,
                               labelText: "Supplier".tr,

@@ -72,7 +72,7 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
                   rows: PurchasesController.to.purchases.map((pur) {
                     return DataRow(
                       cells: [
-                        DataCell(Text(pur.date)),
+                        DataCell(Text(pur.date.toString())),
                         DataCell(Text("Supplier name")),
                         DataCell(Text("10 000 Fc")),
                         DataCell(Text(pur.description ?? '')),
