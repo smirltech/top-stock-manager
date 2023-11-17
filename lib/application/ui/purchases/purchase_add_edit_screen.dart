@@ -2,7 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
+import 'package:top_stock_manager/application/core/controllers/suppliers_controller.dart';
+import 'package:top_stock_manager/application/database/offline/models/supplier_model.dart';
 import 'package:top_stock_manager/application/ui/purchases/purchases_screen.dart';
 import 'package:top_stock_manager/system/configs/theming.dart';
 
@@ -20,29 +21,37 @@ class PurchaseAddEditScreen extends StatefulWidget {
 class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
   final _purchaseAddFormKey = GlobalKey<FormState>();
   final TextEditingController dateEC = TextEditingController();
-  final TextEditingController supplierEC = TextEditingController();
+
   final TextEditingController descriptionEC = TextEditingController();
-  late Map<String, dynamic> _purchase = {
-    'date': '',
-    'supplierId': '',
-    'description': '',
-  };
+
+  late List<DropdownMenuItem<SupplierModel>> suppliersDrop;
 
   @override
   void initState() {
     if (PurchasesController.to.purchase.value != null) {
-      _purchase = {
-        'date': PurchasesController.to.purchase.value?.date,
-        'supplierId': PurchasesController.to.purchase.value?.supplierId,
-        'description': PurchasesController.to.purchase.value?.description,
-      };
       dateEC.text = PurchasesController.to.purchase.value!.date.toString();
-      supplierEC.text =
-          PurchasesController.to.purchase.value!.supplierId.toString();
+
       descriptionEC.text =
           PurchasesController.to.purchase.value!.description.toString();
     }
 
+    suppliersDrop = SuppliersController.to.suppliers
+        .map(
+          (sup) => DropdownMenuItem<SupplierModel>(
+            value: sup,
+            child: Text(sup.name),
+          ),
+        )
+        .toList();
+    suppliersDrop.insert(
+      0,
+      const DropdownMenuItem<SupplierModel>(
+        value: null,
+        child: Text("== SELECT SUPPLIER =="),
+      ),
+    );
+    log(SuppliersController.to.suppliers.toString());
+    //PurchasesController.to.supplier.value = SuppliersController.to.suppliers[0];
     super.initState();
   }
 
@@ -52,117 +61,135 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          Form(
-            key: _purchaseAddFormKey,
-            child: Column(children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Purchase Screen'.tr,
-                      style: const TextStyle(
-                          fontSize: 30, fontWeight: FontWeight.bold),
-                    ),
-                    Row(
+          Obx(() {
+            return Form(
+              key: _purchaseAddFormKey,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        OutlinedButton(
-                          onPressed: () {
-                            Get.toNamed(PurchasesScreen.route);
-                          },
-                          style: OutlinedButton.styleFrom(
-                              foregroundColor: kWhite,
-                              backgroundColor: kSecondary),
-                          child: Text(
-                            'Back'.tr,
-                          ),
+                        Text(
+                          'Purchase Screen'.tr,
+                          style: const TextStyle(
+                              fontSize: 30, fontWeight: FontWeight.bold),
                         ),
-                        const SizedBox(
-                          width: 20.0,
-                        ),
-                        OutlinedButton(
-                          onPressed: () {
-                            log('save purchase');
-                            if (!_purchaseAddFormKey.currentState!.validate()) {
-                              log('failed');
-                              return;
-                            }
-                            _purchaseAddFormKey.currentState!.save();
-                            Map<String, dynamic> _purchase = {
-                              'date': DateTime.parse(dateEC.text),
-                              'supplierId': int.tryParse(supplierEC.text),
-                              'description': descriptionEC.text,
-                            };
-                            PurchasesController.to.savePurchase(_purchase);
-                          },
-                          style: OutlinedButton.styleFrom(
-                              foregroundColor: kWhite,
-                              backgroundColor: kPrimary),
-                          child: Text(
-                            'Save Purchase'.tr,
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 30.0, vertical: 8.0),
-                  child: Column(
-                    children: [
-                      Row(children: [
-                        Flexible(
-                          child: TextFormField(
-                            controller: dateEC,
-                            readOnly: true,
-                            validator: (va) {
-                              if (va!.isEmpty) {
-                                return "Date must not be empty".tr;
-                              }
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                              hintText: "Date of purchase".tr,
-                              labelText: "Date".tr,
-                              border: const OutlineInputBorder(),
+                        Row(
+                          children: [
+                            OutlinedButton(
+                              onPressed: () {
+                                Get.toNamed(PurchasesScreen.route);
+                              },
+                              style: OutlinedButton.styleFrom(
+                                  foregroundColor: kWhite,
+                                  backgroundColor: kSecondary),
+                              child: Text(
+                                'Back'.tr,
+                              ),
                             ),
-                            onTap: () {
-                              Get.dialog(
-                                Center(
-                                  child: SizedBox(
-                                    width: Get.width / 3,
-                                    child: Card(
-                                      child: CalendarDatePicker(
-                                        initialDate: DateTime.tryParse(
-                                                _purchase['date']) ??
-                                            DateTime.now(),
-                                        firstDate: DateTime.now()
-                                            .subtract(const Duration(days: 30)),
-                                        lastDate: DateTime.now(),
-                                        onDateChanged: (DateTime value) {
-                                          dateEC.text =
-                                              DateFormat('y-M-d').format(value);
-                                          Get.back();
-                                        },
+                            const SizedBox(
+                              width: 20.0,
+                            ),
+                            OutlinedButton(
+                              onPressed: () {
+                                log('save purchase');
+                                if (!_purchaseAddFormKey.currentState!
+                                    .validate()) {
+                                  log('failed');
+                                  return;
+                                }
+                                _purchaseAddFormKey.currentState!.save();
+                                Map<String, dynamic> _purchase = {
+                                  'date': DateTime.parse(dateEC.text),
+                                  'supplierId':
+                                      PurchasesController.to.supplier.value!.id,
+                                  'description': descriptionEC.text,
+                                };
+                                // log(_purchase.toString());
+                                PurchasesController.to.savePurchase(_purchase);
+                              },
+                              style: OutlinedButton.styleFrom(
+                                  foregroundColor: kWhite,
+                                  backgroundColor: kPrimary),
+                              child: Text(
+                                'Save Purchase'.tr,
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 30.0, vertical: 8.0),
+                      child: Column(
+                        children: [
+                          Row(children: [
+                            Flexible(
+                              child: TextFormField(
+                                controller: dateEC,
+                                readOnly: true,
+                                validator: (va) {
+                                  if (va!.isEmpty) {
+                                    return "Date must not be empty".tr;
+                                  }
+                                  return null;
+                                },
+                                decoration: InputDecoration(
+                                  hintText: "Date of purchase".tr,
+                                  labelText: "Date".tr,
+                                  border: const OutlineInputBorder(),
+                                ),
+                                onTap: () {
+                                  Get.dialog(
+                                    Center(
+                                      child: SizedBox(
+                                        width: Get.width / 3,
+                                        child: Card(
+                                          child: CalendarDatePicker(
+                                            initialDate: DateTime.tryParse(
+                                                    dateEC.text) ??
+                                                DateTime.now(),
+                                            firstDate: DateTime.now().subtract(
+                                                const Duration(days: 30)),
+                                            lastDate: DateTime.now(),
+                                            onDateChanged: (DateTime value) {
+                                              dateEC.text = value.toString();
+                                              Get.back();
+                                            },
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
+                                  ).then((value) {
+                                    // setState(() {});
+                                  });
+                                },
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Flexible(
+                              child: DropdownButtonFormField(
+                                value: PurchasesController.to.supplier.value,
+                                items: suppliersDrop,
+                                onChanged: (SupplierModel? sup) {
+                                  PurchasesController.to.supplier.value = sup;
+                                },
+                                decoration: InputDecoration(
+                                  hintText: "Supplier".tr,
+                                  labelText: "Supplier".tr,
+                                  border: const OutlineInputBorder(),
                                 ),
-                              ).then((value) {
-                                // setState(() {});
-                              });
-                            },
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Flexible(
+                              ),
+                            ),
+                            /* Flexible(
                           child: TextFormField(
                             controller: supplierEC,
                             validator: (va) {
@@ -177,41 +204,44 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
                               border: const OutlineInputBorder(),
                             ),
                           ),
-                        ),
-                      ]),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Flexible(
-                            child: TextFormField(
-                              controller: descriptionEC,
-                              decoration: InputDecoration(
-                                hintText: "Description".tr,
-                                labelText: "Description".tr,
-                                border: const OutlineInputBorder(),
+                        ),*/
+                          ]),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Flexible(
+                                child: TextFormField(
+                                  controller: descriptionEC,
+                                  decoration: InputDecoration(
+                                    hintText: "Description".tr,
+                                    labelText: "Description".tr,
+                                    border: const OutlineInputBorder(),
+                                  ),
+                                ),
                               ),
-                            ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 10,
                           ),
                         ],
                       ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
-            ]),
-          ),
+            );
+          }),
           Center(
-              child: Text(
-            "Products".tr,
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          )),
+            child: Text(
+              "Products".tr,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ),
           Obx(() {
             return SingleChildScrollView(
               child: Container(

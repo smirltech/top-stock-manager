@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart' as d;
 import 'package:get/get.dart';
 import 'package:top_stock_manager/application/database/offline/app_database.dart';
+import 'package:top_stock_manager/application/database/offline/models/supplier_model.dart';
 import 'package:top_stock_manager/main.dart';
 
 import '../../../system/configs/theming.dart';
@@ -16,6 +17,7 @@ class PurchasesController extends GetxController {
 
 // ------- ./static methods ------- //
 
+  var supplier = Rxn<SupplierModel>();
   var purchase = Rxn<Purchase>();
   var purchases = <PurchaseModel>[].obs;
 
@@ -38,7 +40,10 @@ class PurchasesController extends GetxController {
       Get.back();
       Get.snackbar('Purchase'.tr, 'Purchase updated successfully'.tr);
     }
+    //
     purchase.value = null;
+    supplier.value = null;
+    //  purchase = Rxn<Purchase>();
   }
 
   deletePurchase(Purchase pur) {
@@ -51,6 +56,7 @@ class PurchasesController extends GetxController {
       onConfirm: () {
         DB.purchasesDao.deletePurchase(pur);
         purchase.value = null;
+        supplier.value = null;
         Get.back();
         Get.snackbar('Purchase'.tr, 'Purchase deleted successfully'.tr);
       },

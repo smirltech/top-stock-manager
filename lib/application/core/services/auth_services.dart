@@ -36,7 +36,8 @@ class AuthServices extends GetxService {
       me.value = value;
       InnerStorage.write('user', jsonEncode(value.user));
       Get.offAndToNamed(HomeScreen.route);
-      Get.snackbar('Login'.tr, 'Login successfully'.tr);
+      Get.snackbar('Login'.tr, 'Login successfully'.tr,
+          snackPosition: SnackPosition.BOTTOM);
     }).catchError((err) {
       Get.defaultDialog(
         title: "Login Failed".tr,
@@ -67,14 +68,16 @@ class AuthServices extends GetxService {
       me.value = null;
       if (!exit) {
         Get.offAndToNamed(LoginScreen.route);
-        Get.snackbar('Logout'.tr, 'Logout successfully'.tr);
+        Get.snackbar('Logout'.tr, 'Logout successfully'.tr,
+            snackPosition: SnackPosition.BOTTOM);
       } else {
         WindowManager.instance.close();
       }
     } else {
       if (!exit) {
         Get.offAndToNamed(LoginScreen.route);
-        Get.snackbar('Logout'.tr, 'You were not connected previously'.tr);
+        Get.snackbar('Logout'.tr, 'You were not connected previously'.tr,
+            snackPosition: SnackPosition.BOTTOM);
       } else {
         WindowManager.instance.close();
       }
