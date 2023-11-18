@@ -13,22 +13,22 @@ class PurchasesDao extends DatabaseAccessor<AppDatabase>
 
   PurchasesDao(this.db) : super(db);
 
-  Stream<List<PurchaseModel>> watchAllPurchases() => select(purchases)
-      .join(
+  Stream<List<PurchaseModel>> watchAllPurchases() => select(purchases).join(
         [
           leftOuterJoin(
             db.suppliers,
             db.suppliers.id.equalsExp(purchases.supplierId),
           ),
         ],
-      )
-      .map(
-        (row) => PurchaseModel(
-          purchase: row.readTable(purchases),
-          supplier: row.readTableOrNull(db.suppliers),
-        ),
-      )
-      .watch();
+      ).map(
+        (row) {
+          // List inny = select(db.inputs).get();
+          return PurchaseModel(
+            purchase: row.readTable(purchases),
+            supplier: row.readTableOrNull(db.suppliers),
+          );
+        },
+      ).watch();
 
   Future<int> insertPurchase(Map<String, dynamic> purchase) =>
       into(purchases).insert(

@@ -23,7 +23,8 @@ class DataServices extends GetxService {
     if (product.value == null) {
       await DB.productsDao.insertProduct(data);
       Get.back();
-      Get.snackbar('Product'.tr, 'Product added successfully'.tr);
+      Get.snackbar('Product'.tr, 'Product added successfully'.tr,
+          snackPosition: SnackPosition.BOTTOM);
     } else {
       ProductsCompanion c = product.value!
           .copyWith(
@@ -38,7 +39,8 @@ class DataServices extends GetxService {
 
       await DB.productsDao.updateProduct(c);
       Get.back();
-      Get.snackbar('Product'.tr, 'Product updated successfully'.tr);
+      Get.snackbar('Product'.tr, 'Product updated successfully'.tr,
+          snackPosition: SnackPosition.BOTTOM);
     }
     product.value = null;
   }
@@ -54,7 +56,8 @@ class DataServices extends GetxService {
         DB.productsDao.deleteProduct(prodct);
         product.value = null;
         Get.back();
-        Get.snackbar('Product'.tr, 'Product deleted successfully'.tr);
+        Get.snackbar('Product'.tr, 'Product deleted successfully'.tr,
+            snackPosition: SnackPosition.BOTTOM);
       },
     );
   }

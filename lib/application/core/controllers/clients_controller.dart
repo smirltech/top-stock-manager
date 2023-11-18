@@ -23,7 +23,8 @@ class ClientsController extends GetxController {
     if (client.value == null) {
       await DB.clientsDao.insertClient(data);
       Get.back();
-      Get.snackbar('Client'.tr, 'Client added successfully'.tr);
+      Get.snackbar('Client'.tr, 'Client added successfully'.tr,
+          snackPosition: SnackPosition.BOTTOM);
     } else {
       ClientsCompanion c = client.value!
           .copyWith(
@@ -37,7 +38,8 @@ class ClientsController extends GetxController {
 
       await DB.clientsDao.updateClient(c);
       Get.back();
-      Get.snackbar('Client'.tr, 'Client updated successfully'.tr);
+      Get.snackbar('Client'.tr, 'Client updated successfully'.tr,
+          snackPosition: SnackPosition.BOTTOM);
     }
     client.value = null;
   }
@@ -53,7 +55,8 @@ class ClientsController extends GetxController {
         DB.clientsDao.deleteClient(sup);
         client.value = null;
         Get.back();
-        Get.snackbar('Client'.tr, 'Client deleted successfully'.tr);
+        Get.snackbar('Client'.tr, 'Client deleted successfully'.tr,
+            snackPosition: SnackPosition.BOTTOM);
       },
     );
   }

@@ -25,7 +25,8 @@ class SalesController extends GetxController {
     if (sale.value == null) {
       await DB.salesDao.insertSale(data);
       Get.back();
-      Get.snackbar('Sale'.tr, 'Sale added successfully'.tr);
+      Get.snackbar('Sale'.tr, 'Sale added successfully'.tr,
+          snackPosition: SnackPosition.BOTTOM);
     } else {
       SalesCompanion c = sale.value!
           .copyWith(
@@ -38,7 +39,8 @@ class SalesController extends GetxController {
 
       await DB.salesDao.updateSale(c);
       Get.back();
-      Get.snackbar('Sale'.tr, 'Sale updated successfully'.tr);
+      Get.snackbar('Sale'.tr, 'Sale updated successfully'.tr,
+          snackPosition: SnackPosition.BOTTOM);
     }
     //
     sale.value = null;
@@ -58,7 +60,8 @@ class SalesController extends GetxController {
         sale.value = null;
         client.value = null;
         Get.back();
-        Get.snackbar('Sale'.tr, 'Sale deleted successfully'.tr);
+        Get.snackbar('Sale'.tr, 'Sale deleted successfully'.tr,
+            snackPosition: SnackPosition.BOTTOM);
       },
     );
   }

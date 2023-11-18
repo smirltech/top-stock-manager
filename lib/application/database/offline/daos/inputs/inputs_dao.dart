@@ -2,8 +2,6 @@ import 'package:drift/drift.dart';
 import 'package:top_stock_manager/application/database/offline/tables/inputs.dart';
 
 import '../../app_database.dart';
-import '../../models/sale_model.dart';
-import '../../tables/sales.dart';
 
 part 'inputs_dao.g.dart';
 
@@ -31,6 +29,9 @@ class InputsDao extends DatabaseAccessor<AppDatabase> with _$InputsDaoMixin {
       )
       .watch();
 */
+
+  Future<List<Input>> getInputsByPurchase(int id) =>
+      (select(inputs)..where((t) => t.purchaseId.equals(id))).get();
 
   Future<int> insertInput(Map<String, dynamic> input) => into(inputs).insert(
         InputsCompanion(

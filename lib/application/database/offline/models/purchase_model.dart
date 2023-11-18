@@ -6,6 +6,7 @@ class PurchaseModel {
   final Purchase purchase;
   final User? user;
   final Supplier? supplier;
+  late List<Input>? inputs = <Input>[];
 
   PurchaseModel({required this.purchase, this.user, this.supplier});
 

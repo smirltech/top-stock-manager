@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:drift/drift.dart' as d;
 import 'package:get/get.dart';
@@ -55,10 +54,10 @@ class AuthServices extends GetxService {
   autoLogin() {
     if (InnerStorage.hasData("user")) {
       Map<String, dynamic> uusr = jsonDecode(InnerStorage.read("user"));
-      log(uusr.toString());
+      //  log(uusr.toString());
       login(uusr);
     } else {
-      log("no user saved");
+      // log("no user saved");
     }
   }
 
@@ -88,7 +87,8 @@ class AuthServices extends GetxService {
     if (user.value == null) {
       await DB.usersDao.insertUser(data);
       Get.back();
-      Get.snackbar('User'.tr, 'User added successfully'.tr);
+      Get.snackbar('User'.tr, 'User added successfully'.tr,
+          snackPosition: SnackPosition.BOTTOM);
     } else {
       UsersCompanion c = user.value!
           .copyWith(
@@ -100,7 +100,8 @@ class AuthServices extends GetxService {
 
       await DB.usersDao.updateUser(c);
       Get.back();
-      Get.snackbar('User'.tr, 'User updated successfully'.tr);
+      Get.snackbar('User'.tr, 'User updated successfully'.tr,
+          snackPosition: SnackPosition.BOTTOM);
     }
     user.value = null;
   }
@@ -116,7 +117,8 @@ class AuthServices extends GetxService {
         DB.usersDao.deleteUser(usr);
         user.value = null;
         Get.back();
-        Get.snackbar('User'.tr, 'User deleted successfully'.tr);
+        Get.snackbar('User'.tr, 'User deleted successfully'.tr,
+            snackPosition: SnackPosition.BOTTOM);
       },
     );
   }
@@ -125,7 +127,8 @@ class AuthServices extends GetxService {
     if (role.value == null) {
       await DB.rolesDao.insertRole(data);
       Get.back();
-      Get.snackbar('Role'.tr, 'Role added successfully'.tr);
+      Get.snackbar('Role'.tr, 'Role added successfully'.tr,
+          snackPosition: SnackPosition.BOTTOM);
     } else {
       RolesCompanion c = role.value!
           .copyWith(
@@ -137,7 +140,8 @@ class AuthServices extends GetxService {
 
       await DB.rolesDao.updateRole(c);
       Get.back();
-      Get.snackbar('Role'.tr, 'Role updated successfully'.tr);
+      Get.snackbar('Role'.tr, 'Role updated successfully'.tr,
+          snackPosition: SnackPosition.BOTTOM);
     }
     role.value = null;
   }
@@ -153,7 +157,8 @@ class AuthServices extends GetxService {
         DB.rolesDao.deleteRole(rol);
         user.value = null;
         Get.back();
-        Get.snackbar('Role'.tr, 'Role deleted successfully'.tr);
+        Get.snackbar('Role'.tr, 'Role deleted successfully'.tr,
+            snackPosition: SnackPosition.BOTTOM);
       },
     );
   }

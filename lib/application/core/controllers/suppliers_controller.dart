@@ -23,7 +23,8 @@ class SuppliersController extends GetxController {
     if (supplier.value == null) {
       await DB.suppliersDao.insertSupplier(data);
       Get.back();
-      Get.snackbar('Supplier'.tr, 'Supplier added successfully'.tr);
+      Get.snackbar('Supplier'.tr, 'Supplier added successfully'.tr,
+          snackPosition: SnackPosition.BOTTOM);
     } else {
       SuppliersCompanion c = supplier.value!
           .copyWith(
@@ -37,7 +38,8 @@ class SuppliersController extends GetxController {
 
       await DB.suppliersDao.updateSupplier(c);
       Get.back();
-      Get.snackbar('Supplier'.tr, 'Supplier updated successfully'.tr);
+      Get.snackbar('Supplier'.tr, 'Supplier updated successfully'.tr,
+          snackPosition: SnackPosition.BOTTOM);
     }
     supplier.value = null;
   }
@@ -53,7 +55,8 @@ class SuppliersController extends GetxController {
         DB.suppliersDao.deleteSupplier(sup);
         supplier.value = null;
         Get.back();
-        Get.snackbar('Supplier'.tr, 'Supplier deleted successfully'.tr);
+        Get.snackbar('Supplier'.tr, 'Supplier deleted successfully'.tr,
+            snackPosition: SnackPosition.BOTTOM);
       },
     );
   }

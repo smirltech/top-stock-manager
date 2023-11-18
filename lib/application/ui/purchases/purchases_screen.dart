@@ -84,9 +84,7 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
                                 Expanded(
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      PurchasesController.to.purchase.value =
-                                          pur.purchase;
-                                      Get.toNamed(PurchaseAddEditScreen.route);
+                                      PurchasesController.to.openPurchase(pur);
                                     },
                                     style: ElevatedButton.styleFrom(
                                         foregroundColor: kWhite,

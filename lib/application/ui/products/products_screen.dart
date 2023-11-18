@@ -136,8 +136,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
     late Map<String, dynamic> _product = {
       'name': '',
       'description': '',
-      'minimum': 0,
-      'maximum': 0,
+      'minimum': 0.0,
+      'maximum': 0.0,
       'unit': '',
       'product_id': null,
     };
@@ -215,7 +215,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
                         child: TextFormField(
                           initialValue: _product['minimum'].toString(),
                           onSaved: (String? value) {
-                            _product['minimum'] = int.parse(value.toString());
+                            _product['minimum'] =
+                                double.parse(value.toString());
                           },
                           decoration: InputDecoration(
                             hintText: "Minimum Quantity".tr,
@@ -231,7 +232,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
                         child: TextFormField(
                           initialValue: _product['maximum'].toString(),
                           onSaved: (String? value) {
-                            _product['maximum'] = int.parse(value.toString());
+                            _product['maximum'] =
+                                double.parse(value.toString());
                           },
                           decoration: InputDecoration(
                             hintText: "Maximum Quantity".tr,
