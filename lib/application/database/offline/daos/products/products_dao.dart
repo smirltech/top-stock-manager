@@ -22,8 +22,8 @@ class ProductsDao extends DatabaseAccessor<AppDatabase>
         ProductsCompanion(
           name: Value(product['name']),
           description: Value(product['description']),
-          min: Value(product['min']),
-          max: Value(product['max']),
+          minimum: Value(product['minimum']),
+          maximum: Value(product['maximum']),
           unit: Value(product['unit']),
           productId: Value(product['product_id']),
           createdAt: Value(DateTime.now()),

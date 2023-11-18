@@ -73,7 +73,7 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
                     return DataRow(
                       cells: [
                         DataCell(Text(pur.dateStringed)),
-                        DataCell(Text(pur.supplier!.name)),
+                        DataCell(Text(pur.supplierName)),
                         DataCell(Text(pur.priceStringed)),
                         DataCell(Text(pur.description ?? '')),
                         DataCell(

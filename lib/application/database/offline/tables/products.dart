@@ -7,9 +7,9 @@ class Products extends Table {
 
   TextColumn get description => text().nullable()();
 
-  IntColumn get min => integer().nullable().withDefault(const Constant(0))();
+  RealColumn get minimum => real().nullable().withDefault(const Constant(0))();
 
-  IntColumn get max => integer().nullable().withDefault(const Constant(0))();
+  RealColumn get maximum => real().nullable().withDefault(const Constant(0))();
 
   TextColumn get unit => text().nullable()();
 

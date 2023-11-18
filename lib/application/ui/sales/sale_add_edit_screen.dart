@@ -2,55 +2,55 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:top_stock_manager/application/core/controllers/suppliers_controller.dart';
-import 'package:top_stock_manager/application/database/offline/models/supplier_model.dart';
+import 'package:top_stock_manager/application/database/offline/models/client_model.dart';
 import 'package:top_stock_manager/application/ui/purchases/purchases_screen.dart';
 import 'package:top_stock_manager/system/configs/theming.dart';
 
-import '../../core/controllers/purchases_controller.dart';
+import '../../core/controllers/clients_controller.dart';
+import '../../core/controllers/sales_controller.dart';
 
-class PurchaseAddEditScreen extends StatefulWidget {
-  const PurchaseAddEditScreen({super.key});
+class SaleAddEditScreen extends StatefulWidget {
+  const SaleAddEditScreen({super.key});
 
-  static String route = "/purchases/create-edit";
+  static String route = "/sales/create-edit";
 
   @override
-  State<PurchaseAddEditScreen> createState() => _PurchaseAddEditScreenState();
+  State<SaleAddEditScreen> createState() => _SaleAddEditScreenState();
 }
 
-class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
-  final _purchaseAddFormKey = GlobalKey<FormState>();
+class _SaleAddEditScreenState extends State<SaleAddEditScreen> {
+  final _saleAddFormKey = GlobalKey<FormState>();
   final TextEditingController dateEC = TextEditingController();
 
   final TextEditingController descriptionEC = TextEditingController();
 
-  late List<DropdownMenuItem<SupplierModel>> suppliersDrop;
+  late List<DropdownMenuItem<ClientModel>> clientsDrop;
 
   @override
   void initState() {
-    if (PurchasesController.to.purchase.value != null) {
-      dateEC.text = PurchasesController.to.purchase.value!.date.toString();
+    if (SalesController.to.sale.value != null) {
+      dateEC.text = SalesController.to.sale.value!.date.toString();
 
       descriptionEC.text =
-          PurchasesController.to.purchase.value!.description.toString();
+          SalesController.to.sale.value!.description.toString();
     }
 
-    suppliersDrop = SuppliersController.to.suppliers
+    clientsDrop = ClientsController.to.clients
         .map(
-          (sup) => DropdownMenuItem<SupplierModel>(
-            value: sup,
-            child: Text(sup.name),
+          (cup) => DropdownMenuItem<ClientModel>(
+            value: cup,
+            child: Text(cup.name),
           ),
         )
         .toList();
-    suppliersDrop.insert(
+    clientsDrop.insert(
       0,
-      const DropdownMenuItem<SupplierModel>(
+      const DropdownMenuItem<ClientModel>(
         value: null,
-        child: Text("== SELECT SUPPLIER =="),
+        child: Text("== SELECT CLIENT =="),
       ),
     );
-    log(SuppliersController.to.suppliers.toString());
+    log(ClientsController.to.clients.toString());
     //PurchasesController.to.supplier.value = SuppliersController.to.suppliers[0];
     super.initState();
   }
@@ -63,7 +63,7 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
         children: <Widget>[
           Obx(() {
             return Form(
-              key: _purchaseAddFormKey,
+              key: _saleAddFormKey,
               child: Column(
                 children: [
                   Padding(
@@ -72,7 +72,7 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Purchase Screen'.tr,
+                          'Sale Screen'.tr,
                           style: const TextStyle(
                               fontSize: 30, fontWeight: FontWeight.bold),
                         ),
@@ -95,26 +95,25 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
                             OutlinedButton(
                               onPressed: () {
                                 log('save purchase');
-                                if (!_purchaseAddFormKey.currentState!
-                                    .validate()) {
+                                if (!_saleAddFormKey.currentState!.validate()) {
                                   log('failed');
                                   return;
                                 }
-                                _purchaseAddFormKey.currentState!.save();
-                                Map<String, dynamic> _purchase = {
+                                _saleAddFormKey.currentState!.save();
+                                Map<String, dynamic> _sale = {
                                   'date': DateTime.parse(dateEC.text),
-                                  'supplierId':
-                                      PurchasesController.to.supplier.value?.id,
+                                  'clientId':
+                                      SalesController.to.client.value?.id,
                                   'description': descriptionEC.text,
                                 };
                                 // log(_purchase.toString());
-                                PurchasesController.to.savePurchase(_purchase);
+                                SalesController.to.saveSale(_sale);
                               },
                               style: OutlinedButton.styleFrom(
                                   foregroundColor: kWhite,
                                   backgroundColor: kPrimary),
                               child: Text(
-                                'Save Purchase'.tr,
+                                'Save Sale'.tr,
                               ),
                             ),
                           ],
@@ -177,18 +176,34 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
                             ),
                             Flexible(
                               child: DropdownButtonFormField(
-                                value: PurchasesController.to.supplier.value,
-                                items: suppliersDrop,
-                                onChanged: (SupplierModel? sup) {
-                                  PurchasesController.to.supplier.value = sup;
+                                value: SalesController.to.client.value,
+                                items: clientsDrop,
+                                onChanged: (ClientModel? cup) {
+                                  SalesController.to.client.value = cup;
                                 },
                                 decoration: InputDecoration(
-                                  hintText: "Supplier".tr,
-                                  labelText: "Supplier".tr,
+                                  hintText: "Client".tr,
+                                  labelText: "Client".tr,
                                   border: const OutlineInputBorder(),
                                 ),
                               ),
                             ),
+                            /* Flexible(
+                          child: TextFormField(
+                            controller: supplierEC,
+                            validator: (va) {
+                              if (va!.isEmpty) {
+                                return "Supplier must not be empty".tr;
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              hintText: "Supplier".tr,
+                              labelText: "Supplier".tr,
+                              border: const OutlineInputBorder(),
+                            ),
+                          ),
+                        ),*/
                           ]),
                           const SizedBox(
                             height: 10,
@@ -251,7 +266,7 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
                       label: Text(''.tr),
                     ),
                   ],
-                  rows: PurchasesController.to.purchases.map((pur) {
+                  rows: SalesController.to.sales.map((pur) {
                     return DataRow(
                       cells: [
                         DataCell(Text("Product")),
@@ -299,142 +314,4 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
       ),
     );
   }
-
-/*supplierAdd({String title = "Add a new supplier"}) {
-    final _supplierAddFormKey = GlobalKey<FormState>();
-    late Map<String, dynamic> _supplier = {
-      'name': '',
-      'sex': '',
-      'contact': '',
-      'description': '',
-    };
-
-    if (SuppliersController.to.supplier.value != null) {
-      _supplier = {
-        'name': SuppliersController.to.supplier.value?.name,
-        'sex': SuppliersController.to.supplier.value?.sex,
-        'contact': SuppliersController.to.supplier.value?.contact,
-        'description': SuppliersController.to.supplier.value?.description,
-      };
-    }
-    Get.bottomSheet(
-      Container(
-        margin: const EdgeInsets.symmetric(horizontal: 5.0),
-        child: Form(
-            key: _supplierAddFormKey,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Center(
-                    child: Text(
-                      title.tr,
-                      style: const TextStyle(
-                          fontSize: 30, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    initialValue: _supplier['name'],
-                    validator: (va) {
-                      if (va!.isEmpty) {
-                        return "Name must not be empty".tr;
-                      } else if (va.length < 3) {
-                        return "Length of name must be 3 characters and above";
-                      }
-                      return null;
-                    },
-                    onSaved: (String? value) {
-                      _supplier['name'] = value.toString();
-                    },
-                    decoration: InputDecoration(
-                      hintText: "Supplier Name".tr,
-                      labelText: "Name".tr,
-                      border: const OutlineInputBorder(),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextFormField(
-                    initialValue: _supplier['description'],
-                    onSaved: (String? value) {
-                      _supplier['description'] = value.toString();
-                    },
-                    decoration: InputDecoration(
-                      hintText: "Supplier Description".tr,
-                      labelText: "Description".tr,
-                      border: const OutlineInputBorder(),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Flexible(
-                        child: TextFormField(
-                          initialValue: _supplier['sex'].toString(),
-                          onSaved: (String? value) {
-                            _supplier['sex'] = value.toString();
-                          },
-                          decoration: InputDecoration(
-                            hintText: "Sex".tr,
-                            labelText: "Sex".tr,
-                            border: const OutlineInputBorder(),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 10.0,
-                      ),
-                      Flexible(
-                        child: TextFormField(
-                          initialValue: _supplier['contact'],
-                          onSaved: (String? value) {
-                            _supplier['contact'] = value.toString();
-                          },
-                          decoration: InputDecoration(
-                            hintText: "Contact".tr,
-                            labelText: "Contact".tr,
-                            border: const OutlineInputBorder(),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Center(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (!_supplierAddFormKey.currentState!.validate()) {
-                          return;
-                        }
-                        _supplierAddFormKey.currentState!.save();
-                        SuppliersController.to.saveSupplier(_supplier);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: kWhite,
-                        backgroundColor: kWarning,
-                      ),
-                      child: Text('Save'.tr),
-                    ),
-                  ),
-                ],
-              ),
-            )),
-      ),
-      backgroundColor: kWhite,
-      ignoreSafeArea: true,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-    );
-  }*/
 }

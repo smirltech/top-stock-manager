@@ -959,18 +959,20 @@ class $ProductsTable extends Products with TableInfo<$ProductsTable, Product> {
   late final GeneratedColumn<String> description = GeneratedColumn<String>(
       'description', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _minMeta = const VerificationMeta('min');
+  static const VerificationMeta _minimumMeta =
+      const VerificationMeta('minimum');
   @override
-  late final GeneratedColumn<int> min = GeneratedColumn<int>(
-      'min', aliasedName, true,
-      type: DriftSqlType.int,
+  late final GeneratedColumn<double> minimum = GeneratedColumn<double>(
+      'minimum', aliasedName, true,
+      type: DriftSqlType.double,
       requiredDuringInsert: false,
       defaultValue: const Constant(0));
-  static const VerificationMeta _maxMeta = const VerificationMeta('max');
+  static const VerificationMeta _maximumMeta =
+      const VerificationMeta('maximum');
   @override
-  late final GeneratedColumn<int> max = GeneratedColumn<int>(
-      'max', aliasedName, true,
-      type: DriftSqlType.int,
+  late final GeneratedColumn<double> maximum = GeneratedColumn<double>(
+      'maximum', aliasedName, true,
+      type: DriftSqlType.double,
       requiredDuringInsert: false,
       defaultValue: const Constant(0));
   static const VerificationMeta _unitMeta = const VerificationMeta('unit');
@@ -1004,8 +1006,17 @@ class $ProductsTable extends Products with TableInfo<$ProductsTable, Product> {
       requiredDuringInsert: false,
       defaultValue: currentDateAndTime);
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, name, description, min, max, unit, productId, createdAt, updatedAt];
+  List<GeneratedColumn> get $columns => [
+        id,
+        name,
+        description,
+        minimum,
+        maximum,
+        unit,
+        productId,
+        createdAt,
+        updatedAt
+      ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -1031,13 +1042,13 @@ class $ProductsTable extends Products with TableInfo<$ProductsTable, Product> {
           description.isAcceptableOrUnknown(
               data['description']!, _descriptionMeta));
     }
-    if (data.containsKey('min')) {
-      context.handle(
-          _minMeta, min.isAcceptableOrUnknown(data['min']!, _minMeta));
+    if (data.containsKey('minimum')) {
+      context.handle(_minimumMeta,
+          minimum.isAcceptableOrUnknown(data['minimum']!, _minimumMeta));
     }
-    if (data.containsKey('max')) {
-      context.handle(
-          _maxMeta, max.isAcceptableOrUnknown(data['max']!, _maxMeta));
+    if (data.containsKey('maximum')) {
+      context.handle(_maximumMeta,
+          maximum.isAcceptableOrUnknown(data['maximum']!, _maximumMeta));
     }
     if (data.containsKey('unit')) {
       context.handle(
@@ -1070,10 +1081,10 @@ class $ProductsTable extends Products with TableInfo<$ProductsTable, Product> {
           .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
       description: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}description']),
-      min: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}min']),
-      max: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}max']),
+      minimum: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}minimum']),
+      maximum: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}maximum']),
       unit: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}unit']),
       productId: attachedDatabase.typeMapping
@@ -1095,8 +1106,8 @@ class Product extends DataClass implements Insertable<Product> {
   final int id;
   final String name;
   final String? description;
-  final int? min;
-  final int? max;
+  final double? minimum;
+  final double? maximum;
   final String? unit;
   final int? productId;
   final DateTime? createdAt;
@@ -1105,8 +1116,8 @@ class Product extends DataClass implements Insertable<Product> {
       {required this.id,
       required this.name,
       this.description,
-      this.min,
-      this.max,
+      this.minimum,
+      this.maximum,
       this.unit,
       this.productId,
       this.createdAt,
@@ -1119,11 +1130,11 @@ class Product extends DataClass implements Insertable<Product> {
     if (!nullToAbsent || description != null) {
       map['description'] = Variable<String>(description);
     }
-    if (!nullToAbsent || min != null) {
-      map['min'] = Variable<int>(min);
+    if (!nullToAbsent || minimum != null) {
+      map['minimum'] = Variable<double>(minimum);
     }
-    if (!nullToAbsent || max != null) {
-      map['max'] = Variable<int>(max);
+    if (!nullToAbsent || maximum != null) {
+      map['maximum'] = Variable<double>(maximum);
     }
     if (!nullToAbsent || unit != null) {
       map['unit'] = Variable<String>(unit);
@@ -1147,8 +1158,12 @@ class Product extends DataClass implements Insertable<Product> {
       description: description == null && nullToAbsent
           ? const Value.absent()
           : Value(description),
-      min: min == null && nullToAbsent ? const Value.absent() : Value(min),
-      max: max == null && nullToAbsent ? const Value.absent() : Value(max),
+      minimum: minimum == null && nullToAbsent
+          ? const Value.absent()
+          : Value(minimum),
+      maximum: maximum == null && nullToAbsent
+          ? const Value.absent()
+          : Value(maximum),
       unit: unit == null && nullToAbsent ? const Value.absent() : Value(unit),
       productId: productId == null && nullToAbsent
           ? const Value.absent()
@@ -1169,8 +1184,8 @@ class Product extends DataClass implements Insertable<Product> {
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       description: serializer.fromJson<String?>(json['description']),
-      min: serializer.fromJson<int?>(json['min']),
-      max: serializer.fromJson<int?>(json['max']),
+      minimum: serializer.fromJson<double?>(json['minimum']),
+      maximum: serializer.fromJson<double?>(json['maximum']),
       unit: serializer.fromJson<String?>(json['unit']),
       productId: serializer.fromJson<int?>(json['productId']),
       createdAt: serializer.fromJson<DateTime?>(json['createdAt']),
@@ -1184,8 +1199,8 @@ class Product extends DataClass implements Insertable<Product> {
       'id': serializer.toJson<int>(id),
       'name': serializer.toJson<String>(name),
       'description': serializer.toJson<String?>(description),
-      'min': serializer.toJson<int?>(min),
-      'max': serializer.toJson<int?>(max),
+      'minimum': serializer.toJson<double?>(minimum),
+      'maximum': serializer.toJson<double?>(maximum),
       'unit': serializer.toJson<String?>(unit),
       'productId': serializer.toJson<int?>(productId),
       'createdAt': serializer.toJson<DateTime?>(createdAt),
@@ -1197,8 +1212,8 @@ class Product extends DataClass implements Insertable<Product> {
           {int? id,
           String? name,
           Value<String?> description = const Value.absent(),
-          Value<int?> min = const Value.absent(),
-          Value<int?> max = const Value.absent(),
+          Value<double?> minimum = const Value.absent(),
+          Value<double?> maximum = const Value.absent(),
           Value<String?> unit = const Value.absent(),
           Value<int?> productId = const Value.absent(),
           Value<DateTime?> createdAt = const Value.absent(),
@@ -1207,8 +1222,8 @@ class Product extends DataClass implements Insertable<Product> {
         id: id ?? this.id,
         name: name ?? this.name,
         description: description.present ? description.value : this.description,
-        min: min.present ? min.value : this.min,
-        max: max.present ? max.value : this.max,
+        minimum: minimum.present ? minimum.value : this.minimum,
+        maximum: maximum.present ? maximum.value : this.maximum,
         unit: unit.present ? unit.value : this.unit,
         productId: productId.present ? productId.value : this.productId,
         createdAt: createdAt.present ? createdAt.value : this.createdAt,
@@ -1220,8 +1235,8 @@ class Product extends DataClass implements Insertable<Product> {
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('description: $description, ')
-          ..write('min: $min, ')
-          ..write('max: $max, ')
+          ..write('minimum: $minimum, ')
+          ..write('maximum: $maximum, ')
           ..write('unit: $unit, ')
           ..write('productId: $productId, ')
           ..write('createdAt: $createdAt, ')
@@ -1231,8 +1246,8 @@ class Product extends DataClass implements Insertable<Product> {
   }
 
   @override
-  int get hashCode => Object.hash(
-      id, name, description, min, max, unit, productId, createdAt, updatedAt);
+  int get hashCode => Object.hash(id, name, description, minimum, maximum, unit,
+      productId, createdAt, updatedAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1240,8 +1255,8 @@ class Product extends DataClass implements Insertable<Product> {
           other.id == this.id &&
           other.name == this.name &&
           other.description == this.description &&
-          other.min == this.min &&
-          other.max == this.max &&
+          other.minimum == this.minimum &&
+          other.maximum == this.maximum &&
           other.unit == this.unit &&
           other.productId == this.productId &&
           other.createdAt == this.createdAt &&
@@ -1252,8 +1267,8 @@ class ProductsCompanion extends UpdateCompanion<Product> {
   final Value<int> id;
   final Value<String> name;
   final Value<String?> description;
-  final Value<int?> min;
-  final Value<int?> max;
+  final Value<double?> minimum;
+  final Value<double?> maximum;
   final Value<String?> unit;
   final Value<int?> productId;
   final Value<DateTime?> createdAt;
@@ -1262,8 +1277,8 @@ class ProductsCompanion extends UpdateCompanion<Product> {
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.description = const Value.absent(),
-    this.min = const Value.absent(),
-    this.max = const Value.absent(),
+    this.minimum = const Value.absent(),
+    this.maximum = const Value.absent(),
     this.unit = const Value.absent(),
     this.productId = const Value.absent(),
     this.createdAt = const Value.absent(),
@@ -1273,8 +1288,8 @@ class ProductsCompanion extends UpdateCompanion<Product> {
     this.id = const Value.absent(),
     required String name,
     this.description = const Value.absent(),
-    this.min = const Value.absent(),
-    this.max = const Value.absent(),
+    this.minimum = const Value.absent(),
+    this.maximum = const Value.absent(),
     this.unit = const Value.absent(),
     this.productId = const Value.absent(),
     this.createdAt = const Value.absent(),
@@ -1284,8 +1299,8 @@ class ProductsCompanion extends UpdateCompanion<Product> {
     Expression<int>? id,
     Expression<String>? name,
     Expression<String>? description,
-    Expression<int>? min,
-    Expression<int>? max,
+    Expression<double>? minimum,
+    Expression<double>? maximum,
     Expression<String>? unit,
     Expression<int>? productId,
     Expression<DateTime>? createdAt,
@@ -1295,8 +1310,8 @@ class ProductsCompanion extends UpdateCompanion<Product> {
       if (id != null) 'id': id,
       if (name != null) 'name': name,
       if (description != null) 'description': description,
-      if (min != null) 'min': min,
-      if (max != null) 'max': max,
+      if (minimum != null) 'minimum': minimum,
+      if (maximum != null) 'maximum': maximum,
       if (unit != null) 'unit': unit,
       if (productId != null) 'product_id': productId,
       if (createdAt != null) 'created_at': createdAt,
@@ -1308,8 +1323,8 @@ class ProductsCompanion extends UpdateCompanion<Product> {
       {Value<int>? id,
       Value<String>? name,
       Value<String?>? description,
-      Value<int?>? min,
-      Value<int?>? max,
+      Value<double?>? minimum,
+      Value<double?>? maximum,
       Value<String?>? unit,
       Value<int?>? productId,
       Value<DateTime?>? createdAt,
@@ -1318,8 +1333,8 @@ class ProductsCompanion extends UpdateCompanion<Product> {
       id: id ?? this.id,
       name: name ?? this.name,
       description: description ?? this.description,
-      min: min ?? this.min,
-      max: max ?? this.max,
+      minimum: minimum ?? this.minimum,
+      maximum: maximum ?? this.maximum,
       unit: unit ?? this.unit,
       productId: productId ?? this.productId,
       createdAt: createdAt ?? this.createdAt,
@@ -1339,11 +1354,11 @@ class ProductsCompanion extends UpdateCompanion<Product> {
     if (description.present) {
       map['description'] = Variable<String>(description.value);
     }
-    if (min.present) {
-      map['min'] = Variable<int>(min.value);
+    if (minimum.present) {
+      map['minimum'] = Variable<double>(minimum.value);
     }
-    if (max.present) {
-      map['max'] = Variable<int>(max.value);
+    if (maximum.present) {
+      map['maximum'] = Variable<double>(maximum.value);
     }
     if (unit.present) {
       map['unit'] = Variable<String>(unit.value);
@@ -1366,8 +1381,8 @@ class ProductsCompanion extends UpdateCompanion<Product> {
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('description: $description, ')
-          ..write('min: $min, ')
-          ..write('max: $max, ')
+          ..write('minimum: $minimum, ')
+          ..write('maximum: $maximum, ')
           ..write('unit: $unit, ')
           ..write('productId: $productId, ')
           ..write('createdAt: $createdAt, ')
@@ -2875,6 +2890,758 @@ class SalesCompanion extends UpdateCompanion<Sale> {
   }
 }
 
+class $InputsTable extends Inputs with TableInfo<$InputsTable, Input> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $InputsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _productIdMeta =
+      const VerificationMeta('productId');
+  @override
+  late final GeneratedColumn<int> productId = GeneratedColumn<int>(
+      'product_id', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES products (id)'));
+  static const VerificationMeta _purchaseIdMeta =
+      const VerificationMeta('purchaseId');
+  @override
+  late final GeneratedColumn<int> purchaseId = GeneratedColumn<int>(
+      'purchase_id', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES purchases (id)'));
+  static const VerificationMeta _quantityMeta =
+      const VerificationMeta('quantity');
+  @override
+  late final GeneratedColumn<double> quantity = GeneratedColumn<double>(
+      'quantity', aliasedName, true,
+      type: DriftSqlType.double, requiredDuringInsert: false);
+  static const VerificationMeta _priceMeta = const VerificationMeta('price');
+  @override
+  late final GeneratedColumn<double> price = GeneratedColumn<double>(
+      'price', aliasedName, true,
+      type: DriftSqlType.double, requiredDuringInsert: false);
+  static const VerificationMeta _createdAtMeta =
+      const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, true,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: currentDateAndTime);
+  static const VerificationMeta _updatedAtMeta =
+      const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+      'updated_at', aliasedName, true,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: currentDateAndTime);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, productId, purchaseId, quantity, price, createdAt, updatedAt];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'inputs';
+  @override
+  VerificationContext validateIntegrity(Insertable<Input> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('product_id')) {
+      context.handle(_productIdMeta,
+          productId.isAcceptableOrUnknown(data['product_id']!, _productIdMeta));
+    }
+    if (data.containsKey('purchase_id')) {
+      context.handle(
+          _purchaseIdMeta,
+          purchaseId.isAcceptableOrUnknown(
+              data['purchase_id']!, _purchaseIdMeta));
+    }
+    if (data.containsKey('quantity')) {
+      context.handle(_quantityMeta,
+          quantity.isAcceptableOrUnknown(data['quantity']!, _quantityMeta));
+    }
+    if (data.containsKey('price')) {
+      context.handle(
+          _priceMeta, price.isAcceptableOrUnknown(data['price']!, _priceMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Input map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Input(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      productId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}product_id']),
+      purchaseId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}purchase_id']),
+      quantity: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}quantity']),
+      price: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}price']),
+      createdAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at']),
+      updatedAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at']),
+    );
+  }
+
+  @override
+  $InputsTable createAlias(String alias) {
+    return $InputsTable(attachedDatabase, alias);
+  }
+}
+
+class Input extends DataClass implements Insertable<Input> {
+  final int id;
+  final int? productId;
+  final int? purchaseId;
+  final double? quantity;
+  final double? price;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  const Input(
+      {required this.id,
+      this.productId,
+      this.purchaseId,
+      this.quantity,
+      this.price,
+      this.createdAt,
+      this.updatedAt});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || productId != null) {
+      map['product_id'] = Variable<int>(productId);
+    }
+    if (!nullToAbsent || purchaseId != null) {
+      map['purchase_id'] = Variable<int>(purchaseId);
+    }
+    if (!nullToAbsent || quantity != null) {
+      map['quantity'] = Variable<double>(quantity);
+    }
+    if (!nullToAbsent || price != null) {
+      map['price'] = Variable<double>(price);
+    }
+    if (!nullToAbsent || createdAt != null) {
+      map['created_at'] = Variable<DateTime>(createdAt);
+    }
+    if (!nullToAbsent || updatedAt != null) {
+      map['updated_at'] = Variable<DateTime>(updatedAt);
+    }
+    return map;
+  }
+
+  InputsCompanion toCompanion(bool nullToAbsent) {
+    return InputsCompanion(
+      id: Value(id),
+      productId: productId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(productId),
+      purchaseId: purchaseId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(purchaseId),
+      quantity: quantity == null && nullToAbsent
+          ? const Value.absent()
+          : Value(quantity),
+      price:
+          price == null && nullToAbsent ? const Value.absent() : Value(price),
+      createdAt: createdAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(createdAt),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
+    );
+  }
+
+  factory Input.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Input(
+      id: serializer.fromJson<int>(json['id']),
+      productId: serializer.fromJson<int?>(json['productId']),
+      purchaseId: serializer.fromJson<int?>(json['purchaseId']),
+      quantity: serializer.fromJson<double?>(json['quantity']),
+      price: serializer.fromJson<double?>(json['price']),
+      createdAt: serializer.fromJson<DateTime?>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'productId': serializer.toJson<int?>(productId),
+      'purchaseId': serializer.toJson<int?>(purchaseId),
+      'quantity': serializer.toJson<double?>(quantity),
+      'price': serializer.toJson<double?>(price),
+      'createdAt': serializer.toJson<DateTime?>(createdAt),
+      'updatedAt': serializer.toJson<DateTime?>(updatedAt),
+    };
+  }
+
+  Input copyWith(
+          {int? id,
+          Value<int?> productId = const Value.absent(),
+          Value<int?> purchaseId = const Value.absent(),
+          Value<double?> quantity = const Value.absent(),
+          Value<double?> price = const Value.absent(),
+          Value<DateTime?> createdAt = const Value.absent(),
+          Value<DateTime?> updatedAt = const Value.absent()}) =>
+      Input(
+        id: id ?? this.id,
+        productId: productId.present ? productId.value : this.productId,
+        purchaseId: purchaseId.present ? purchaseId.value : this.purchaseId,
+        quantity: quantity.present ? quantity.value : this.quantity,
+        price: price.present ? price.value : this.price,
+        createdAt: createdAt.present ? createdAt.value : this.createdAt,
+        updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Input(')
+          ..write('id: $id, ')
+          ..write('productId: $productId, ')
+          ..write('purchaseId: $purchaseId, ')
+          ..write('quantity: $quantity, ')
+          ..write('price: $price, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      id, productId, purchaseId, quantity, price, createdAt, updatedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Input &&
+          other.id == this.id &&
+          other.productId == this.productId &&
+          other.purchaseId == this.purchaseId &&
+          other.quantity == this.quantity &&
+          other.price == this.price &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
+}
+
+class InputsCompanion extends UpdateCompanion<Input> {
+  final Value<int> id;
+  final Value<int?> productId;
+  final Value<int?> purchaseId;
+  final Value<double?> quantity;
+  final Value<double?> price;
+  final Value<DateTime?> createdAt;
+  final Value<DateTime?> updatedAt;
+  const InputsCompanion({
+    this.id = const Value.absent(),
+    this.productId = const Value.absent(),
+    this.purchaseId = const Value.absent(),
+    this.quantity = const Value.absent(),
+    this.price = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  });
+  InputsCompanion.insert({
+    this.id = const Value.absent(),
+    this.productId = const Value.absent(),
+    this.purchaseId = const Value.absent(),
+    this.quantity = const Value.absent(),
+    this.price = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  });
+  static Insertable<Input> custom({
+    Expression<int>? id,
+    Expression<int>? productId,
+    Expression<int>? purchaseId,
+    Expression<double>? quantity,
+    Expression<double>? price,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (productId != null) 'product_id': productId,
+      if (purchaseId != null) 'purchase_id': purchaseId,
+      if (quantity != null) 'quantity': quantity,
+      if (price != null) 'price': price,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+    });
+  }
+
+  InputsCompanion copyWith(
+      {Value<int>? id,
+      Value<int?>? productId,
+      Value<int?>? purchaseId,
+      Value<double?>? quantity,
+      Value<double?>? price,
+      Value<DateTime?>? createdAt,
+      Value<DateTime?>? updatedAt}) {
+    return InputsCompanion(
+      id: id ?? this.id,
+      productId: productId ?? this.productId,
+      purchaseId: purchaseId ?? this.purchaseId,
+      quantity: quantity ?? this.quantity,
+      price: price ?? this.price,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (productId.present) {
+      map['product_id'] = Variable<int>(productId.value);
+    }
+    if (purchaseId.present) {
+      map['purchase_id'] = Variable<int>(purchaseId.value);
+    }
+    if (quantity.present) {
+      map['quantity'] = Variable<double>(quantity.value);
+    }
+    if (price.present) {
+      map['price'] = Variable<double>(price.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('InputsCompanion(')
+          ..write('id: $id, ')
+          ..write('productId: $productId, ')
+          ..write('purchaseId: $purchaseId, ')
+          ..write('quantity: $quantity, ')
+          ..write('price: $price, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $OutputsTable extends Outputs with TableInfo<$OutputsTable, Output> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $OutputsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _productIdMeta =
+      const VerificationMeta('productId');
+  @override
+  late final GeneratedColumn<int> productId = GeneratedColumn<int>(
+      'product_id', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES products (id)'));
+  static const VerificationMeta _saleIdMeta = const VerificationMeta('saleId');
+  @override
+  late final GeneratedColumn<int> saleId = GeneratedColumn<int>(
+      'sale_id', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES sales (id)'));
+  static const VerificationMeta _quantityMeta =
+      const VerificationMeta('quantity');
+  @override
+  late final GeneratedColumn<double> quantity = GeneratedColumn<double>(
+      'quantity', aliasedName, true,
+      type: DriftSqlType.double, requiredDuringInsert: false);
+  static const VerificationMeta _priceMeta = const VerificationMeta('price');
+  @override
+  late final GeneratedColumn<double> price = GeneratedColumn<double>(
+      'price', aliasedName, true,
+      type: DriftSqlType.double, requiredDuringInsert: false);
+  static const VerificationMeta _createdAtMeta =
+      const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, true,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: currentDateAndTime);
+  static const VerificationMeta _updatedAtMeta =
+      const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+      'updated_at', aliasedName, true,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: currentDateAndTime);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, productId, saleId, quantity, price, createdAt, updatedAt];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'outputs';
+  @override
+  VerificationContext validateIntegrity(Insertable<Output> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('product_id')) {
+      context.handle(_productIdMeta,
+          productId.isAcceptableOrUnknown(data['product_id']!, _productIdMeta));
+    }
+    if (data.containsKey('sale_id')) {
+      context.handle(_saleIdMeta,
+          saleId.isAcceptableOrUnknown(data['sale_id']!, _saleIdMeta));
+    }
+    if (data.containsKey('quantity')) {
+      context.handle(_quantityMeta,
+          quantity.isAcceptableOrUnknown(data['quantity']!, _quantityMeta));
+    }
+    if (data.containsKey('price')) {
+      context.handle(
+          _priceMeta, price.isAcceptableOrUnknown(data['price']!, _priceMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Output map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Output(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      productId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}product_id']),
+      saleId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}sale_id']),
+      quantity: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}quantity']),
+      price: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}price']),
+      createdAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at']),
+      updatedAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at']),
+    );
+  }
+
+  @override
+  $OutputsTable createAlias(String alias) {
+    return $OutputsTable(attachedDatabase, alias);
+  }
+}
+
+class Output extends DataClass implements Insertable<Output> {
+  final int id;
+  final int? productId;
+  final int? saleId;
+  final double? quantity;
+  final double? price;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  const Output(
+      {required this.id,
+      this.productId,
+      this.saleId,
+      this.quantity,
+      this.price,
+      this.createdAt,
+      this.updatedAt});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || productId != null) {
+      map['product_id'] = Variable<int>(productId);
+    }
+    if (!nullToAbsent || saleId != null) {
+      map['sale_id'] = Variable<int>(saleId);
+    }
+    if (!nullToAbsent || quantity != null) {
+      map['quantity'] = Variable<double>(quantity);
+    }
+    if (!nullToAbsent || price != null) {
+      map['price'] = Variable<double>(price);
+    }
+    if (!nullToAbsent || createdAt != null) {
+      map['created_at'] = Variable<DateTime>(createdAt);
+    }
+    if (!nullToAbsent || updatedAt != null) {
+      map['updated_at'] = Variable<DateTime>(updatedAt);
+    }
+    return map;
+  }
+
+  OutputsCompanion toCompanion(bool nullToAbsent) {
+    return OutputsCompanion(
+      id: Value(id),
+      productId: productId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(productId),
+      saleId:
+          saleId == null && nullToAbsent ? const Value.absent() : Value(saleId),
+      quantity: quantity == null && nullToAbsent
+          ? const Value.absent()
+          : Value(quantity),
+      price:
+          price == null && nullToAbsent ? const Value.absent() : Value(price),
+      createdAt: createdAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(createdAt),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
+    );
+  }
+
+  factory Output.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Output(
+      id: serializer.fromJson<int>(json['id']),
+      productId: serializer.fromJson<int?>(json['productId']),
+      saleId: serializer.fromJson<int?>(json['saleId']),
+      quantity: serializer.fromJson<double?>(json['quantity']),
+      price: serializer.fromJson<double?>(json['price']),
+      createdAt: serializer.fromJson<DateTime?>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'productId': serializer.toJson<int?>(productId),
+      'saleId': serializer.toJson<int?>(saleId),
+      'quantity': serializer.toJson<double?>(quantity),
+      'price': serializer.toJson<double?>(price),
+      'createdAt': serializer.toJson<DateTime?>(createdAt),
+      'updatedAt': serializer.toJson<DateTime?>(updatedAt),
+    };
+  }
+
+  Output copyWith(
+          {int? id,
+          Value<int?> productId = const Value.absent(),
+          Value<int?> saleId = const Value.absent(),
+          Value<double?> quantity = const Value.absent(),
+          Value<double?> price = const Value.absent(),
+          Value<DateTime?> createdAt = const Value.absent(),
+          Value<DateTime?> updatedAt = const Value.absent()}) =>
+      Output(
+        id: id ?? this.id,
+        productId: productId.present ? productId.value : this.productId,
+        saleId: saleId.present ? saleId.value : this.saleId,
+        quantity: quantity.present ? quantity.value : this.quantity,
+        price: price.present ? price.value : this.price,
+        createdAt: createdAt.present ? createdAt.value : this.createdAt,
+        updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Output(')
+          ..write('id: $id, ')
+          ..write('productId: $productId, ')
+          ..write('saleId: $saleId, ')
+          ..write('quantity: $quantity, ')
+          ..write('price: $price, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, productId, saleId, quantity, price, createdAt, updatedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Output &&
+          other.id == this.id &&
+          other.productId == this.productId &&
+          other.saleId == this.saleId &&
+          other.quantity == this.quantity &&
+          other.price == this.price &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
+}
+
+class OutputsCompanion extends UpdateCompanion<Output> {
+  final Value<int> id;
+  final Value<int?> productId;
+  final Value<int?> saleId;
+  final Value<double?> quantity;
+  final Value<double?> price;
+  final Value<DateTime?> createdAt;
+  final Value<DateTime?> updatedAt;
+  const OutputsCompanion({
+    this.id = const Value.absent(),
+    this.productId = const Value.absent(),
+    this.saleId = const Value.absent(),
+    this.quantity = const Value.absent(),
+    this.price = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  });
+  OutputsCompanion.insert({
+    this.id = const Value.absent(),
+    this.productId = const Value.absent(),
+    this.saleId = const Value.absent(),
+    this.quantity = const Value.absent(),
+    this.price = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  });
+  static Insertable<Output> custom({
+    Expression<int>? id,
+    Expression<int>? productId,
+    Expression<int>? saleId,
+    Expression<double>? quantity,
+    Expression<double>? price,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (productId != null) 'product_id': productId,
+      if (saleId != null) 'sale_id': saleId,
+      if (quantity != null) 'quantity': quantity,
+      if (price != null) 'price': price,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+    });
+  }
+
+  OutputsCompanion copyWith(
+      {Value<int>? id,
+      Value<int?>? productId,
+      Value<int?>? saleId,
+      Value<double?>? quantity,
+      Value<double?>? price,
+      Value<DateTime?>? createdAt,
+      Value<DateTime?>? updatedAt}) {
+    return OutputsCompanion(
+      id: id ?? this.id,
+      productId: productId ?? this.productId,
+      saleId: saleId ?? this.saleId,
+      quantity: quantity ?? this.quantity,
+      price: price ?? this.price,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (productId.present) {
+      map['product_id'] = Variable<int>(productId.value);
+    }
+    if (saleId.present) {
+      map['sale_id'] = Variable<int>(saleId.value);
+    }
+    if (quantity.present) {
+      map['quantity'] = Variable<double>(quantity.value);
+    }
+    if (price.present) {
+      map['price'] = Variable<double>(price.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('OutputsCompanion(')
+          ..write('id: $id, ')
+          ..write('productId: $productId, ')
+          ..write('saleId: $saleId, ')
+          ..write('quantity: $quantity, ')
+          ..write('price: $price, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   late final $UsersTable users = $UsersTable(this);
@@ -2885,6 +3652,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $ClientsTable clients = $ClientsTable(this);
   late final $PurchasesTable purchases = $PurchasesTable(this);
   late final $SalesTable sales = $SalesTable(this);
+  late final $InputsTable inputs = $InputsTable(this);
+  late final $OutputsTable outputs = $OutputsTable(this);
   late final UsersDao usersDao = UsersDao(this as AppDatabase);
   late final RolesDao rolesDao = RolesDao(this as AppDatabase);
   late final PermissionsDao permissionsDao =
@@ -2894,6 +3663,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final ClientsDao clientsDao = ClientsDao(this as AppDatabase);
   late final PurchasesDao purchasesDao = PurchasesDao(this as AppDatabase);
   late final SalesDao salesDao = SalesDao(this as AppDatabase);
+  late final InputsDao inputsDao = InputsDao(this as AppDatabase);
+  late final OutputsDao outputsDao = OutputsDao(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -2906,6 +3677,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         suppliers,
         clients,
         purchases,
-        sales
+        sales,
+        inputs,
+        outputs
       ];
 }

@@ -11,9 +11,9 @@ class ProductModel {
 
   get description => product.description;
 
-  get min => product.min;
+  get min => product.minimum;
 
-  get max => product.max;
+  get max => product.maximum;
 
   get unit => product.unit;
 

@@ -136,8 +136,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
     late Map<String, dynamic> _product = {
       'name': '',
       'description': '',
-      'min': 0,
-      'max': 0,
+      'minimum': 0,
+      'maximum': 0,
       'unit': '',
       'product_id': null,
     };
@@ -146,8 +146,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
       _product = {
         'name': DataServices.to.product.value?.name,
         'description': DataServices.to.product.value?.description,
-        'min': DataServices.to.product.value?.min,
-        'max': DataServices.to.product.value?.max,
+        'minimum': DataServices.to.product.value?.minimum,
+        'maximum': DataServices.to.product.value?.maximum,
         'unit': DataServices.to.product.value?.unit,
         'product_id': null,
       };
@@ -213,9 +213,9 @@ class _ProductsScreenState extends State<ProductsScreen> {
                     children: [
                       Flexible(
                         child: TextFormField(
-                          initialValue: _product['min'].toString(),
+                          initialValue: _product['minimum'].toString(),
                           onSaved: (String? value) {
-                            _product['min'] = int.parse(value.toString());
+                            _product['minimum'] = int.parse(value.toString());
                           },
                           decoration: InputDecoration(
                             hintText: "Minimum Quantity".tr,
@@ -229,9 +229,9 @@ class _ProductsScreenState extends State<ProductsScreen> {
                       ),
                       Flexible(
                         child: TextFormField(
-                          initialValue: _product['max'].toString(),
+                          initialValue: _product['maximum'].toString(),
                           onSaved: (String? value) {
-                            _product['max'] = int.parse(value.toString());
+                            _product['maximum'] = int.parse(value.toString());
                           },
                           decoration: InputDecoration(
                             hintText: "Maximum Quantity".tr,

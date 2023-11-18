@@ -6,6 +6,8 @@ import 'package:drift/native.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:top_stock_manager/application/database/offline/daos/clients/clients_dao.dart';
+import 'package:top_stock_manager/application/database/offline/daos/inputs/inputs_dao.dart';
+import 'package:top_stock_manager/application/database/offline/daos/outputs/outputs_dao.dart';
 import 'package:top_stock_manager/application/database/offline/daos/permissions/permissions_dao.dart';
 import 'package:top_stock_manager/application/database/offline/daos/products/products_dao.dart';
 import 'package:top_stock_manager/application/database/offline/daos/purchases/purchases_dao.dart';
@@ -14,6 +16,8 @@ import 'package:top_stock_manager/application/database/offline/daos/sales/sales_
 import 'package:top_stock_manager/application/database/offline/daos/suppliers/suppliers_dao.dart';
 import 'package:top_stock_manager/application/database/offline/daos/users/users_dao.dart';
 import 'package:top_stock_manager/application/database/offline/tables/clients.dart';
+import 'package:top_stock_manager/application/database/offline/tables/inputs.dart';
+import 'package:top_stock_manager/application/database/offline/tables/outputs.dart';
 import 'package:top_stock_manager/application/database/offline/tables/permissions.dart';
 import 'package:top_stock_manager/application/database/offline/tables/products.dart';
 import 'package:top_stock_manager/application/database/offline/tables/purchases.dart';
@@ -49,6 +53,8 @@ LazyDatabase _lazyDatabase() {
     Clients,
     Purchases,
     Sales,
+    Inputs,
+    Outputs,
   ],
   daos: [
     UsersDao,
@@ -59,6 +65,8 @@ LazyDatabase _lazyDatabase() {
     ClientsDao,
     PurchasesDao,
     SalesDao,
+    InputsDao,
+    OutputsDao,
   ],
 )
 class AppDatabase extends _$AppDatabase {

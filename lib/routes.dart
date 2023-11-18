@@ -11,6 +11,8 @@ import 'package:top_stock_manager/system/widgets/menu.dart';
 import 'application/ui/auth/users/users_screen.dart';
 import 'application/ui/purchases/purchase_add_edit_screen.dart';
 import 'application/ui/purchases/purchases_screen.dart';
+import 'application/ui/sales/sale_add_edit_screen.dart';
+import 'application/ui/sales/sales_screen.dart';
 
 class Routes {
   static List<GetPage> routes = [
@@ -89,6 +91,24 @@ class Routes {
       name: PurchaseAddEditScreen.route,
       page: () => const WindowMenu(
         child: PurchaseAddEditScreen(),
+      ),
+      middlewares: [
+        //  AuthMiddleware(),
+      ],
+    ),
+    GetPage(
+      name: SaleAddEditScreen.route,
+      page: () => const WindowMenu(
+        child: SaleAddEditScreen(),
+      ),
+      middlewares: [
+        //  AuthMiddleware(),
+      ],
+    ),
+    GetPage(
+      name: SalesScreen.route,
+      page: () => const WindowMenu(
+        child: SalesScreen(),
       ),
       middlewares: [
         //  AuthMiddleware(),

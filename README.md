@@ -86,20 +86,20 @@ supplier if that is not necessary
 
 - [x] View all purchases ;
 - [ ] View one purchase ;
-- [ ] Create a purchase ;
-- [ ] Update a purchase ;
-- [ ] Delete a purchase ;
+- [x] Create a purchase ;
+- [x] Update a purchase ;
+- [x] Delete a purchase ;
 
 ### 8. Sales
 
 A sale is a set of different products sold at once, usually to the same client. A sale can have no client if that is not
 necessary
 
-- [ ] View all sales ;
+- [x] View all sales ;
 - [ ] View one sale ;
-- [ ] Create a sale ;
-- [ ] Update a sale ;
-- [ ] Delete a sale ;
+- [x] Create a sale ;
+- [x] Update a sale ;
+- [x] Delete a sale ;
 
 ### 9. Inputs
 

@@ -15,6 +15,8 @@ class PurchaseModel {
 
   get supplierId => purchase.supplierId;
 
+  get supplierName => supplier?.name ?? '';
+
   get price => RANDOM_DOUBLE * 10000;
 
   get priceStringed =>

@@ -13,6 +13,7 @@ import 'package:top_stock_manager/application/ui/suppliers/suppliers_screen.dart
 import 'package:window_manager/window_manager.dart';
 
 import '../../application/ui/purchases/purchases_screen.dart';
+import '../../application/ui/sales/sales_screen.dart';
 
 List<BarButton> _menuBarButtons() {
   return [
@@ -98,7 +99,7 @@ List<BarButton> _menuBarButtons() {
             text: Text('Purchases'.tr),
           ),
           MenuButton(
-            onTap: null,
+            onTap: () => Get.toNamed(SalesScreen.route),
             text: Text('Sales'.tr),
           ),
         ],

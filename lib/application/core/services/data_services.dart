@@ -29,8 +29,8 @@ class DataServices extends GetxService {
           .copyWith(
             name: data['name'],
             description: d.Value(data['description']),
-            min: d.Value(data['min']),
-            max: d.Value(data['max']),
+            minimum: d.Value(data['minimum']),
+            maximum: d.Value(data['maximum']),
             unit: d.Value(data['unit']),
             updatedAt: d.Value(DateTime.now()),
           )

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:top_stock_manager/application/core/controllers/clients_controller.dart';
+import 'package:top_stock_manager/application/core/controllers/sales_controller.dart';
 import 'package:top_stock_manager/application/core/controllers/suppliers_controller.dart';
 import 'package:top_stock_manager/application/core/services/auth_services.dart';
 import 'package:top_stock_manager/application/database/offline/app_database.dart';
@@ -49,6 +50,7 @@ Future<void> _initControllers() async {
   await SuppliersController.init();
   await ClientsController.init();
   await PurchasesController.init();
+  await SalesController.init();
 }
 
 class MyApp extends StatelessWidget {
