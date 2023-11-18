@@ -26,7 +26,7 @@ class PurchasesController extends GetxController {
   var product = Rxn<ProductModel>();
   var purchases = <PurchaseModel>[].obs;
   var inputs = <Input>[].obs;
-  var inputsList = <Map<String, dynamic>>[].obs;
+  var inputsList = <Input>[].obs;
 
   openPurchase(PurchaseModel pur) async {
     purchase.value = pur;
@@ -64,11 +64,12 @@ class PurchasesController extends GetxController {
   appendToInputs(Map<String, dynamic> data) async {
     data['createdAt'] = DateTime.now();
     data['updatedAt'] = DateTime.now();
+    data['id'] = DateTime.now().millisecondsSinceEpoch * -1;
     // ic = InputsCompanion.insert({});
-    inputsList.add(
-      data,
+    inputs.add(
+      Input.fromJson(data),
     );
-    log(inputsList.string);
+    log(inputs.string);
     Get.back();
     // Get.snackbar('Input'.tr, 'Input added successfully'.tr,
     //     snackPosition: SnackPosition.BOTTOM);
