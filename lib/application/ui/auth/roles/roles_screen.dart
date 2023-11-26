@@ -45,7 +45,7 @@ class _RolesScreenState extends State<RolesScreen> {
           ),
           Obx(() {
             return SingleChildScrollView(
-              child: Container(
+              child: SizedBox(
                 width: Get.width - 50,
                 child: DataTable(
                   sortAscending: true,
@@ -120,14 +120,14 @@ class _RolesScreenState extends State<RolesScreen> {
   }
 
   roleAdd({String title = "Add a new role"}) {
-    final _roleAddFormKey = GlobalKey<FormState>();
-    late Map<String, dynamic> _role = {
+    final roleAddFormKey = GlobalKey<FormState>();
+    late Map<String, dynamic> role = {
       'name': '',
       'description': '',
     };
 
     if (AuthServices.to.role.value != null) {
-      _role = {
+      role = {
         'name': AuthServices.to.role.value?.name,
         'description': AuthServices.to.role.value?.description,
       };
@@ -136,7 +136,7 @@ class _RolesScreenState extends State<RolesScreen> {
       Container(
         margin: const EdgeInsets.symmetric(horizontal: 5.0),
         child: Form(
-            key: _roleAddFormKey,
+            key: roleAddFormKey,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -152,7 +152,7 @@ class _RolesScreenState extends State<RolesScreen> {
                     height: 20,
                   ),
                   TextFormField(
-                    initialValue: _role['name'],
+                    initialValue: role['name'],
                     validator: (va) {
                       if (va!.isEmpty) {
                         return "Name must not be empty".tr;
@@ -162,7 +162,7 @@ class _RolesScreenState extends State<RolesScreen> {
                       return null;
                     },
                     onSaved: (String? value) {
-                      _role['name'] = value.toString();
+                      role['name'] = value.toString();
                     },
                     decoration: InputDecoration(
                       hintText: "Name".tr,
@@ -174,9 +174,9 @@ class _RolesScreenState extends State<RolesScreen> {
                     height: 10,
                   ),
                   TextFormField(
-                    initialValue: _role['description'],
+                    initialValue: role['description'],
                     onSaved: (String? value) {
-                      _role['description'] = value.toString();
+                      role['description'] = value.toString();
                     },
                     decoration: InputDecoration(
                       hintText: "Role Description".tr,
@@ -190,11 +190,11 @@ class _RolesScreenState extends State<RolesScreen> {
                   Center(
                     child: ElevatedButton(
                       onPressed: () {
-                        if (!_roleAddFormKey.currentState!.validate()) {
+                        if (!roleAddFormKey.currentState!.validate()) {
                           return;
                         }
-                        _roleAddFormKey.currentState!.save();
-                        AuthServices.to.saveRole(_role);
+                        roleAddFormKey.currentState!.save();
+                        AuthServices.to.saveRole(role);
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: kWhite,

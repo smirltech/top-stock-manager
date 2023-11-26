@@ -44,7 +44,7 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
           ),
           Obx(() {
             return SingleChildScrollView(
-              child: Container(
+              child: SizedBox(
                 width: Get.width - 50,
                 child: DataTable(
                   sortAscending: true,
@@ -126,8 +126,8 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
   }
 
   supplierAdd({String title = "Add a new supplier"}) {
-    final _supplierAddFormKey = GlobalKey<FormState>();
-    late Map<String, dynamic> _supplier = {
+    final supplierAddFormKey = GlobalKey<FormState>();
+    late Map<String, dynamic> supplier = {
       'name': '',
       'sex': '',
       'contact': '',
@@ -135,7 +135,7 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
     };
 
     if (SuppliersController.to.supplier.value != null) {
-      _supplier = {
+      supplier = {
         'name': SuppliersController.to.supplier.value?.name,
         'sex': SuppliersController.to.supplier.value?.sex,
         'contact': SuppliersController.to.supplier.value?.contact,
@@ -146,7 +146,7 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
       Container(
         margin: const EdgeInsets.symmetric(horizontal: 5.0),
         child: Form(
-            key: _supplierAddFormKey,
+            key: supplierAddFormKey,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -162,7 +162,7 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
                     height: 20,
                   ),
                   TextFormField(
-                    initialValue: _supplier['name'],
+                    initialValue: supplier['name'],
                     validator: (va) {
                       if (va!.isEmpty) {
                         return "Name must not be empty".tr;
@@ -172,7 +172,7 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
                       return null;
                     },
                     onSaved: (String? value) {
-                      _supplier['name'] = value.toString();
+                      supplier['name'] = value.toString();
                     },
                     decoration: InputDecoration(
                       hintText: "Supplier Name".tr,
@@ -184,9 +184,9 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
                     height: 10,
                   ),
                   TextFormField(
-                    initialValue: _supplier['description'],
+                    initialValue: supplier['description'],
                     onSaved: (String? value) {
-                      _supplier['description'] = value.toString();
+                      supplier['description'] = value.toString();
                     },
                     decoration: InputDecoration(
                       hintText: "Supplier Description".tr,
@@ -203,9 +203,9 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
                     children: [
                       Flexible(
                         child: TextFormField(
-                          initialValue: _supplier['sex'].toString(),
+                          initialValue: supplier['sex'].toString(),
                           onSaved: (String? value) {
-                            _supplier['sex'] = value.toString();
+                            supplier['sex'] = value.toString();
                           },
                           decoration: InputDecoration(
                             hintText: "Sex".tr,
@@ -219,9 +219,9 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
                       ),
                       Flexible(
                         child: TextFormField(
-                          initialValue: _supplier['contact'],
+                          initialValue: supplier['contact'],
                           onSaved: (String? value) {
-                            _supplier['contact'] = value.toString();
+                            supplier['contact'] = value.toString();
                           },
                           decoration: InputDecoration(
                             hintText: "Contact".tr,
@@ -238,11 +238,11 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
                   Center(
                     child: ElevatedButton(
                       onPressed: () {
-                        if (!_supplierAddFormKey.currentState!.validate()) {
+                        if (!supplierAddFormKey.currentState!.validate()) {
                           return;
                         }
-                        _supplierAddFormKey.currentState!.save();
-                        SuppliersController.to.saveSupplier(_supplier);
+                        supplierAddFormKey.currentState!.save();
+                        SuppliersController.to.saveSupplier(supplier);
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: kWhite,

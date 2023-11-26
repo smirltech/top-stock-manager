@@ -1,10 +1,7 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-import 'package:top_stock_manager/system/configs/theming.dart';
 import 'package:window_manager/window_manager.dart';
 
-import 'constants.dart';
 
 void setFrameSize() async {
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {

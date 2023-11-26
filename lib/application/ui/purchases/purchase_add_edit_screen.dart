@@ -112,14 +112,14 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
                                   return;
                                 }
                                 _purchaseAddFormKey.currentState!.save();
-                                Map<String, dynamic> _purchase = {
+                                Map<String, dynamic> purchase = {
                                   'date': DateTime.parse(dateEC.text),
                                   'supplierId':
                                       PurchasesController.to.supplier.value?.id,
                                   'description': descriptionEC.text,
                                 };
                                 // log(_purchase.toString());
-                                PurchasesController.to.savePurchase(_purchase);
+                                PurchasesController.to.savePurchase(purchase);
                               },
                               style: OutlinedButton.styleFrom(
                                   foregroundColor: kWhite,
@@ -239,7 +239,7 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
           ),
           Obx(() {
             return SingleChildScrollView(
-              child: Container(
+              child: SizedBox(
                 width: Get.width - 50,
                 child: DataTable(
                   sortAscending: true,
@@ -265,7 +265,7 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
                   rows: PurchasesController.to.inputs.map((ipt) {
                     InputProductModel? ipm;
                     DB.inputsDao
-                        .getInputProduct(ipt.id)
+                        .getInputProduct(ipt!.id)
                         .then((value) => ipm = value);
                     return DataRow(
                       cells: [
@@ -316,8 +316,8 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
   }
 
   inputAdd({String title = "Add a new input"}) {
-    final _inputAddFormKey = GlobalKey<FormState>();
-    late Map<String, dynamic> _input = {
+    final inputAddFormKey = GlobalKey<FormState>();
+    late Map<String, dynamic> input = {
       'productId': null,
       'purchaseId': null,
       'quantity': 0.0,
@@ -346,7 +346,7 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
       Container(
         margin: const EdgeInsets.symmetric(horizontal: 5.0),
         child: Form(
-            key: _inputAddFormKey,
+            key: inputAddFormKey,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -367,7 +367,7 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
                       items: productsDrop,
                       onChanged: (ProductModel? sup) {
                         PurchasesController.to.product.value = sup;
-                        _input['productId'] =
+                        input['productId'] =
                             PurchasesController.to.product.value?.id;
                       },
                       decoration: InputDecoration(
@@ -386,9 +386,9 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
                     children: [
                       Flexible(
                         child: TextFormField(
-                          initialValue: _input['quantity'].toString(),
+                          initialValue: input['quantity'].toString(),
                           onSaved: (String? value) {
-                            _input['quantity'] =
+                            input['quantity'] =
                                 double.tryParse(value.toString());
                           },
                           decoration: InputDecoration(
@@ -403,9 +403,9 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
                       ),
                       Flexible(
                         child: TextFormField(
-                          initialValue: _input['price'].toString(),
+                          initialValue: input['price'].toString(),
                           onSaved: (String? value) {
-                            _input['price'] = double.tryParse(value.toString());
+                            input['price'] = double.tryParse(value.toString());
                           },
                           decoration: InputDecoration(
                             hintText: "Price".tr,
@@ -422,12 +422,12 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
                   Center(
                     child: ElevatedButton(
                       onPressed: () {
-                        if (!_inputAddFormKey.currentState!.validate()) {
+                        if (!inputAddFormKey.currentState!.validate()) {
                           return;
                         }
-                        _inputAddFormKey.currentState!.save();
+                        inputAddFormKey.currentState!.save();
 
-                        PurchasesController.to.appendToInputs(_input);
+                        PurchasesController.to.appendToInputs(input);
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: kWhite,

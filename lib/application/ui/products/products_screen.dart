@@ -44,7 +44,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
           ),
           Obx(() {
             return SingleChildScrollView(
-              child: Container(
+              child: SizedBox(
                 width: Get.width - 50,
                 child: DataTable(
                   sortAscending: true,
@@ -132,8 +132,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
   }
 
   productAdd({String title = "Add a new product"}) {
-    final _productAddFormKey = GlobalKey<FormState>();
-    late Map<String, dynamic> _product = {
+    final productAddFormKey = GlobalKey<FormState>();
+    late Map<String, dynamic> product = {
       'name': '',
       'description': '',
       'minimum': 0.0,
@@ -143,7 +143,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
     };
 
     if (DataServices.to.product.value != null) {
-      _product = {
+      product = {
         'name': DataServices.to.product.value?.name,
         'description': DataServices.to.product.value?.description,
         'minimum': DataServices.to.product.value?.minimum,
@@ -156,7 +156,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
       Container(
         margin: const EdgeInsets.symmetric(horizontal: 5.0),
         child: Form(
-            key: _productAddFormKey,
+            key: productAddFormKey,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -172,7 +172,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                     height: 20,
                   ),
                   TextFormField(
-                    initialValue: _product['name'],
+                    initialValue: product['name'],
                     validator: (va) {
                       if (va!.isEmpty) {
                         return "Name must not be empty".tr;
@@ -182,7 +182,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                       return null;
                     },
                     onSaved: (String? value) {
-                      _product['name'] = value.toString();
+                      product['name'] = value.toString();
                     },
                     decoration: InputDecoration(
                       hintText: "Product Name".tr,
@@ -194,9 +194,9 @@ class _ProductsScreenState extends State<ProductsScreen> {
                     height: 10,
                   ),
                   TextFormField(
-                    initialValue: _product['description'],
+                    initialValue: product['description'],
                     onSaved: (String? value) {
-                      _product['description'] = value.toString();
+                      product['description'] = value.toString();
                     },
                     decoration: InputDecoration(
                       hintText: "Product Description".tr,
@@ -213,9 +213,9 @@ class _ProductsScreenState extends State<ProductsScreen> {
                     children: [
                       Flexible(
                         child: TextFormField(
-                          initialValue: _product['minimum'].toString(),
+                          initialValue: product['minimum'].toString(),
                           onSaved: (String? value) {
-                            _product['minimum'] =
+                            product['minimum'] =
                                 double.parse(value.toString());
                           },
                           decoration: InputDecoration(
@@ -230,9 +230,9 @@ class _ProductsScreenState extends State<ProductsScreen> {
                       ),
                       Flexible(
                         child: TextFormField(
-                          initialValue: _product['maximum'].toString(),
+                          initialValue: product['maximum'].toString(),
                           onSaved: (String? value) {
-                            _product['maximum'] =
+                            product['maximum'] =
                                 double.parse(value.toString());
                           },
                           decoration: InputDecoration(
@@ -247,7 +247,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                       ),
                       Flexible(
                         child: TextFormField(
-                          initialValue: _product['unit'],
+                          initialValue: product['unit'],
                           validator: (va) {
                             if (va!.isEmpty) {
                               return "Unit must not be empty".tr;
@@ -257,7 +257,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                             return null;
                           },
                           onSaved: (String? value) {
-                            _product['unit'] = value.toString();
+                            product['unit'] = value.toString();
                           },
                           decoration: InputDecoration(
                             hintText: "Unit of Measure".tr,
@@ -274,11 +274,11 @@ class _ProductsScreenState extends State<ProductsScreen> {
                   Center(
                     child: ElevatedButton(
                       onPressed: () {
-                        if (!_productAddFormKey.currentState!.validate()) {
+                        if (!productAddFormKey.currentState!.validate()) {
                           return;
                         }
-                        _productAddFormKey.currentState!.save();
-                        DataServices.to.saveProduct(_product);
+                        productAddFormKey.currentState!.save();
+                        DataServices.to.saveProduct(product);
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: kWhite,

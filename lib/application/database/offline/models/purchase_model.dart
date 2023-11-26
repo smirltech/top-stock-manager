@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
-import 'package:top_stock_manager/application/database/offline/app_database.dart';
 import 'package:top_stock_manager/system/configs/constants.dart';
+import 'package:top_stock_manager/application/database/offline/app_database.dart';
 
 class PurchaseModel {
   final Purchase purchase;

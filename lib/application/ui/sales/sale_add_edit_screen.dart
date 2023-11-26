@@ -100,14 +100,14 @@ class _SaleAddEditScreenState extends State<SaleAddEditScreen> {
                                   return;
                                 }
                                 _saleAddFormKey.currentState!.save();
-                                Map<String, dynamic> _sale = {
+                                Map<String, dynamic> sale = {
                                   'date': DateTime.parse(dateEC.text),
                                   'clientId':
                                       SalesController.to.client.value?.id,
                                   'description': descriptionEC.text,
                                 };
                                 // log(_purchase.toString());
-                                SalesController.to.saveSale(_sale);
+                                SalesController.to.saveSale(sale);
                               },
                               style: OutlinedButton.styleFrom(
                                   foregroundColor: kWhite,
@@ -243,7 +243,7 @@ class _SaleAddEditScreenState extends State<SaleAddEditScreen> {
           ),
           Obx(() {
             return SingleChildScrollView(
-              child: Container(
+              child: SizedBox(
                 width: Get.width - 50,
                 child: DataTable(
                   sortAscending: true,
@@ -269,10 +269,10 @@ class _SaleAddEditScreenState extends State<SaleAddEditScreen> {
                   rows: SalesController.to.sales.map((pur) {
                     return DataRow(
                       cells: [
-                        DataCell(Text("Product")),
-                        DataCell(Text("20")),
-                        DataCell(Text("10 000 Fc")),
-                        DataCell(Text("200 000 Fc")),
+                        const DataCell(Text("Product")),
+                        const DataCell(Text("20")),
+                        const DataCell(Text("10 000 Fc")),
+                        const DataCell(Text("200 000 Fc")),
                         DataCell(
                           SizedBox(
                             width: 200.0,

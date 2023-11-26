@@ -21,15 +21,21 @@ import 'package:top_stock_manager/application/database/offline/tables/outputs.da
 import 'package:top_stock_manager/application/database/offline/tables/permissions.dart';
 import 'package:top_stock_manager/application/database/offline/tables/products.dart';
 import 'package:top_stock_manager/application/database/offline/tables/purchases.dart';
+import 'package:top_stock_manager/application/database/offline/tables/role_has_permissions.dart';
 import 'package:top_stock_manager/application/database/offline/tables/roles.dart';
 import 'package:top_stock_manager/application/database/offline/tables/sales.dart';
 import 'package:top_stock_manager/application/database/offline/tables/suppliers.dart';
+import 'package:top_stock_manager/application/database/offline/tables/user_has_permissions.dart';
+import 'package:top_stock_manager/application/database/offline/tables/user_has_roles.dart';
 import 'package:top_stock_manager/application/database/offline/tables/users.dart';
 import 'package:top_stock_manager/main.dart';
 import 'package:top_stock_manager/system/enums/permissions.dart'
     as PermissionsEnum;
 
 import '../../../system/configs/constants.dart';
+import 'daos/role_has_permissions/role_has_permissions_dao.dart';
+import 'daos/user_has_permissions/user_has_permissions_dao.dart';
+import 'daos/user_has_roles/user_has_roles_dao.dart';
 
 part 'app_database.g.dart';
 
@@ -48,6 +54,9 @@ LazyDatabase _lazyDatabase() {
     Users,
     Roles,
     Permissions,
+    RoleHasPermissions,
+    UserHasPermissions,
+    UserHasRoles,
     Products,
     Suppliers,
     Clients,
@@ -60,6 +69,9 @@ LazyDatabase _lazyDatabase() {
     UsersDao,
     RolesDao,
     PermissionsDao,
+    RoleHasPermissionsDao,
+    UserHasPermissionsDao,
+    UserHasRolesDao,
     ProductsDao,
     SuppliersDao,
     ClientsDao,

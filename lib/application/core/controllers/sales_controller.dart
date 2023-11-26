@@ -1,9 +1,9 @@
 import 'package:drift/drift.dart' as d;
 import 'package:get/get.dart';
-import 'package:top_stock_manager/application/database/offline/app_database.dart';
 import 'package:top_stock_manager/application/database/offline/models/client_model.dart';
 import 'package:top_stock_manager/application/database/offline/models/sale_model.dart';
 import 'package:top_stock_manager/main.dart';
+import 'package:top_stock_manager/application/database/offline/app_database.dart';
 
 import '../../../system/configs/theming.dart';
 

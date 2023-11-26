@@ -46,7 +46,7 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
           ),
           Obx(() {
             return SingleChildScrollView(
-              child: Container(
+              child: SizedBox(
                 width: Get.width - 50,
                 child: DataTable(
                   sortAscending: true,

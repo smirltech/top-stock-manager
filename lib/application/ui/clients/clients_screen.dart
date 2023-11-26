@@ -45,7 +45,7 @@ class _ClientsScreenState extends State<ClientsScreen> {
           ),
           Obx(() {
             return SingleChildScrollView(
-              child: Container(
+              child: SizedBox(
                 width: Get.width - 50,
                 child: DataTable(
                   sortAscending: true,
@@ -127,8 +127,8 @@ class _ClientsScreenState extends State<ClientsScreen> {
   }
 
   clientAdd({String title = "Add a new client"}) {
-    final _clientAddFormKey = GlobalKey<FormState>();
-    late Map<String, dynamic> _client = {
+    final clientAddFormKey = GlobalKey<FormState>();
+    late Map<String, dynamic> client = {
       'name': '',
       'sex': '',
       'contact': '',
@@ -136,7 +136,7 @@ class _ClientsScreenState extends State<ClientsScreen> {
     };
 
     if (ClientsController.to.client.value != null) {
-      _client = {
+      client = {
         'name': ClientsController.to.client.value?.name,
         'sex': ClientsController.to.client.value?.sex,
         'contact': ClientsController.to.client.value?.contact,
@@ -147,7 +147,7 @@ class _ClientsScreenState extends State<ClientsScreen> {
       Container(
         margin: const EdgeInsets.symmetric(horizontal: 5.0),
         child: Form(
-            key: _clientAddFormKey,
+            key: clientAddFormKey,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -163,7 +163,7 @@ class _ClientsScreenState extends State<ClientsScreen> {
                     height: 20,
                   ),
                   TextFormField(
-                    initialValue: _client['name'],
+                    initialValue: client['name'],
                     validator: (va) {
                       if (va!.isEmpty) {
                         return "Name must not be empty".tr;
@@ -173,7 +173,7 @@ class _ClientsScreenState extends State<ClientsScreen> {
                       return null;
                     },
                     onSaved: (String? value) {
-                      _client['name'] = value.toString();
+                      client['name'] = value.toString();
                     },
                     decoration: InputDecoration(
                       hintText: "Client Name".tr,
@@ -185,9 +185,9 @@ class _ClientsScreenState extends State<ClientsScreen> {
                     height: 10,
                   ),
                   TextFormField(
-                    initialValue: _client['description'],
+                    initialValue: client['description'],
                     onSaved: (String? value) {
-                      _client['description'] = value.toString();
+                      client['description'] = value.toString();
                     },
                     decoration: InputDecoration(
                       hintText: "Client Description".tr,
@@ -204,9 +204,9 @@ class _ClientsScreenState extends State<ClientsScreen> {
                     children: [
                       Flexible(
                         child: TextFormField(
-                          initialValue: _client['sex'].toString(),
+                          initialValue: client['sex'].toString(),
                           onSaved: (String? value) {
-                            _client['sex'] = value.toString();
+                            client['sex'] = value.toString();
                           },
                           decoration: InputDecoration(
                             hintText: "Sex".tr,
@@ -220,9 +220,9 @@ class _ClientsScreenState extends State<ClientsScreen> {
                       ),
                       Flexible(
                         child: TextFormField(
-                          initialValue: _client['contact'],
+                          initialValue: client['contact'],
                           onSaved: (String? value) {
-                            _client['contact'] = value.toString();
+                            client['contact'] = value.toString();
                           },
                           decoration: InputDecoration(
                             hintText: "Contact".tr,
@@ -239,11 +239,11 @@ class _ClientsScreenState extends State<ClientsScreen> {
                   Center(
                     child: ElevatedButton(
                       onPressed: () {
-                        if (!_clientAddFormKey.currentState!.validate()) {
+                        if (!clientAddFormKey.currentState!.validate()) {
                           return;
                         }
-                        _clientAddFormKey.currentState!.save();
-                        ClientsController.to.saveClient(_client);
+                        clientAddFormKey.currentState!.save();
+                        ClientsController.to.saveClient(client);
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: kWhite,

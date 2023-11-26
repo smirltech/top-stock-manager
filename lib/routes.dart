@@ -29,7 +29,7 @@ class Routes {
       page: () => const WindowMenu(
         child: HomeScreen(),
       ),
-      middlewares: [
+      middlewares: const [
         //  AuthMiddleware(),
       ],
     ),
@@ -38,7 +38,7 @@ class Routes {
       page: () => const WindowMenu(
         child: ProductsScreen(),
       ),
-      middlewares: [
+      middlewares: const [
         //  AuthMiddleware(),
       ],
     ),
@@ -47,7 +47,7 @@ class Routes {
       page: () => const WindowMenu(
         child: UsersScreen(),
       ),
-      middlewares: [
+      middlewares: const [
         //  AuthMiddleware(),
       ],
     ),
@@ -56,7 +56,7 @@ class Routes {
       page: () => const WindowMenu(
         child: RolesScreen(),
       ),
-      middlewares: [
+      middlewares: const [
         //  AuthMiddleware(),
       ],
     ),
@@ -65,7 +65,7 @@ class Routes {
       page: () => const WindowMenu(
         child: SuppliersScreen(),
       ),
-      middlewares: [
+      middlewares: const [
         //  AuthMiddleware(),
       ],
     ),
@@ -74,7 +74,7 @@ class Routes {
       page: () => const WindowMenu(
         child: ClientsScreen(),
       ),
-      middlewares: [
+      middlewares: const [
         //  AuthMiddleware(),
       ],
     ),
@@ -83,7 +83,7 @@ class Routes {
       page: () => const WindowMenu(
         child: PurchasesScreen(),
       ),
-      middlewares: [
+      middlewares: const [
         //  AuthMiddleware(),
       ],
     ),
@@ -92,7 +92,7 @@ class Routes {
       page: () => const WindowMenu(
         child: PurchaseAddEditScreen(),
       ),
-      middlewares: [
+      middlewares: const [
         //  AuthMiddleware(),
       ],
     ),
@@ -101,7 +101,7 @@ class Routes {
       page: () => const WindowMenu(
         child: SaleAddEditScreen(),
       ),
-      middlewares: [
+      middlewares: const [
         //  AuthMiddleware(),
       ],
     ),
@@ -110,7 +110,7 @@ class Routes {
       page: () => const WindowMenu(
         child: SalesScreen(),
       ),
-      middlewares: [
+      middlewares: const [
         //  AuthMiddleware(),
       ],
     ),

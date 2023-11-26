@@ -45,7 +45,7 @@ class _UsersScreenState extends State<UsersScreen> {
           ),
           Obx(() {
             return SingleChildScrollView(
-              child: Container(
+              child: SizedBox(
                 width: Get.width - 50,
                 child: DataTable(
                   sortAscending: true,
@@ -123,15 +123,15 @@ class _UsersScreenState extends State<UsersScreen> {
   }
 
   userAdd({String title = "Add a new user"}) {
-    final _userAddFormKey = GlobalKey<FormState>();
-    late Map<String, dynamic> _user = {
+    final userAddFormKey = GlobalKey<FormState>();
+    late Map<String, dynamic> user = {
       'name': '',
       'username': '',
       'password': '',
     };
 
     if (AuthServices.to.user.value != null) {
-      _user = {
+      user = {
         'name': AuthServices.to.user.value?.name,
         'username': AuthServices.to.user.value?.username,
         'password': '',
@@ -141,7 +141,7 @@ class _UsersScreenState extends State<UsersScreen> {
       Container(
         margin: const EdgeInsets.symmetric(horizontal: 5.0),
         child: Form(
-            key: _userAddFormKey,
+            key: userAddFormKey,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -157,7 +157,7 @@ class _UsersScreenState extends State<UsersScreen> {
                     height: 20,
                   ),
                   TextFormField(
-                    initialValue: _user['name'],
+                    initialValue: user['name'],
                     validator: (va) {
                       if (va!.isEmpty) {
                         return "Name must not be empty".tr;
@@ -167,7 +167,7 @@ class _UsersScreenState extends State<UsersScreen> {
                       return null;
                     },
                     onSaved: (String? value) {
-                      _user['name'] = value.toString();
+                      user['name'] = value.toString();
                     },
                     decoration: InputDecoration(
                       hintText: "Name".tr,
@@ -179,9 +179,9 @@ class _UsersScreenState extends State<UsersScreen> {
                     height: 10,
                   ),
                   TextFormField(
-                    initialValue: _user['username'],
+                    initialValue: user['username'],
                     onSaved: (String? value) {
-                      _user['username'] = value.toString();
+                      user['username'] = value.toString();
                     },
                     decoration: InputDecoration(
                       hintText: "User identifier".tr,
@@ -194,9 +194,9 @@ class _UsersScreenState extends State<UsersScreen> {
                   ),
                   if (AuthServices.to.user.value == null)
                     TextFormField(
-                      initialValue: _user['password'],
+                      initialValue: user['password'],
                       onSaved: (String? value) {
-                        _user['password'] = value.toString();
+                        user['password'] = value.toString();
                       },
                       validator: (va) {
                         if (va!.isEmpty) {
@@ -219,11 +219,11 @@ class _UsersScreenState extends State<UsersScreen> {
                   Center(
                     child: ElevatedButton(
                       onPressed: () {
-                        if (!_userAddFormKey.currentState!.validate()) {
+                        if (!userAddFormKey.currentState!.validate()) {
                           return;
                         }
-                        _userAddFormKey.currentState!.save();
-                        AuthServices.to.saveUser(_user);
+                        userAddFormKey.currentState!.save();
+                        AuthServices.to.saveUser(user);
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: kWhite,

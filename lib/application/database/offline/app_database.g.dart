@@ -932,6 +932,920 @@ class PermissionsCompanion extends UpdateCompanion<Permission> {
   }
 }
 
+class $RoleHasPermissionsTable extends RoleHasPermissions
+    with TableInfo<$RoleHasPermissionsTable, RoleHasPermission> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $RoleHasPermissionsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _roleIdMeta = const VerificationMeta('roleId');
+  @override
+  late final GeneratedColumn<int> roleId = GeneratedColumn<int>(
+      'role_id', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES roles (id)'));
+  static const VerificationMeta _permissionIdMeta =
+      const VerificationMeta('permissionId');
+  @override
+  late final GeneratedColumn<int> permissionId = GeneratedColumn<int>(
+      'permission_id', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES permissions (id)'));
+  static const VerificationMeta _createdAtMeta =
+      const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, true,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: currentDateAndTime);
+  static const VerificationMeta _updatedAtMeta =
+      const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+      'updated_at', aliasedName, true,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: currentDateAndTime);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, roleId, permissionId, createdAt, updatedAt];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'role_has_permissions';
+  @override
+  VerificationContext validateIntegrity(Insertable<RoleHasPermission> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('role_id')) {
+      context.handle(_roleIdMeta,
+          roleId.isAcceptableOrUnknown(data['role_id']!, _roleIdMeta));
+    }
+    if (data.containsKey('permission_id')) {
+      context.handle(
+          _permissionIdMeta,
+          permissionId.isAcceptableOrUnknown(
+              data['permission_id']!, _permissionIdMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  RoleHasPermission map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return RoleHasPermission(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      roleId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}role_id']),
+      permissionId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}permission_id']),
+      createdAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at']),
+      updatedAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at']),
+    );
+  }
+
+  @override
+  $RoleHasPermissionsTable createAlias(String alias) {
+    return $RoleHasPermissionsTable(attachedDatabase, alias);
+  }
+}
+
+class RoleHasPermission extends DataClass
+    implements Insertable<RoleHasPermission> {
+  final int id;
+  final int? roleId;
+  final int? permissionId;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  const RoleHasPermission(
+      {required this.id,
+      this.roleId,
+      this.permissionId,
+      this.createdAt,
+      this.updatedAt});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || roleId != null) {
+      map['role_id'] = Variable<int>(roleId);
+    }
+    if (!nullToAbsent || permissionId != null) {
+      map['permission_id'] = Variable<int>(permissionId);
+    }
+    if (!nullToAbsent || createdAt != null) {
+      map['created_at'] = Variable<DateTime>(createdAt);
+    }
+    if (!nullToAbsent || updatedAt != null) {
+      map['updated_at'] = Variable<DateTime>(updatedAt);
+    }
+    return map;
+  }
+
+  RoleHasPermissionsCompanion toCompanion(bool nullToAbsent) {
+    return RoleHasPermissionsCompanion(
+      id: Value(id),
+      roleId:
+          roleId == null && nullToAbsent ? const Value.absent() : Value(roleId),
+      permissionId: permissionId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(permissionId),
+      createdAt: createdAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(createdAt),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
+    );
+  }
+
+  factory RoleHasPermission.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return RoleHasPermission(
+      id: serializer.fromJson<int>(json['id']),
+      roleId: serializer.fromJson<int?>(json['roleId']),
+      permissionId: serializer.fromJson<int?>(json['permissionId']),
+      createdAt: serializer.fromJson<DateTime?>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'roleId': serializer.toJson<int?>(roleId),
+      'permissionId': serializer.toJson<int?>(permissionId),
+      'createdAt': serializer.toJson<DateTime?>(createdAt),
+      'updatedAt': serializer.toJson<DateTime?>(updatedAt),
+    };
+  }
+
+  RoleHasPermission copyWith(
+          {int? id,
+          Value<int?> roleId = const Value.absent(),
+          Value<int?> permissionId = const Value.absent(),
+          Value<DateTime?> createdAt = const Value.absent(),
+          Value<DateTime?> updatedAt = const Value.absent()}) =>
+      RoleHasPermission(
+        id: id ?? this.id,
+        roleId: roleId.present ? roleId.value : this.roleId,
+        permissionId:
+            permissionId.present ? permissionId.value : this.permissionId,
+        createdAt: createdAt.present ? createdAt.value : this.createdAt,
+        updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('RoleHasPermission(')
+          ..write('id: $id, ')
+          ..write('roleId: $roleId, ')
+          ..write('permissionId: $permissionId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, roleId, permissionId, createdAt, updatedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is RoleHasPermission &&
+          other.id == this.id &&
+          other.roleId == this.roleId &&
+          other.permissionId == this.permissionId &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
+}
+
+class RoleHasPermissionsCompanion extends UpdateCompanion<RoleHasPermission> {
+  final Value<int> id;
+  final Value<int?> roleId;
+  final Value<int?> permissionId;
+  final Value<DateTime?> createdAt;
+  final Value<DateTime?> updatedAt;
+  const RoleHasPermissionsCompanion({
+    this.id = const Value.absent(),
+    this.roleId = const Value.absent(),
+    this.permissionId = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  });
+  RoleHasPermissionsCompanion.insert({
+    this.id = const Value.absent(),
+    this.roleId = const Value.absent(),
+    this.permissionId = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  });
+  static Insertable<RoleHasPermission> custom({
+    Expression<int>? id,
+    Expression<int>? roleId,
+    Expression<int>? permissionId,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (roleId != null) 'role_id': roleId,
+      if (permissionId != null) 'permission_id': permissionId,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+    });
+  }
+
+  RoleHasPermissionsCompanion copyWith(
+      {Value<int>? id,
+      Value<int?>? roleId,
+      Value<int?>? permissionId,
+      Value<DateTime?>? createdAt,
+      Value<DateTime?>? updatedAt}) {
+    return RoleHasPermissionsCompanion(
+      id: id ?? this.id,
+      roleId: roleId ?? this.roleId,
+      permissionId: permissionId ?? this.permissionId,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (roleId.present) {
+      map['role_id'] = Variable<int>(roleId.value);
+    }
+    if (permissionId.present) {
+      map['permission_id'] = Variable<int>(permissionId.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RoleHasPermissionsCompanion(')
+          ..write('id: $id, ')
+          ..write('roleId: $roleId, ')
+          ..write('permissionId: $permissionId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $UserHasPermissionsTable extends UserHasPermissions
+    with TableInfo<$UserHasPermissionsTable, UserHasPermission> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $UserHasPermissionsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<int> userId = GeneratedColumn<int>(
+      'user_id', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES users (id)'));
+  static const VerificationMeta _permissionIdMeta =
+      const VerificationMeta('permissionId');
+  @override
+  late final GeneratedColumn<int> permissionId = GeneratedColumn<int>(
+      'permission_id', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES permissions (id)'));
+  static const VerificationMeta _createdAtMeta =
+      const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, true,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: currentDateAndTime);
+  static const VerificationMeta _updatedAtMeta =
+      const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+      'updated_at', aliasedName, true,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: currentDateAndTime);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, userId, permissionId, createdAt, updatedAt];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'user_has_permissions';
+  @override
+  VerificationContext validateIntegrity(Insertable<UserHasPermission> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(_userIdMeta,
+          userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta));
+    }
+    if (data.containsKey('permission_id')) {
+      context.handle(
+          _permissionIdMeta,
+          permissionId.isAcceptableOrUnknown(
+              data['permission_id']!, _permissionIdMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  UserHasPermission map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return UserHasPermission(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      userId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}user_id']),
+      permissionId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}permission_id']),
+      createdAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at']),
+      updatedAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at']),
+    );
+  }
+
+  @override
+  $UserHasPermissionsTable createAlias(String alias) {
+    return $UserHasPermissionsTable(attachedDatabase, alias);
+  }
+}
+
+class UserHasPermission extends DataClass
+    implements Insertable<UserHasPermission> {
+  final int id;
+  final int? userId;
+  final int? permissionId;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  const UserHasPermission(
+      {required this.id,
+      this.userId,
+      this.permissionId,
+      this.createdAt,
+      this.updatedAt});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || userId != null) {
+      map['user_id'] = Variable<int>(userId);
+    }
+    if (!nullToAbsent || permissionId != null) {
+      map['permission_id'] = Variable<int>(permissionId);
+    }
+    if (!nullToAbsent || createdAt != null) {
+      map['created_at'] = Variable<DateTime>(createdAt);
+    }
+    if (!nullToAbsent || updatedAt != null) {
+      map['updated_at'] = Variable<DateTime>(updatedAt);
+    }
+    return map;
+  }
+
+  UserHasPermissionsCompanion toCompanion(bool nullToAbsent) {
+    return UserHasPermissionsCompanion(
+      id: Value(id),
+      userId:
+          userId == null && nullToAbsent ? const Value.absent() : Value(userId),
+      permissionId: permissionId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(permissionId),
+      createdAt: createdAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(createdAt),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
+    );
+  }
+
+  factory UserHasPermission.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return UserHasPermission(
+      id: serializer.fromJson<int>(json['id']),
+      userId: serializer.fromJson<int?>(json['userId']),
+      permissionId: serializer.fromJson<int?>(json['permissionId']),
+      createdAt: serializer.fromJson<DateTime?>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'userId': serializer.toJson<int?>(userId),
+      'permissionId': serializer.toJson<int?>(permissionId),
+      'createdAt': serializer.toJson<DateTime?>(createdAt),
+      'updatedAt': serializer.toJson<DateTime?>(updatedAt),
+    };
+  }
+
+  UserHasPermission copyWith(
+          {int? id,
+          Value<int?> userId = const Value.absent(),
+          Value<int?> permissionId = const Value.absent(),
+          Value<DateTime?> createdAt = const Value.absent(),
+          Value<DateTime?> updatedAt = const Value.absent()}) =>
+      UserHasPermission(
+        id: id ?? this.id,
+        userId: userId.present ? userId.value : this.userId,
+        permissionId:
+            permissionId.present ? permissionId.value : this.permissionId,
+        createdAt: createdAt.present ? createdAt.value : this.createdAt,
+        updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('UserHasPermission(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('permissionId: $permissionId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, userId, permissionId, createdAt, updatedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is UserHasPermission &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.permissionId == this.permissionId &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
+}
+
+class UserHasPermissionsCompanion extends UpdateCompanion<UserHasPermission> {
+  final Value<int> id;
+  final Value<int?> userId;
+  final Value<int?> permissionId;
+  final Value<DateTime?> createdAt;
+  final Value<DateTime?> updatedAt;
+  const UserHasPermissionsCompanion({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.permissionId = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  });
+  UserHasPermissionsCompanion.insert({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.permissionId = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  });
+  static Insertable<UserHasPermission> custom({
+    Expression<int>? id,
+    Expression<int>? userId,
+    Expression<int>? permissionId,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (permissionId != null) 'permission_id': permissionId,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+    });
+  }
+
+  UserHasPermissionsCompanion copyWith(
+      {Value<int>? id,
+      Value<int?>? userId,
+      Value<int?>? permissionId,
+      Value<DateTime?>? createdAt,
+      Value<DateTime?>? updatedAt}) {
+    return UserHasPermissionsCompanion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      permissionId: permissionId ?? this.permissionId,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<int>(userId.value);
+    }
+    if (permissionId.present) {
+      map['permission_id'] = Variable<int>(permissionId.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UserHasPermissionsCompanion(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('permissionId: $permissionId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $UserHasRolesTable extends UserHasRoles
+    with TableInfo<$UserHasRolesTable, UserHasRole> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $UserHasRolesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<int> userId = GeneratedColumn<int>(
+      'user_id', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES users (id)'));
+  static const VerificationMeta _roleIdMeta = const VerificationMeta('roleId');
+  @override
+  late final GeneratedColumn<int> roleId = GeneratedColumn<int>(
+      'role_id', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES roles (id)'));
+  static const VerificationMeta _createdAtMeta =
+      const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, true,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: currentDateAndTime);
+  static const VerificationMeta _updatedAtMeta =
+      const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+      'updated_at', aliasedName, true,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: currentDateAndTime);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, userId, roleId, createdAt, updatedAt];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'user_has_roles';
+  @override
+  VerificationContext validateIntegrity(Insertable<UserHasRole> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(_userIdMeta,
+          userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta));
+    }
+    if (data.containsKey('role_id')) {
+      context.handle(_roleIdMeta,
+          roleId.isAcceptableOrUnknown(data['role_id']!, _roleIdMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  UserHasRole map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return UserHasRole(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      userId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}user_id']),
+      roleId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}role_id']),
+      createdAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at']),
+      updatedAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at']),
+    );
+  }
+
+  @override
+  $UserHasRolesTable createAlias(String alias) {
+    return $UserHasRolesTable(attachedDatabase, alias);
+  }
+}
+
+class UserHasRole extends DataClass implements Insertable<UserHasRole> {
+  final int id;
+  final int? userId;
+  final int? roleId;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  const UserHasRole(
+      {required this.id,
+      this.userId,
+      this.roleId,
+      this.createdAt,
+      this.updatedAt});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || userId != null) {
+      map['user_id'] = Variable<int>(userId);
+    }
+    if (!nullToAbsent || roleId != null) {
+      map['role_id'] = Variable<int>(roleId);
+    }
+    if (!nullToAbsent || createdAt != null) {
+      map['created_at'] = Variable<DateTime>(createdAt);
+    }
+    if (!nullToAbsent || updatedAt != null) {
+      map['updated_at'] = Variable<DateTime>(updatedAt);
+    }
+    return map;
+  }
+
+  UserHasRolesCompanion toCompanion(bool nullToAbsent) {
+    return UserHasRolesCompanion(
+      id: Value(id),
+      userId:
+          userId == null && nullToAbsent ? const Value.absent() : Value(userId),
+      roleId:
+          roleId == null && nullToAbsent ? const Value.absent() : Value(roleId),
+      createdAt: createdAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(createdAt),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
+    );
+  }
+
+  factory UserHasRole.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return UserHasRole(
+      id: serializer.fromJson<int>(json['id']),
+      userId: serializer.fromJson<int?>(json['userId']),
+      roleId: serializer.fromJson<int?>(json['roleId']),
+      createdAt: serializer.fromJson<DateTime?>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'userId': serializer.toJson<int?>(userId),
+      'roleId': serializer.toJson<int?>(roleId),
+      'createdAt': serializer.toJson<DateTime?>(createdAt),
+      'updatedAt': serializer.toJson<DateTime?>(updatedAt),
+    };
+  }
+
+  UserHasRole copyWith(
+          {int? id,
+          Value<int?> userId = const Value.absent(),
+          Value<int?> roleId = const Value.absent(),
+          Value<DateTime?> createdAt = const Value.absent(),
+          Value<DateTime?> updatedAt = const Value.absent()}) =>
+      UserHasRole(
+        id: id ?? this.id,
+        userId: userId.present ? userId.value : this.userId,
+        roleId: roleId.present ? roleId.value : this.roleId,
+        createdAt: createdAt.present ? createdAt.value : this.createdAt,
+        updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('UserHasRole(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('roleId: $roleId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, userId, roleId, createdAt, updatedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is UserHasRole &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.roleId == this.roleId &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
+}
+
+class UserHasRolesCompanion extends UpdateCompanion<UserHasRole> {
+  final Value<int> id;
+  final Value<int?> userId;
+  final Value<int?> roleId;
+  final Value<DateTime?> createdAt;
+  final Value<DateTime?> updatedAt;
+  const UserHasRolesCompanion({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.roleId = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  });
+  UserHasRolesCompanion.insert({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.roleId = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  });
+  static Insertable<UserHasRole> custom({
+    Expression<int>? id,
+    Expression<int>? userId,
+    Expression<int>? roleId,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (roleId != null) 'role_id': roleId,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+    });
+  }
+
+  UserHasRolesCompanion copyWith(
+      {Value<int>? id,
+      Value<int?>? userId,
+      Value<int?>? roleId,
+      Value<DateTime?>? createdAt,
+      Value<DateTime?>? updatedAt}) {
+    return UserHasRolesCompanion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      roleId: roleId ?? this.roleId,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<int>(userId.value);
+    }
+    if (roleId.present) {
+      map['role_id'] = Variable<int>(roleId.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UserHasRolesCompanion(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('roleId: $roleId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $ProductsTable extends Products with TableInfo<$ProductsTable, Product> {
   @override
   final GeneratedDatabase attachedDatabase;
@@ -3647,6 +4561,11 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $UsersTable users = $UsersTable(this);
   late final $RolesTable roles = $RolesTable(this);
   late final $PermissionsTable permissions = $PermissionsTable(this);
+  late final $RoleHasPermissionsTable roleHasPermissions =
+      $RoleHasPermissionsTable(this);
+  late final $UserHasPermissionsTable userHasPermissions =
+      $UserHasPermissionsTable(this);
+  late final $UserHasRolesTable userHasRoles = $UserHasRolesTable(this);
   late final $ProductsTable products = $ProductsTable(this);
   late final $SuppliersTable suppliers = $SuppliersTable(this);
   late final $ClientsTable clients = $ClientsTable(this);
@@ -3658,6 +4577,12 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final RolesDao rolesDao = RolesDao(this as AppDatabase);
   late final PermissionsDao permissionsDao =
       PermissionsDao(this as AppDatabase);
+  late final RoleHasPermissionsDao roleHasPermissionsDao =
+      RoleHasPermissionsDao(this as AppDatabase);
+  late final UserHasPermissionsDao userHasPermissionsDao =
+      UserHasPermissionsDao(this as AppDatabase);
+  late final UserHasRolesDao userHasRolesDao =
+      UserHasRolesDao(this as AppDatabase);
   late final ProductsDao productsDao = ProductsDao(this as AppDatabase);
   late final SuppliersDao suppliersDao = SuppliersDao(this as AppDatabase);
   late final ClientsDao clientsDao = ClientsDao(this as AppDatabase);
@@ -3673,6 +4598,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         users,
         roles,
         permissions,
+        roleHasPermissions,
+        userHasPermissions,
+        userHasRoles,
         products,
         suppliers,
         clients,

@@ -1,10 +1,7 @@
 import 'package:drift/drift.dart';
-import 'package:top_stock_manager/application/database/offline/tables/inputs.dart';
 
 import '../../app_database.dart';
-import '../../models/sale_model.dart';
 import '../../tables/outputs.dart';
-import '../../tables/sales.dart';
 
 part 'outputs_dao.g.dart';
 
