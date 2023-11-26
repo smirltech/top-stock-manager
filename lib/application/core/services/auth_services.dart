@@ -4,13 +4,13 @@ import 'package:drift/drift.dart' as d;
 import 'package:get/get.dart';
 import 'package:top_stock_manager/application/database/offline/app_database.dart';
 import 'package:top_stock_manager/application/ui/auth/login/login_screen.dart';
+import 'package:top_stock_manager/application/ui/home/home_screen.dart';
 import 'package:top_stock_manager/main.dart';
 import 'package:window_manager/window_manager.dart';
 
 import '../../../system/configs/theming.dart';
 import '../../database/offline/models/role_model.dart';
 import '../../database/offline/models/user_model.dart';
-import '../../ui/home/home_screen.dart';
 
 class AuthServices extends GetxService {
   // ------- static methods ------- //
@@ -32,12 +32,16 @@ class AuthServices extends GetxService {
     String username = data['username'];
     String password = data['password'];
     await DB.usersDao.login(username, password).then((value) {
+      // log("login : $value");
       me.value = value;
       InnerStorage.write('user', jsonEncode(value.user));
       Get.offAndToNamed(HomeScreen.route);
+
+      // Get.offAndToNamed(SplashScreen.route);
       Get.snackbar('Login'.tr, 'Login successfully'.tr,
           snackPosition: SnackPosition.BOTTOM);
-    }).catchError((err) {
+    }).onError((error, stackTrace) {
+      // log(error.toString());
       Get.defaultDialog(
         title: "Login Failed".tr,
         middleText:
@@ -45,7 +49,7 @@ class AuthServices extends GetxService {
         textConfirm: "Ok".tr,
         buttonColor: kDanger,
         onConfirm: () {
-          Get.back();
+          Get.offAndToNamed(LoginScreen.route);
         },
       );
     });

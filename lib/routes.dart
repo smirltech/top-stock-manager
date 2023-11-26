@@ -29,90 +29,90 @@ class Routes {
       page: () => const WindowMenu(
         child: HomeScreen(),
       ),
-      middlewares: const [
+      /*  middlewares: const [
         //  AuthMiddleware(),
-      ],
+      ],*/
     ),
     GetPage(
       name: ProductsScreen.route,
       page: () => const WindowMenu(
         child: ProductsScreen(),
       ),
-      middlewares: const [
+      /* middlewares: const [
         //  AuthMiddleware(),
-      ],
+      ],*/
     ),
     GetPage(
       name: UsersScreen.route,
       page: () => const WindowMenu(
         child: UsersScreen(),
       ),
-      middlewares: const [
+      /* middlewares: const [
         //  AuthMiddleware(),
-      ],
+      ],*/
     ),
     GetPage(
       name: RolesScreen.route,
       page: () => const WindowMenu(
         child: RolesScreen(),
       ),
-      middlewares: const [
+      /* middlewares: const [
         //  AuthMiddleware(),
-      ],
+      ],*/
     ),
     GetPage(
       name: SuppliersScreen.route,
       page: () => const WindowMenu(
         child: SuppliersScreen(),
       ),
-      middlewares: const [
+      /* middlewares: const [
         //  AuthMiddleware(),
-      ],
+      ],*/
     ),
     GetPage(
       name: ClientsScreen.route,
       page: () => const WindowMenu(
         child: ClientsScreen(),
       ),
-      middlewares: const [
+      /* middlewares: const [
         //  AuthMiddleware(),
-      ],
+      ],*/
     ),
     GetPage(
       name: PurchasesScreen.route,
       page: () => const WindowMenu(
         child: PurchasesScreen(),
       ),
-      middlewares: const [
+      /* middlewares: const [
         //  AuthMiddleware(),
-      ],
+      ],*/
     ),
     GetPage(
       name: PurchaseAddEditScreen.route,
       page: () => const WindowMenu(
         child: PurchaseAddEditScreen(),
       ),
-      middlewares: const [
+      /* middlewares: const [
         //  AuthMiddleware(),
-      ],
+      ],*/
     ),
     GetPage(
       name: SaleAddEditScreen.route,
       page: () => const WindowMenu(
         child: SaleAddEditScreen(),
       ),
-      middlewares: const [
+      /* middlewares: const [
         //  AuthMiddleware(),
-      ],
+      ],*/
     ),
     GetPage(
       name: SalesScreen.route,
       page: () => const WindowMenu(
         child: SalesScreen(),
       ),
-      middlewares: const [
+      /*  middlewares: const [
         //  AuthMiddleware(),
-      ],
+      ],*/
     ),
   ];
 }

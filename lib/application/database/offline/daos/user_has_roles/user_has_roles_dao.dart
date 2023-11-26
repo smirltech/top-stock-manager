@@ -12,34 +12,18 @@ class UserHasRolesDao extends DatabaseAccessor<AppDatabase>
 
   UserHasRolesDao(this.db) : super(db);
 
-/*  Stream<List<RoleModel>> watchAllRoles() =>
-      select(roles).map((role) => RoleModel(role: role)).watch();*/
-
-/*  Future<int> insertRole(Map<String, dynamic> role) =>
-      into(roles).insert(
-        RolesCompanion(
-          name: Value(role['name']),
-          description: Value(role['description']),
+  Future<int> insertData(Map<String, dynamic> data) =>
+      into(userHasRoles).insert(
+        UserHasRolesCompanion(
+          userId: Value(data['userId']),
+          roleId: Value(data['roleId']),
           createdAt: Value(DateTime.now()),
           updatedAt: Value(DateTime.now()),
         ),
-      );*/
+      );
 
-/*  Future updateRole(RolesCompanion role) => update(roles).replace(role);*/
+  Future updateData(UserHasRolesCompanion data) =>
+      update(userHasRoles).replace(data);
 
-/* Future deleteRole(Role role) => delete(roles).delete(role);*/
-
-/*  Future<int> insertOrAbortRole(Map<String, dynamic> role) =>
-      into(roles).insert(
-        RolesCompanion(
-          name: Value(role['name']),
-          description: Value(role['description']),
-          createdAt: Value(DateTime.now()),
-          updatedAt: Value(DateTime.now()),
-        ),
-        onConflict: DoNothing(
-          target: <Column>[roles.name],
-        ),
-        mode: InsertMode.insertOrAbort,
-      );*/
+  Future deleteData(UserHasRole data) => delete(userHasRoles).delete(data);
 }

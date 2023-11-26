@@ -15,31 +15,19 @@ class RoleHasPermissionsDao extends DatabaseAccessor<AppDatabase>
 /*  Stream<List<RoleModel>> watchAllRoles() =>
       select(roles).map((role) => RoleModel(role: role)).watch();*/
 
-/*  Future<int> insertRole(Map<String, dynamic> role) =>
-      into(roles).insert(
-        RolesCompanion(
-          name: Value(role['name']),
-          description: Value(role['description']),
+  Future<int> insertData(Map<String, dynamic> data) =>
+      into(roleHasPermissions).insert(
+        RoleHasPermissionsCompanion(
+          roleId: Value(data['roleId']),
+          permissionId: Value(data['permissionId']),
           createdAt: Value(DateTime.now()),
           updatedAt: Value(DateTime.now()),
         ),
-      );*/
+      );
 
-/*  Future updateRole(RolesCompanion role) => update(roles).replace(role);*/
+  Future updateData(RoleHasPermissionsCompanion data) =>
+      update(roleHasPermissions).replace(data);
 
-/* Future deleteRole(Role role) => delete(roles).delete(role);*/
-
-/*  Future<int> insertOrAbortRole(Map<String, dynamic> role) =>
-      into(roles).insert(
-        RolesCompanion(
-          name: Value(role['name']),
-          description: Value(role['description']),
-          createdAt: Value(DateTime.now()),
-          updatedAt: Value(DateTime.now()),
-        ),
-        onConflict: DoNothing(
-          target: <Column>[roles.name],
-        ),
-        mode: InsertMode.insertOrAbort,
-      );*/
+  Future deleteData(RoleHasPermission data) =>
+      delete(roleHasPermissions).delete(data);
 }

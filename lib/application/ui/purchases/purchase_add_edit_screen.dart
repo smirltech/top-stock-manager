@@ -265,7 +265,7 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
                   rows: PurchasesController.to.inputs.map((ipt) {
                     InputProductModel? ipm;
                     DB.inputsDao
-                        .getInputProduct(ipt!.id)
+                        .getInputProduct(ipt.id)
                         .then((value) => ipm = value);
                     return DataRow(
                       cells: [

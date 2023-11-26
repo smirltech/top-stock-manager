@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:drift/drift.dart';
@@ -122,11 +121,13 @@ _seedRoles() {
     {'name': "Admin", 'description': "for administrators"},
   ).catchError((onError) async {
     return Future.value(1);
+  }).then((value) {
+    // log(value.toString());
   });
 }
 
 _seedPermissions() {
-  log("seed permissions");
+  // log("seed permissions");
   PermissionsEnum.permissions.forEach((key, value) async {
     // log(value.label);
     await DB.permissionsDao.insertOrAbortPermission(
