@@ -6,7 +6,6 @@ import 'package:top_stock_manager/application/core/controllers/sales_controller.
 import 'package:top_stock_manager/application/core/controllers/suppliers_controller.dart';
 import 'package:top_stock_manager/application/core/services/auth_services.dart';
 import 'package:top_stock_manager/application/database/offline/app_database.dart';
-import 'package:top_stock_manager/application/ui/auth/login/login_screen.dart';
 import 'package:top_stock_manager/routes.dart';
 import 'package:top_stock_manager/system/configs/constants.dart';
 import 'package:top_stock_manager/system/configs/theming.dart';
@@ -16,6 +15,7 @@ import 'package:uuid/uuid.dart';
 
 import 'application/core/controllers/purchases_controller.dart';
 import 'application/core/services/data_services.dart';
+import 'application/ui/splash/splash_screen.dart';
 
 Locale _initLang() {
   var map = GetStorage().read('lang') ??
@@ -77,8 +77,8 @@ class MyApp extends StatelessWidget {
         ),*/
       ),
       // home: const SplashScreen(),
-      // initialRoute: SplashScreen.route,
-      initialRoute: LoginScreen.route,
+      initialRoute: SplashScreen.route,
+      // initialRoute: LoginScreen.route,
       getPages: Routes.routes,
     );
   }

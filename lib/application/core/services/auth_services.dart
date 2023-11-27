@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:drift/drift.dart' as d;
 import 'package:get/get.dart';
@@ -27,6 +28,9 @@ class AuthServices extends GetxService {
 
   var role = Rxn<Role>();
   var roles = <RoleModel>[].obs;
+  final _isLogin = false.obs;
+
+  bool get isLogin => _isLogin.value;
 
   login(Map<String, dynamic> data) async {
     String username = data['username'];
@@ -34,6 +38,7 @@ class AuthServices extends GetxService {
     await DB.usersDao.login(username, password).then((value) {
       // log("login : $value");
       me.value = value;
+      _isLogin.value = true;
       InnerStorage.write('user', jsonEncode(value.user));
       Get.offAndToNamed(HomeScreen.route);
 
@@ -42,6 +47,7 @@ class AuthServices extends GetxService {
           snackPosition: SnackPosition.BOTTOM);
     }).onError((error, stackTrace) {
       // log(error.toString());
+      _isLogin.value = true;
       Get.defaultDialog(
         title: "Login Failed".tr,
         middleText:
@@ -55,13 +61,23 @@ class AuthServices extends GetxService {
     });
   }
 
-  autoLogin() {
+  autoLogin() async {
     if (InnerStorage.hasData("user")) {
+      log('autologin');
       Map<String, dynamic> uusr = jsonDecode(InnerStorage.read("user"));
-      //  log(uusr.toString());
-      login(uusr);
+      String username = uusr['username'];
+      String password = uusr['password'];
+      await DB.usersDao.login(username, password).then((value) {
+        log('autologin : done');
+        me.value = value;
+        _isLogin.value = true;
+      }).onError((error, stackTrace) {
+        me.value = null;
+        _isLogin.value = true;
+      });
     } else {
-      // log("no user saved");
+      me.value = null;
+      _isLogin.value = true;
     }
   }
 
@@ -69,6 +85,7 @@ class AuthServices extends GetxService {
     if (InnerStorage.hasData("user")) {
       InnerStorage.remove("user");
       me.value = null;
+      _isLogin.value = true;
       if (!exit) {
         Get.offAndToNamed(LoginScreen.route);
         Get.snackbar('Logout'.tr, 'Logout successfully'.tr,
@@ -78,10 +95,12 @@ class AuthServices extends GetxService {
       }
     } else {
       if (!exit) {
+        _isLogin.value = true;
         Get.offAndToNamed(LoginScreen.route);
         Get.snackbar('Logout'.tr, 'You were not connected previously'.tr,
             snackPosition: SnackPosition.BOTTOM);
       } else {
+        _isLogin.value = true;
         WindowManager.instance.close();
       }
     }
@@ -172,8 +191,14 @@ class AuthServices extends GetxService {
   }
 
   @override
-  void onReady() {
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
     autoLogin();
+  }
+
+  @override
+  void onReady() {
     DB.usersDao.watchAllUsers().listen((event) {
       users.value = event;
       // log(event.toString());

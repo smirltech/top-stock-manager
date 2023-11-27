@@ -21,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _startTimer();
+    // _startTimer();
   }
 
   Future<Timer> _startTimer() async {
