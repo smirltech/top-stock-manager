@@ -15,6 +15,9 @@ class RolesDao extends DatabaseAccessor<AppDatabase> with _$RolesDaoMixin {
   Stream<List<RoleModel>> watchAllRoles() =>
       select(roles).map((role) => RoleModel(role: role)).watch();
 
+  Future<Role> getRole(int id) =>
+      (select(roles)..where((tbl) => tbl.id.equals(id))).getSingle();
+
   Future<int> insertRole(Map<String, dynamic> role) => into(roles).insert(
         RolesCompanion(
           name: Value(role['name']),

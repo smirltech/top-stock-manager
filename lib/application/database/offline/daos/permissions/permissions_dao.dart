@@ -12,6 +12,12 @@ class PermissionsDao extends DatabaseAccessor<AppDatabase>
 
   PermissionsDao(this.db) : super(db);
 
+  Future<List<Permission>> getPermissions() => select(permissions).get();
+
+/*  Future<List<Permission>> getPermissionsNotOfRole(int roleId) => return (select(permissions)
+  ..where((tbl) => tbl.roleId.equals(roleId)))
+      .get();*/
+
   Stream<List<Permission>> watchAllPermissions() => select(permissions).watch();
 
   Future<int> insertPermission(Map<String, dynamic> permission) =>

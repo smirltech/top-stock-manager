@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:top_stock_manager/application/core/middlewares/loggedin_middleware.dart';
 import 'package:top_stock_manager/application/ui/auth/login/login_screen.dart';
+import 'package:top_stock_manager/application/ui/auth/roles/role_add_edit_screen.dart';
 import 'package:top_stock_manager/application/ui/auth/roles/roles_screen.dart';
 import 'package:top_stock_manager/application/ui/clients/clients_screen.dart';
 import 'package:top_stock_manager/application/ui/home/home_screen.dart';
@@ -62,6 +63,15 @@ class Routes {
       name: RolesScreen.route,
       page: () => const WindowMenu(
         child: RolesScreen(),
+      ),
+      middlewares: [
+        LoggedinMiddleware(priority: 0),
+      ],
+    ),
+    GetPage(
+      name: RoleAddEditScreen.route,
+      page: () => const WindowMenu(
+        child: RoleAddEditScreen(),
       ),
       middlewares: [
         LoggedinMiddleware(priority: 0),

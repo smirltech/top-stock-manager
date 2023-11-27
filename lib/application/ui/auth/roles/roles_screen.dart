@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:top_stock_manager/application/core/services/auth_services.dart';
+import 'package:top_stock_manager/application/ui/auth/roles/role_add_edit_screen.dart';
 import 'package:top_stock_manager/system/configs/theming.dart';
 
 class RolesScreen extends StatefulWidget {
@@ -31,8 +32,8 @@ class _RolesScreenState extends State<RolesScreen> {
                 ),
                 OutlinedButton(
                   onPressed: () {
-                    AuthServices.to.role.value = null;
-                    roleAdd();
+                    AuthServices.to.selectRole(null);
+                    Get.toNamed(RoleAddEditScreen.route);
                   },
                   style: OutlinedButton.styleFrom(
                       foregroundColor: kWhite, backgroundColor: kPrimary),
@@ -80,8 +81,10 @@ class _RolesScreenState extends State<RolesScreen> {
                                 Expanded(
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      AuthServices.to.role.value = rol.role;
-                                      roleAdd(title: rol.role.name);
+                                      //AuthServices.to.role.value = rol.role;
+                                      AuthServices.to.selectRole(rol.role);
+                                      Get.toNamed(RoleAddEditScreen.route);
+                                      // roleAdd(title: rol.role.name);
                                     },
                                     style: ElevatedButton.styleFrom(
                                         foregroundColor: kWhite,
