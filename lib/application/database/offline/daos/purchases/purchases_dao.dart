@@ -19,13 +19,14 @@ class PurchasesDao extends DatabaseAccessor<AppDatabase>
             db.suppliers,
             db.suppliers.id.equalsExp(purchases.supplierId),
           ),
+          innerJoin(db.inputs, db.inputs.purchaseId.equalsExp(purchases.id)),
         ],
       ).map(
         (row) {
-          // List inny = select(db.inputs).get();
           return PurchaseModel(
             purchase: row.readTable(purchases),
             supplier: row.readTableOrNull(db.suppliers),
+            // inputs: row.readTableOrNull(row.)
           );
         },
       ).watch();

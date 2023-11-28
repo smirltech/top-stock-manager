@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
-import 'package:top_stock_manager/system/configs/constants.dart';
 import 'package:top_stock_manager/application/database/offline/app_database.dart';
+import 'package:top_stock_manager/system/configs/constants.dart';
 
 class PurchaseModel {
   final Purchase purchase;
@@ -8,7 +8,8 @@ class PurchaseModel {
   final Supplier? supplier;
   late List<Input>? inputs = <Input>[];
 
-  PurchaseModel({required this.purchase, this.user, this.supplier});
+  PurchaseModel(
+      {required this.purchase, this.user, this.supplier, this.inputs});
 
   get id => purchase.id;
 
