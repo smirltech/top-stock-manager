@@ -204,5 +204,6 @@ The software will be compatible with :
 - [x] Navigation Management :  [GetX](https://pub.dev/packages/get)
 - [x] Dependencies Management :  [GetX](https://pub.dev/packages/get)
 - [x] Local Storage Manager : [GetStorage](https://pub.dev/packages/get_storage)
+- [x] Collection for indexed map : [Collection](https://pub.dev/packages/collection)
 
 This software is the product of [Smirltech](https://www.smirltech.com) sarl

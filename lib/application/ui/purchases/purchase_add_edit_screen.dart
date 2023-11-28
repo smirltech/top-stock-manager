@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:top_stock_manager/application/core/controllers/suppliers_controller.dart';
@@ -245,6 +246,9 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
                   showBottomBorder: true,
                   columns: [
                     DataColumn(
+                      label: Text('#'.tr),
+                    ),
+                    DataColumn(
                       label: Text('Product'.tr),
                     ),
                     DataColumn(
@@ -260,47 +264,50 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
                       label: Text(''.tr),
                     ),
                   ],
-                  rows:
-                      PurchasesController.to.purchase.value!.inputs!.map((ipt) {
-                    return DataRow(
-                      cells: [
-                        DataCell(Text("${ipt?.productName}")),
-                        DataCell(Text("${ipt?.quantity}")),
-                        DataCell(Text("${ipt?.price}")),
-                        DataCell(Text("${ipt?.total!}")),
-                        DataCell(
-                          SizedBox(
-                            width: 200.0,
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: ElevatedButton(
-                                    onPressed: null,
-                                    style: ElevatedButton.styleFrom(
-                                        foregroundColor: kWhite,
-                                        backgroundColor: kWarning),
-                                    child: Text('Edit'.tr),
+                  rows: PurchasesController.to.purchase.value == null
+                      ? []
+                      : PurchasesController.to.purchase.value!.inputs!
+                          .mapIndexed((i, ipt) {
+                          return DataRow(
+                            cells: [
+                              DataCell(Text("${i + 1}")),
+                              DataCell(Text("${ipt.productName}")),
+                              DataCell(Text("${ipt.quantity}")),
+                              DataCell(Text("${ipt.price}")),
+                              DataCell(Text("${ipt.total!}")),
+                              DataCell(
+                                SizedBox(
+                                  width: 200.0,
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: ElevatedButton(
+                                          onPressed: null,
+                                          style: ElevatedButton.styleFrom(
+                                              foregroundColor: kWhite,
+                                              backgroundColor: kWarning),
+                                          child: Text('Edit'.tr),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 5.0,
+                                      ),
+                                      Expanded(
+                                        child: ElevatedButton(
+                                          onPressed: null,
+                                          style: ElevatedButton.styleFrom(
+                                              foregroundColor: kWhite,
+                                              backgroundColor: kDanger),
+                                          child: Text('Delete'.tr),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                const SizedBox(
-                                  width: 5.0,
-                                ),
-                                Expanded(
-                                  child: ElevatedButton(
-                                    onPressed: null,
-                                    style: ElevatedButton.styleFrom(
-                                        foregroundColor: kWhite,
-                                        backgroundColor: kDanger),
-                                    child: Text('Delete'.tr),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  }).toList(),
+                              ),
+                            ],
+                          );
+                        }).toList(),
                 ),
               ),
             );
