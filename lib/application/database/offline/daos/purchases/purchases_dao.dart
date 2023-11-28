@@ -1,4 +1,6 @@
 import 'package:drift/drift.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:top_stock_manager/application/database/offline/models/Input_product_model.dart';
 import 'package:top_stock_manager/application/database/offline/tables/purchases.dart';
 
 import '../../app_database.dart';
@@ -13,23 +15,34 @@ class PurchasesDao extends DatabaseAccessor<AppDatabase>
 
   PurchasesDao(this.db) : super(db);
 
-  Stream<List<PurchaseModel>> watchAllPurchases() => select(purchases).join(
-        [
-          leftOuterJoin(
-            db.suppliers,
-            db.suppliers.id.equalsExp(purchases.supplierId),
-          ),
-          innerJoin(db.inputs, db.inputs.purchaseId.equalsExp(purchases.id)),
-        ],
-      ).map(
-        (row) {
-          return PurchaseModel(
-            purchase: row.readTable(purchases),
-            supplier: row.readTableOrNull(db.suppliers),
-            // inputs: row.readTableOrNull(row.)
-          );
-        },
-      ).watch();
+  Stream<List<PurchaseModel>> watchAllPurchases() {
+    final purchs = select(purchases).join(
+      [
+        leftOuterJoin(
+          db.suppliers,
+          db.suppliers.id.equalsExp(purchases.supplierId),
+        ),
+      ],
+    ).map(
+      (row) {
+        return PurchaseModel(
+          purchase: row.readTable(purchases),
+          supplier: row.readTableOrNull(db.suppliers),
+        );
+      },
+    ).watch();
+
+    final inps = db.inputsDao.watchAllInputProducts();
+
+    return Rx.combineLatest2(purchs, inps,
+        (List<PurchaseModel> p, List<InputProductModel> ins) {
+      return p.map((purchase) {
+        purchase.inputs =
+            ins.where((element) => element.purchaseId == purchase.id).toList();
+        return purchase;
+      }).toList();
+    });
+  }
 
   Future<int> insertPurchase(Map<String, dynamic> purchase) =>
       into(purchases).insert(

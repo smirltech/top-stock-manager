@@ -12,24 +12,22 @@ class InputsDao extends DatabaseAccessor<AppDatabase> with _$InputsDaoMixin {
 
   InputsDao(this.db) : super(db);
 
-/*
-  Stream<List<SaleModel>> watchAllSales() => select(sales)
+  Stream<List<InputProductModel>> watchAllInputProducts() => select(inputs)
       .join(
         [
           leftOuterJoin(
-            db.clients,
-            db.clients.id.equalsExp(sales.clientId),
+            db.products,
+            db.products.id.equalsExp(inputs.productId),
           ),
         ],
       )
       .map(
-        (row) => SaleModel(
-          sale: row.readTable(sales),
-          client: row.readTableOrNull(db.clients),
+        (row) => InputProductModel(
+          input: row.readTable(inputs),
+          product: row.readTableOrNull(db.products),
         ),
       )
       .watch();
-*/
 
   Future<InputProductModel> getInputProduct(int id) => (select(inputs).join(
         [

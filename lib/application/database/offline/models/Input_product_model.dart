@@ -9,6 +9,8 @@ class InputProductModel {
 
   get id => input.id;
 
+  get purchaseId => input.purchaseId;
+
   get productName => product?.name ?? '';
 
   get price => input.price;

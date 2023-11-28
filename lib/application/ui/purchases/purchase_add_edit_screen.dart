@@ -4,11 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:top_stock_manager/application/core/controllers/suppliers_controller.dart';
 import 'package:top_stock_manager/application/core/services/data_services.dart';
-import 'package:top_stock_manager/application/database/offline/models/Input_product_model.dart';
 import 'package:top_stock_manager/application/database/offline/models/product_model.dart';
 import 'package:top_stock_manager/application/database/offline/models/supplier_model.dart';
 import 'package:top_stock_manager/application/ui/purchases/purchases_screen.dart';
-import 'package:top_stock_manager/main.dart';
 import 'package:top_stock_manager/system/configs/theming.dart';
 
 import '../../core/controllers/purchases_controller.dart';
@@ -262,17 +260,14 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
                       label: Text(''.tr),
                     ),
                   ],
-                  rows: PurchasesController.to.inputs.map((ipt) {
-                    InputProductModel? ipm;
-                    DB.inputsDao
-                        .getInputProduct(ipt.id)
-                        .then((value) => ipm = value);
+                  rows:
+                      PurchasesController.to.purchase.value!.inputs!.map((ipt) {
                     return DataRow(
                       cells: [
-                        DataCell(Text("${ipm?.productName}")),
-                        DataCell(Text("${ipm?.quantity}")),
-                        DataCell(Text("${ipm?.price}")),
-                        DataCell(Text("${ipm?.total!}")),
+                        DataCell(Text("${ipt?.productName}")),
+                        DataCell(Text("${ipt?.quantity}")),
+                        DataCell(Text("${ipt?.price}")),
+                        DataCell(Text("${ipt?.total!}")),
                         DataCell(
                           SizedBox(
                             width: 200.0,

@@ -1,12 +1,13 @@
 import 'package:intl/intl.dart';
 import 'package:top_stock_manager/application/database/offline/app_database.dart';
+import 'package:top_stock_manager/application/database/offline/models/Input_product_model.dart';
 import 'package:top_stock_manager/system/configs/constants.dart';
 
 class PurchaseModel {
   final Purchase purchase;
   final User? user;
   final Supplier? supplier;
-  late List<Input>? inputs = <Input>[];
+  late List<InputProductModel>? inputs = <InputProductModel>[];
 
   PurchaseModel(
       {required this.purchase, this.user, this.supplier, this.inputs});
