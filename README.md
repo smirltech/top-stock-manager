@@ -196,12 +196,13 @@ The software will be compatible with :
 - [x] Linux
 - [x] MacOS
 
-### 3. Packagies
+### 3. Packages
 
-- [x] Database : Drift (sqlite3_flutter_libs)
-- [x] State Management : GetX
-- [x] Navigation Management : GetX
-- [x] Dependencies Management : GetX
-- [x] Local Storage Manager : GetStorage
+- [x] Database : [Drift](https://pub.dev/packages/drift) (sqlite3_flutter_libs)
+- [x] Complex Relational queries : [RxDart](https://pub.dev/packages/rxdart)
+- [x] State Management : [GetX](https://pub.dev/packages/get)
+- [x] Navigation Management :  [GetX](https://pub.dev/packages/get)
+- [x] Dependencies Management :  [GetX](https://pub.dev/packages/get)
+- [x] Local Storage Manager : [GetStorage](https://pub.dev/packages/get_storage)
 
 This software is the product of [Smirltech](https://www.smirltech.com) sarl
