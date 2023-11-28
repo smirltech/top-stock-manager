@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:top_stock_manager/application/core/services/auth_services.dart';
@@ -163,6 +164,9 @@ class _RoleAddEditScreenState extends State<RoleAddEditScreen> {
                           showBottomBorder: true,
                           columns: [
                             DataColumn(
+                              label: Text('#'.tr),
+                            ),
+                            DataColumn(
                               label: Text('Permission'.tr),
                             ),
                             DataColumn(
@@ -173,8 +177,9 @@ class _RoleAddEditScreenState extends State<RoleAddEditScreen> {
                             ),
                           ],
                           rows: AuthServices.to.rolePermissions
-                              .map((rolePermission) {
+                              .mapIndexed((i, rolePermission) {
                             return DataRow(cells: [
+                              DataCell(Text("${i + 1}")),
                               DataCell(
                                   Text("${rolePermission.permissionName}")),
                               DataCell(Text(

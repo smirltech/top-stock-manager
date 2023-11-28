@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:top_stock_manager/application/ui/purchases/purchase_add_edit_screen.dart';
@@ -54,6 +55,9 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
                   showBottomBorder: true,
                   columns: [
                     DataColumn(
+                      label: Text('#'.tr),
+                    ),
+                    DataColumn(
                       label: Text('Date'.tr),
                     ),
                     DataColumn(
@@ -69,9 +73,10 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
                       label: Text(''.tr),
                     ),
                   ],
-                  rows: PurchasesController.to.purchases.map((pur) {
+                  rows: PurchasesController.to.purchases.mapIndexed((i, pur) {
                     return DataRow(
                       cells: [
+                        DataCell(Text("${i + 1}")),
                         DataCell(Text(pur.dateStringed)),
                         DataCell(Text(pur.supplierName)),
                         DataCell(Text(pur.priceStringed)),

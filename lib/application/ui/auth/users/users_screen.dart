@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:top_stock_manager/application/core/services/auth_services.dart';
@@ -53,6 +54,9 @@ class _UsersScreenState extends State<UsersScreen> {
                   showBottomBorder: true,
                   columns: [
                     DataColumn(
+                      label: Text('#'.tr),
+                    ),
+                    DataColumn(
                       label: Text('Name'.tr),
                     ),
                     DataColumn(
@@ -66,9 +70,10 @@ class _UsersScreenState extends State<UsersScreen> {
                       label: Text(''.tr),
                     ),
                   ],
-                  rows: AuthServices.to.users.map((usr) {
+                  rows: AuthServices.to.users.mapIndexed((i, usr) {
                     return DataRow(
                       cells: [
+                        DataCell(Text("${i + 1}")),
                         DataCell(Text(usr.name)),
                         DataCell(Text(usr.username ?? '')),
                         DataCell(Text(usr.role)),

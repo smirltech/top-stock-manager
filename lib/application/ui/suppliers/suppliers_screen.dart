@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:top_stock_manager/application/core/controllers/suppliers_controller.dart';
@@ -52,6 +53,9 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
                   showBottomBorder: true,
                   columns: [
                     DataColumn(
+                      label: Text('#'.tr),
+                    ),
+                    DataColumn(
                       label: Text('Name'.tr),
                     ),
                     DataColumn(
@@ -69,9 +73,10 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
                       label: Text(''.tr),
                     ),
                   ],
-                  rows: SuppliersController.to.suppliers.map((sup) {
+                  rows: SuppliersController.to.suppliers.mapIndexed((i, sup) {
                     return DataRow(
                       cells: [
+                        DataCell(Text("${i + 1}")),
                         DataCell(Text(sup.name)),
                         DataCell(Text(sup.sex)),
                         DataCell(Text(sup.contact)),

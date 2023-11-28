@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:top_stock_manager/application/core/services/data_services.dart';
@@ -52,6 +53,9 @@ class _ProductsScreenState extends State<ProductsScreen> {
                   showBottomBorder: true,
                   columns: [
                     DataColumn(
+                      label: Text('#'.tr),
+                    ),
+                    DataColumn(
                       label: Text('Name'.tr),
                     ),
                     DataColumn(
@@ -77,9 +81,10 @@ class _ProductsScreenState extends State<ProductsScreen> {
                       label: Text(''.tr),
                     ),
                   ],
-                  rows: DataServices.to.products.map((prod) {
+                  rows: DataServices.to.products.mapIndexed((i, prod) {
                     return DataRow(
                       cells: [
+                        DataCell(Text("${i + 1}")),
                         DataCell(Text(prod.name)),
                         DataCell(Text(prod.description ?? '')),
                         DataCell(Text(prod.minStringed)),
@@ -215,8 +220,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                         child: TextFormField(
                           initialValue: product['minimum'].toString(),
                           onSaved: (String? value) {
-                            product['minimum'] =
-                                double.parse(value.toString());
+                            product['minimum'] = double.parse(value.toString());
                           },
                           decoration: InputDecoration(
                             hintText: "Minimum Quantity".tr,
@@ -232,8 +236,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                         child: TextFormField(
                           initialValue: product['maximum'].toString(),
                           onSaved: (String? value) {
-                            product['maximum'] =
-                                double.parse(value.toString());
+                            product['maximum'] = double.parse(value.toString());
                           },
                           decoration: InputDecoration(
                             hintText: "Maximum Quantity".tr,

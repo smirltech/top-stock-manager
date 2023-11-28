@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:top_stock_manager/system/configs/theming.dart';
@@ -53,6 +54,9 @@ class _ClientsScreenState extends State<ClientsScreen> {
                   showBottomBorder: true,
                   columns: [
                     DataColumn(
+                      label: Text('#'.tr),
+                    ),
+                    DataColumn(
                       label: Text('Name'.tr),
                     ),
                     DataColumn(
@@ -70,9 +74,10 @@ class _ClientsScreenState extends State<ClientsScreen> {
                       label: Text(''.tr),
                     ),
                   ],
-                  rows: ClientsController.to.clients.map((cl) {
+                  rows: ClientsController.to.clients.mapIndexed((i, cl) {
                     return DataRow(
                       cells: [
+                        DataCell(Text("${i + 1}")),
                         DataCell(Text(cl.name)),
                         DataCell(Text(cl.sex)),
                         DataCell(Text(cl.contact)),

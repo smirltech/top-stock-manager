@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:top_stock_manager/application/ui/sales/sale_add_edit_screen.dart';
@@ -54,6 +55,9 @@ class _SalesScreenState extends State<SalesScreen> {
                   showBottomBorder: true,
                   columns: [
                     DataColumn(
+                      label: Text('#'.tr),
+                    ),
+                    DataColumn(
                       label: Text('Date'.tr),
                     ),
                     DataColumn(
@@ -69,9 +73,10 @@ class _SalesScreenState extends State<SalesScreen> {
                       label: Text(''.tr),
                     ),
                   ],
-                  rows: SalesController.to.sales.map((sal) {
+                  rows: SalesController.to.sales.mapIndexed((i, sal) {
                     return DataRow(
                       cells: [
+                        DataCell(Text("${i + 1}")),
                         DataCell(Text(sal.dateStringed)),
                         DataCell(Text(sal.clientName)),
                         DataCell(Text(sal.priceStringed)),

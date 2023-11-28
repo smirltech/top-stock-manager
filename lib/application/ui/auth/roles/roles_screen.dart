@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:top_stock_manager/application/core/services/auth_services.dart';
@@ -54,6 +55,9 @@ class _RolesScreenState extends State<RolesScreen> {
                   showBottomBorder: true,
                   columns: [
                     DataColumn(
+                      label: Text('#'.tr),
+                    ),
+                    DataColumn(
                       label: Text('Name'.tr),
                     ),
                     DataColumn(
@@ -67,9 +71,10 @@ class _RolesScreenState extends State<RolesScreen> {
                       label: Text(''.tr),
                     ),
                   ],
-                  rows: AuthServices.to.roles.map((rol) {
+                  rows: AuthServices.to.roles.mapIndexed((i, rol) {
                     return DataRow(
                       cells: [
+                        DataCell(Text("${i + 1}")),
                         DataCell(Text(rol.name)),
                         DataCell(Text(rol.description ?? '')),
                         DataCell(Text(rol.permissions)),
