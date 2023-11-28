@@ -77,7 +77,7 @@ class _RolesScreenState extends State<RolesScreen> {
                         DataCell(Text("${i + 1}")),
                         DataCell(Text(rol.name)),
                         DataCell(Text(rol.description ?? '')),
-                        DataCell(Text(rol.permissions)),
+                        DataCell(Text(rol.permissions.toString() ?? "")),
                         DataCell(
                           SizedBox(
                             width: 200.0,

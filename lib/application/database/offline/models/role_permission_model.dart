@@ -12,6 +12,8 @@ class RolePermissionModel {
 
   get id => roleHasPermission.id;
 
+  get roleId => role.id;
+
   get roleName => role.name;
 
   get roleDescription => role.description;
@@ -19,4 +21,9 @@ class RolePermissionModel {
   get permissionName => permission.name;
 
   get permissionDescription => permission.description;
+
+  @override
+  String toString() {
+    return 'RolePermissionModel{roleHasPermission: $roleHasPermission, role: $role, permission: $permission, roleId: $roleId}';
+  }
 }

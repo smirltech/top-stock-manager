@@ -1,9 +1,11 @@
 import 'package:top_stock_manager/application/database/offline/app_database.dart';
+import 'package:top_stock_manager/application/database/offline/models/role_permission_model.dart';
 
 class RoleModel {
   final Role role;
+  late List<RolePermissionModel>? rolePermissions = [];
 
-  RoleModel({required this.role});
+  RoleModel({required this.role, this.rolePermissions});
 
   get id => role.id;
 
@@ -11,10 +13,13 @@ class RoleModel {
 
   get description => role.description;
 
-  get permissions => "no permission yet";
+  List<Permission> get permissions =>
+      rolePermissions!.map((e) => e.permission).toList();
+
+  //  rolePermissions?.forEach((rolePermission) => rolePermission.permission);
 
   @override
   String toString() {
-    return "name: $name, description: $description, permissions: $permissions";
+    return 'RoleModel{role: $role, permissions: $permissions}';
   }
 }

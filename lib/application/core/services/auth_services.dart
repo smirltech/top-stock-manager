@@ -271,9 +271,13 @@ class AuthServices extends GetxService {
       // log(event.toString());
     });
 
-    DB.rolesDao.watchAllRoles().listen((event) {
+    DB.rolesDao.watchAllRolesWithPermissions().listen((event) {
       roles.value = event;
-      // log(event.toString());
+      log(event.toString());
+    });
+
+    DB.roleHasPermissionsDao.watchAllRolePermissions().listen((event) {
+      //  log(event.toString());
     });
 
     super.onReady();

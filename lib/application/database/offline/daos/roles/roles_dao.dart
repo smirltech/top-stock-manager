@@ -1,5 +1,7 @@
 import 'package:drift/drift.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:top_stock_manager/application/database/offline/models/role_model.dart';
+import 'package:top_stock_manager/application/database/offline/models/role_permission_model.dart';
 
 import '../../app_database.dart';
 import '../../tables/roles.dart';
@@ -14,6 +16,21 @@ class RolesDao extends DatabaseAccessor<AppDatabase> with _$RolesDaoMixin {
 
   Stream<List<RoleModel>> watchAllRoles() =>
       select(roles).map((role) => RoleModel(role: role)).watch();
+
+  Stream<List<RoleModel>> watchAllRolesWithPermissions() {
+    final rolies = watchAllRoles();
+
+    final rp = db.roleHasPermissionsDao.watchAllRolePermissions();
+
+    return Rx.combineLatest2(rolies, rp,
+        (List<RoleModel> p, List<RolePermissionModel> ins) {
+      return p.map((role) {
+        role.rolePermissions =
+            ins.where((rper) => rper.roleId == role.id).toList();
+        return role;
+      }).toList();
+    });
+  }
 
   Future<Role> getRole(int id) =>
       (select(roles)..where((tbl) => tbl.id.equals(id))).getSingle();

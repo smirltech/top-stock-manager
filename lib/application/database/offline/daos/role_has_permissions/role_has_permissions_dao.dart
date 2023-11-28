@@ -16,6 +16,29 @@ class RoleHasPermissionsDao extends DatabaseAccessor<AppDatabase>
 /*  Stream<List<RoleModel>> watchAllRoles() =>
       select(roles).map((role) => RoleModel(role: role)).watch();*/
 
+  Stream<List<RolePermissionModel>> watchAllRolePermissions() =>
+      select(roleHasPermissions)
+          .join(
+            [
+              leftOuterJoin(
+                db.roles,
+                db.roles.id.equalsExp(roleHasPermissions.roleId),
+              ),
+              leftOuterJoin(
+                db.permissions,
+                db.permissions.id.equalsExp(roleHasPermissions.permissionId),
+              ),
+            ],
+          )
+          .map(
+            (row) => RolePermissionModel(
+              roleHasPermission: row.readTable(roleHasPermissions),
+              role: row.readTable(db.roles),
+              permission: row.readTable(db.permissions),
+            ),
+          )
+          .watch();
+
   Future<List<RoleHasPermission>> permissionsOfRole(int roleId) {
     return (select(roleHasPermissions)
           ..where((tbl) => tbl.roleId.equals(roleId)))
