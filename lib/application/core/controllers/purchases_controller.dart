@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:drift/drift.dart' as d;
 import 'package:get/get.dart';
 import 'package:top_stock_manager/application/database/offline/app_database.dart';
@@ -69,7 +67,7 @@ class PurchasesController extends GetxController {
     inputs.add(
       Input.fromJson(data),
     );
-    log(inputs.string);
+    //log(inputs.string);
     Get.back();
     // Get.snackbar('Input'.tr, 'Input added successfully'.tr,
     //     snackPosition: SnackPosition.BOTTOM);

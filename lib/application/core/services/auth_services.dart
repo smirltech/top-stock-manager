@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:drift/drift.dart' as d;
 import 'package:get/get.dart';
@@ -82,12 +81,12 @@ class AuthServices extends GetxService {
 
   autoLogin() async {
     if (InnerStorage.hasData("user")) {
-      log('autologin');
+      // log('autologin');
       Map<String, dynamic> uusr = jsonDecode(InnerStorage.read("user"));
       String username = uusr['username'];
       String password = uusr['password'];
       await DB.usersDao.login(username, password).then((value) {
-        log('autologin : done');
+        //  log('autologin : done');
         me.value = value;
         _isLogin.value = true;
       }).onError((error, stackTrace) {
@@ -273,11 +272,7 @@ class AuthServices extends GetxService {
 
     DB.rolesDao.watchAllRolesWithPermissions().listen((event) {
       roles.value = event;
-      log(event.toString());
-    });
-
-    DB.roleHasPermissionsDao.watchAllRolePermissions().listen((event) {
-      //  log(event.toString());
+      // log(event.toString());
     });
 
     super.onReady();

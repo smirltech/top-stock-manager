@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:top_stock_manager/application/core/services/auth_services.dart';
 import 'package:top_stock_manager/application/ui/auth/roles/role_add_edit_screen.dart';
 import 'package:top_stock_manager/system/configs/theming.dart';
+import 'package:top_stock_manager/system/widgets/permissions_views/permissions_view.dart';
 
 class RolesScreen extends StatefulWidget {
   const RolesScreen({super.key});
@@ -77,7 +78,7 @@ class _RolesScreenState extends State<RolesScreen> {
                         DataCell(Text("${i + 1}")),
                         DataCell(Text(rol.name)),
                         DataCell(Text(rol.description ?? '')),
-                        DataCell(Text(rol.permissions.toString() ?? "")),
+                        DataCell(PermissionsView(permissions: rol.permissions)),
                         DataCell(
                           SizedBox(
                             width: 200.0,

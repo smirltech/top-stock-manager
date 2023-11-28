@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -44,11 +42,193 @@ class _RoleAddEditScreenState extends State<RoleAddEditScreen> {
                 onPressed: () {
                   inputAdd();
                 },
-                tooltip: "Add role".tr,
+                tooltip: "Add permission".tr,
                 child: const Icon(Icons.add),
               );
       }),
-      body: Column(
+      body: Form(
+        key: _roleAddFormKey,
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Role Screen'.tr,
+                      style: const TextStyle(
+                          fontSize: 30, fontWeight: FontWeight.bold),
+                    ),
+                    Row(
+                      children: [
+                        OutlinedButton(
+                          onPressed: () {
+                            Get.toNamed(RolesScreen.route);
+                          },
+                          style: OutlinedButton.styleFrom(
+                              foregroundColor: kWhite,
+                              backgroundColor: kSecondary),
+                          child: Text(
+                            'Back'.tr,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 20.0,
+                        ),
+                        OutlinedButton(
+                          onPressed: () {
+                            //  log('save role');
+                            if (!_roleAddFormKey.currentState!.validate()) {
+                              //  log('failed');
+                              return;
+                            }
+                            _roleAddFormKey.currentState!.save();
+                            Map<String, dynamic> role = {
+                              'name': nameEC.text,
+                              'description': descriptionEC.text,
+                            };
+                            // log(_purchase.toString());
+                            AuthServices.to.saveRole(role);
+                          },
+                          style: OutlinedButton.styleFrom(
+                              foregroundColor: kWhite,
+                              backgroundColor: kPrimary),
+                          child: Text(
+                            'Save Role'.tr,
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 30.0, vertical: 8.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextFormField(
+                        controller: nameEC,
+                        validator: (va) {
+                          if (va!.isEmpty) {
+                            return "Name must not be empty".tr;
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          hintText: "Name of role".tr,
+                          labelText: "Name".tr,
+                          border: const OutlineInputBorder(),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextFormField(
+                        controller: descriptionEC,
+                        decoration: InputDecoration(
+                          hintText: "Description of role".tr,
+                          labelText: "Description".tr,
+                          border: const OutlineInputBorder(),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: Center(
+                child: Text(
+                  "Permissions".tr,
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+            SliverFillRemaining(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SingleChildScrollView(
+                  child: SizedBox(
+                    width: Get.width - 50,
+                    child: DataTable(
+                      sortAscending: true,
+                      sortColumnIndex: 0,
+                      showBottomBorder: true,
+                      columns: [
+                        DataColumn(
+                          label: Text('#'.tr),
+                        ),
+                        DataColumn(
+                          label: Text('Permission'.tr),
+                        ),
+                        DataColumn(
+                          label: Text('Description'.tr),
+                        ),
+                        DataColumn(
+                          label: Text(''.tr),
+                        ),
+                      ],
+                      rows: AuthServices.to.rolePermissions
+                          .mapIndexed((i, rolePermission) {
+                        return DataRow(cells: [
+                          DataCell(Text("${i + 1}")),
+                          DataCell(Text("${rolePermission.permissionName}")),
+                          DataCell(
+                              Text("${rolePermission.permissionDescription}")),
+                          DataCell(
+                            SizedBox(
+                              width: 200.0,
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      onPressed: null,
+                                      style: ElevatedButton.styleFrom(
+                                          foregroundColor: kWhite,
+                                          backgroundColor: kWarning),
+                                      child: Text('Edit'.tr),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 5.0,
+                                  ),
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        AuthServices.to.deleteRoleHasPermission(
+                                            rolePermission);
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                          foregroundColor: kWhite,
+                                          backgroundColor: kDanger),
+                                      child: Text('Delete'.tr),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ]);
+                      }).toList(),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+
+      /*  Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Obx(() {
@@ -84,9 +264,9 @@ class _RoleAddEditScreenState extends State<RoleAddEditScreen> {
                             ),
                             OutlinedButton(
                               onPressed: () {
-                                log('save role');
+                                //  log('save role');
                                 if (!_roleAddFormKey.currentState!.validate()) {
-                                  log('failed');
+                                  //  log('failed');
                                   return;
                                 }
                                 _roleAddFormKey.currentState!.save();
@@ -153,74 +333,15 @@ class _RoleAddEditScreenState extends State<RoleAddEditScreen> {
                           fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SingleChildScrollView(
-                      child: SizedBox(
-                        width: Get.width - 50,
-                        child: DataTable(
-                          sortAscending: true,
-                          sortColumnIndex: 0,
-                          showBottomBorder: true,
-                          columns: [
-                            DataColumn(
-                              label: Text('#'.tr),
-                            ),
-                            DataColumn(
-                              label: Text('Permission'.tr),
-                            ),
-                            DataColumn(
-                              label: Text('Description'.tr),
-                            ),
-                            DataColumn(
-                              label: Text(''.tr),
-                            ),
-                          ],
-                          rows: AuthServices.to.rolePermissions
-                              .mapIndexed((i, rolePermission) {
-                            return DataRow(cells: [
-                              DataCell(Text("${i + 1}")),
-                              DataCell(
-                                  Text("${rolePermission.permissionName}")),
-                              DataCell(Text(
-                                  "${rolePermission.permissionDescription}")),
-                              DataCell(
-                                SizedBox(
-                                  width: 200.0,
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: ElevatedButton(
-                                          onPressed: null,
-                                          style: ElevatedButton.styleFrom(
-                                              foregroundColor: kWhite,
-                                              backgroundColor: kWarning),
-                                          child: Text('Edit'.tr),
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 5.0,
-                                      ),
-                                      Expanded(
-                                        child: ElevatedButton(
-                                          onPressed: () {
-                                            AuthServices.to
-                                                .deleteRoleHasPermission(
-                                                    rolePermission);
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                              foregroundColor: kWhite,
-                                              backgroundColor: kDanger),
-                                          child: Text('Delete'.tr),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ]);
-                          }).toList(),
-                        ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListView(
+                        children: AuthServices.to.rolePermissions
+                            .map(
+                              (element) => ListTile(),
+                            )
+                            .toList(),
                       ),
                     ),
                   ),
@@ -229,7 +350,7 @@ class _RoleAddEditScreenState extends State<RoleAddEditScreen> {
             );
           })
         ],
-      ),
+      ),*/
     );
   }
 
@@ -324,3 +445,67 @@ class _RoleAddEditScreenState extends State<RoleAddEditScreen> {
     );
   }
 }
+
+/* DataTable(
+                          sortAscending: true,
+                          sortColumnIndex: 0,
+                          showBottomBorder: true,
+                          columns: [
+                            DataColumn(
+                              label: Text('#'.tr),
+                            ),
+                            DataColumn(
+                              label: Text('Permission'.tr),
+                            ),
+                            DataColumn(
+                              label: Text('Description'.tr),
+                            ),
+                            DataColumn(
+                              label: Text(''.tr),
+                            ),
+                          ],
+                          rows: AuthServices.to.rolePermissions
+                              .mapIndexed((i, rolePermission) {
+                            return DataRow(cells: [
+                              DataCell(Text("${i + 1}")),
+                              DataCell(
+                                  Text("${rolePermission.permissionName}")),
+                              DataCell(Text(
+                                  "${rolePermission.permissionDescription}")),
+                              DataCell(
+                                SizedBox(
+                                  width: 200.0,
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: ElevatedButton(
+                                          onPressed: null,
+                                          style: ElevatedButton.styleFrom(
+                                              foregroundColor: kWhite,
+                                              backgroundColor: kWarning),
+                                          child: Text('Edit'.tr),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 5.0,
+                                      ),
+                                      Expanded(
+                                        child: ElevatedButton(
+                                          onPressed: () {
+                                            AuthServices.to
+                                                .deleteRoleHasPermission(
+                                                    rolePermission);
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                              foregroundColor: kWhite,
+                                              backgroundColor: kDanger),
+                                          child: Text('Delete'.tr),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ]);
+                          }).toList(),
+                        ),*/
