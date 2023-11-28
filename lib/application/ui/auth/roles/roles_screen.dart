@@ -32,16 +32,17 @@ class _RolesScreenState extends State<RolesScreen> {
                     style: const TextStyle(
                         fontSize: 30, fontWeight: FontWeight.bold),
                   ),
-                  OutlinedButton(
+                  OutlinedButton.icon(
                     onPressed: () {
                       AuthServices.to.selectRole(null);
                       Get.toNamed(RoleAddEditScreen.route);
                     },
                     style: OutlinedButton.styleFrom(
                         foregroundColor: kWhite, backgroundColor: kPrimary),
-                    child: Text(
-                      'Add Role'.tr,
+                    label: Text(
+                      'Add'.tr,
                     ),
+                    icon: const Icon(Icons.add),
                   )
                 ],
               ),
@@ -83,7 +84,7 @@ class _RolesScreenState extends State<RolesScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              ElevatedButton(
+                              ElevatedButton.icon(
                                 onPressed: () {
                                   //AuthServices.to.role.value = rol.role;
                                   AuthServices.to.selectRole(rol.role);
@@ -93,19 +94,21 @@ class _RolesScreenState extends State<RolesScreen> {
                                 style: ElevatedButton.styleFrom(
                                     foregroundColor: kWhite,
                                     backgroundColor: kWarning),
-                                child: Text('Edit'.tr),
+                                label: Text('Edit'.tr),
+                                icon: const Icon(Icons.edit),
                               ),
                               const SizedBox(
                                 width: 5.0,
                               ),
-                              ElevatedButton(
+                              ElevatedButton.icon(
                                 onPressed: () {
                                   AuthServices.to.deleteRole(rol.role);
                                 },
                                 style: ElevatedButton.styleFrom(
                                     foregroundColor: kWhite,
                                     backgroundColor: kDanger),
-                                child: Text('Delete'.tr),
+                                label: Text('Delete'.tr),
+                                icon: const Icon(Icons.clear),
                               ),
                             ],
                           ),

@@ -31,15 +31,16 @@ class _ClientsScreenState extends State<ClientsScreen> {
                     style: const TextStyle(
                         fontSize: 30, fontWeight: FontWeight.bold),
                   ),
-                  OutlinedButton(
+                  OutlinedButton.icon(
                     onPressed: () {
                       clientAdd();
                     },
                     style: OutlinedButton.styleFrom(
                         foregroundColor: kWhite, backgroundColor: kPrimary),
-                    child: Text(
-                      'Add Client'.tr,
+                    label: Text(
+                      'Add'.tr,
                     ),
+                    icon: const Icon(Icons.add),
                   )
                 ],
               ),
@@ -85,40 +86,36 @@ class _ClientsScreenState extends State<ClientsScreen> {
                           DataCell(Text(cl.contact)),
                           DataCell(Text(cl.description ?? '')),
                           DataCell(
-                            SizedBox(
-                              width: 200.0,
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        ClientsController.to.client.value =
-                                            cl.client;
-                                        clientAdd(title: cl.client.name);
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                          foregroundColor: kWhite,
-                                          backgroundColor: kWarning),
-                                      child: Text('Edit'.tr),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 5.0,
-                                  ),
-                                  Expanded(
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        ClientsController.to
-                                            .deleteClient(cl.client);
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                          foregroundColor: kWhite,
-                                          backgroundColor: kDanger),
-                                      child: Text('Delete'.tr),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                ElevatedButton.icon(
+                                  onPressed: () {
+                                    ClientsController.to.client.value =
+                                        cl.client;
+                                    clientAdd(title: cl.client.name);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                      foregroundColor: kWhite,
+                                      backgroundColor: kWarning),
+                                  label: Text('Edit'.tr),
+                                  icon: const Icon(Icons.edit),
+                                ),
+                                const SizedBox(
+                                  width: 5.0,
+                                ),
+                                ElevatedButton.icon(
+                                  onPressed: () {
+                                    ClientsController.to
+                                        .deleteClient(cl.client);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                      foregroundColor: kWhite,
+                                      backgroundColor: kDanger),
+                                  label: Text('Delete'.tr),
+                                  icon: const Icon(Icons.clear),
+                                ),
+                              ],
                             ),
                           ),
                         ],
@@ -245,7 +242,7 @@ class _ClientsScreenState extends State<ClientsScreen> {
                     height: 10,
                   ),
                   Center(
-                    child: ElevatedButton(
+                    child: ElevatedButton.icon(
                       onPressed: () {
                         if (!clientAddFormKey.currentState!.validate()) {
                           return;
@@ -257,7 +254,8 @@ class _ClientsScreenState extends State<ClientsScreen> {
                         foregroundColor: kWhite,
                         backgroundColor: kWarning,
                       ),
-                      child: Text('Save'.tr),
+                      label: Text('Save'.tr),
+                      icon: const Icon(Icons.save),
                     ),
                   ),
                 ],

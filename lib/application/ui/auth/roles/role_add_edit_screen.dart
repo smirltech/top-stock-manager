@@ -63,21 +63,22 @@ class _RoleAddEditScreenState extends State<RoleAddEditScreen> {
                     ),
                     Row(
                       children: [
-                        OutlinedButton(
+                        OutlinedButton.icon(
                           onPressed: () {
                             Get.toNamed(RolesScreen.route);
                           },
                           style: OutlinedButton.styleFrom(
                               foregroundColor: kWhite,
                               backgroundColor: kSecondary),
-                          child: Text(
+                          label: Text(
                             'Back'.tr,
                           ),
+                          icon: const Icon(Icons.arrow_back),
                         ),
                         const SizedBox(
                           width: 20.0,
                         ),
-                        OutlinedButton(
+                        OutlinedButton.icon(
                           onPressed: () {
                             //  log('save role');
                             if (!_roleAddFormKey.currentState!.validate()) {
@@ -95,9 +96,10 @@ class _RoleAddEditScreenState extends State<RoleAddEditScreen> {
                           style: OutlinedButton.styleFrom(
                               foregroundColor: kWhite,
                               backgroundColor: kPrimary),
-                          child: Text(
-                            'Save Role'.tr,
+                          label: Text(
+                            'Save'.tr,
                           ),
+                          icon: const Icon(Icons.save),
                         ),
                       ],
                     )
@@ -189,17 +191,18 @@ class _RoleAddEditScreenState extends State<RoleAddEditScreen> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 //Spacer(),
-                                ElevatedButton(
+                                ElevatedButton.icon(
                                   onPressed: null,
                                   style: ElevatedButton.styleFrom(
                                       foregroundColor: kWhite,
                                       backgroundColor: kWarning),
-                                  child: Text('Edit'.tr),
+                                  label: Text('Edit'.tr),
+                                  icon: const Icon(Icons.edit),
                                 ),
                                 const SizedBox(
                                   width: 5.0,
                                 ),
-                                ElevatedButton(
+                                ElevatedButton.icon(
                                   onPressed: () {
                                     AuthServices.to.deleteRoleHasPermission(
                                         rolePermission);
@@ -207,7 +210,8 @@ class _RoleAddEditScreenState extends State<RoleAddEditScreen> {
                                   style: ElevatedButton.styleFrom(
                                       foregroundColor: kWhite,
                                       backgroundColor: kDanger),
-                                  child: Text('Delete'.tr),
+                                  label: Text('Delete'.tr),
+                                  icon: const Icon(Icons.clear),
                                 ),
                               ],
                             ),

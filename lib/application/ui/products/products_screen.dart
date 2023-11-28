@@ -30,15 +30,16 @@ class _ProductsScreenState extends State<ProductsScreen> {
                     style: const TextStyle(
                         fontSize: 30, fontWeight: FontWeight.bold),
                   ),
-                  OutlinedButton(
+                  OutlinedButton.icon(
                     onPressed: () {
                       productAdd();
                     },
                     style: OutlinedButton.styleFrom(
                         foregroundColor: kWhite, backgroundColor: kPrimary),
-                    child: Text(
-                      'Add Product'.tr,
+                    label: Text(
+                      'Add'.tr,
                     ),
+                    icon: const Icon(Icons.add),
                   )
                 ],
               ),
@@ -97,7 +98,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                ElevatedButton(
+                                ElevatedButton.icon(
                                   onPressed: () {
                                     DataServices.to.product.value =
                                         prod.product;
@@ -106,19 +107,21 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                   style: ElevatedButton.styleFrom(
                                       foregroundColor: kWhite,
                                       backgroundColor: kWarning),
-                                  child: Text('Edit'.tr),
+                                  label: Text('Edit'.tr),
+                                  icon: const Icon(Icons.edit),
                                 ),
                                 const SizedBox(
                                   width: 5.0,
                                 ),
-                                ElevatedButton(
+                                ElevatedButton.icon(
                                   onPressed: () {
                                     DataServices.to.deleteProduct(prod.product);
                                   },
                                   style: ElevatedButton.styleFrom(
                                       foregroundColor: kWhite,
                                       backgroundColor: kDanger),
-                                  child: Text('Delete'.tr),
+                                  label: Text('Delete'.tr),
+                                  icon: const Icon(Icons.clear),
                                 ),
                               ],
                             ),
@@ -275,7 +278,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                     height: 10,
                   ),
                   Center(
-                    child: ElevatedButton(
+                    child: ElevatedButton.icon(
                       onPressed: () {
                         if (!productAddFormKey.currentState!.validate()) {
                           return;
@@ -287,7 +290,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
                         foregroundColor: kWhite,
                         backgroundColor: kWarning,
                       ),
-                      child: Text('Save'.tr),
+                      label: Text('Save'.tr),
+                      icon: const Icon(Icons.save),
                     ),
                   ),
                 ],

@@ -32,15 +32,16 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
                     style: const TextStyle(
                         fontSize: 30, fontWeight: FontWeight.bold),
                   ),
-                  OutlinedButton(
+                  OutlinedButton.icon(
                     onPressed: () {
                       Get.toNamed(PurchaseAddEditScreen.route);
                     },
                     style: OutlinedButton.styleFrom(
                         foregroundColor: kWhite, backgroundColor: kPrimary),
-                    child: Text(
-                      'Add Purchase'.tr,
+                    label: Text(
+                      'Add'.tr,
                     ),
+                    icon: const Icon(Icons.add),
                   )
                 ],
               ),
@@ -87,19 +88,20 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                ElevatedButton(
+                                ElevatedButton.icon(
                                   onPressed: () {
                                     PurchasesController.to.openPurchase(pur);
                                   },
                                   style: ElevatedButton.styleFrom(
                                       foregroundColor: kWhite,
                                       backgroundColor: kWarning),
-                                  child: Text('Edit'.tr),
+                                  label: Text('Edit'.tr),
+                                  icon: const Icon(Icons.edit),
                                 ),
                                 const SizedBox(
                                   width: 5.0,
                                 ),
-                                ElevatedButton(
+                                ElevatedButton.icon(
                                   onPressed: () {
                                     PurchasesController.to
                                         .deletePurchase(pur.purchase);
@@ -107,7 +109,8 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
                                   style: ElevatedButton.styleFrom(
                                       foregroundColor: kWhite,
                                       backgroundColor: kDanger),
-                                  child: Text('Delete'.tr),
+                                  label: Text('Delete'.tr),
+                                  icon: const Icon(Icons.clear),
                                 ),
                               ],
                             ),

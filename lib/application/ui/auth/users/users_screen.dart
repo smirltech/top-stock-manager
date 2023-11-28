@@ -30,16 +30,17 @@ class _UsersScreenState extends State<UsersScreen> {
                     style: const TextStyle(
                         fontSize: 30, fontWeight: FontWeight.bold),
                   ),
-                  OutlinedButton(
+                  OutlinedButton.icon(
                     onPressed: () {
                       AuthServices.to.user.value = null;
                       userAdd();
                     },
                     style: OutlinedButton.styleFrom(
                         foregroundColor: kWhite, backgroundColor: kPrimary),
-                    child: Text(
-                      'Add User'.tr,
+                    label: Text(
+                      'Add'.tr,
                     ),
+                    icon: const Icon(Icons.add),
                   )
                 ],
               ),
@@ -83,7 +84,7 @@ class _UsersScreenState extends State<UsersScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                ElevatedButton(
+                                ElevatedButton.icon(
                                   onPressed: () {
                                     AuthServices.to.user.value = usr.user;
                                     userAdd(title: usr.user.name);
@@ -91,12 +92,13 @@ class _UsersScreenState extends State<UsersScreen> {
                                   style: ElevatedButton.styleFrom(
                                       foregroundColor: kWhite,
                                       backgroundColor: kWarning),
-                                  child: Text('Edit'.tr),
+                                  label: Text('Edit'.tr),
+                                  icon: const Icon(Icons.edit),
                                 ),
                                 const SizedBox(
                                   width: 5.0,
                                 ),
-                                ElevatedButton(
+                                ElevatedButton.icon(
                                   onPressed: AuthServices.to.isMe(usr)
                                       ? null
                                       : () {
@@ -105,7 +107,8 @@ class _UsersScreenState extends State<UsersScreen> {
                                   style: ElevatedButton.styleFrom(
                                       foregroundColor: kWhite,
                                       backgroundColor: kDanger),
-                                  child: Text('Delete'.tr),
+                                  label: Text('Delete'.tr),
+                                  icon: const Icon(Icons.clear),
                                 ),
                               ],
                             ),
@@ -218,7 +221,7 @@ class _UsersScreenState extends State<UsersScreen> {
                       height: 10,
                     ),
                   Center(
-                    child: ElevatedButton(
+                    child: ElevatedButton.icon(
                       onPressed: () {
                         if (!userAddFormKey.currentState!.validate()) {
                           return;
@@ -230,7 +233,8 @@ class _UsersScreenState extends State<UsersScreen> {
                         foregroundColor: kWhite,
                         backgroundColor: kWarning,
                       ),
-                      child: Text('Save'.tr),
+                      label: Text('Save'.tr),
+                      icon: const Icon(Icons.save),
                     ),
                   ),
                 ],

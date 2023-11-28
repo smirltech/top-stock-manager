@@ -30,15 +30,16 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
                     style: const TextStyle(
                         fontSize: 30, fontWeight: FontWeight.bold),
                   ),
-                  OutlinedButton(
+                  OutlinedButton.icon(
                     onPressed: () {
                       supplierAdd();
                     },
                     style: OutlinedButton.styleFrom(
                         foregroundColor: kWhite, backgroundColor: kPrimary),
-                    child: Text(
-                      'Add Supplier'.tr,
+                    label: Text(
+                      'Add'.tr,
                     ),
+                    icon: const Icon(Icons.add),
                   )
                 ],
               ),
@@ -87,7 +88,7 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                ElevatedButton(
+                                ElevatedButton.icon(
                                   onPressed: () {
                                     SuppliersController.to.supplier.value =
                                         sup.supplier;
@@ -96,12 +97,13 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
                                   style: ElevatedButton.styleFrom(
                                       foregroundColor: kWhite,
                                       backgroundColor: kWarning),
-                                  child: Text('Edit'.tr),
+                                  label: Text('Edit'.tr),
+                                  icon: const Icon(Icons.edit),
                                 ),
                                 const SizedBox(
                                   width: 5.0,
                                 ),
-                                ElevatedButton(
+                                ElevatedButton.icon(
                                   onPressed: () {
                                     SuppliersController.to
                                         .deleteSupplier(sup.supplier);
@@ -109,7 +111,8 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
                                   style: ElevatedButton.styleFrom(
                                       foregroundColor: kWhite,
                                       backgroundColor: kDanger),
-                                  child: Text('Delete'.tr),
+                                  label: Text('Delete'.tr),
+                                  icon: const Icon(Icons.clear),
                                 ),
                               ],
                             ),
@@ -238,7 +241,7 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
                     height: 10,
                   ),
                   Center(
-                    child: ElevatedButton(
+                    child: ElevatedButton.icon(
                       onPressed: () {
                         if (!supplierAddFormKey.currentState!.validate()) {
                           return;
@@ -250,7 +253,8 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
                         foregroundColor: kWhite,
                         backgroundColor: kWarning,
                       ),
-                      child: Text('Save'.tr),
+                      label: Text('Save'.tr),
+                      icon: const Icon(Icons.save),
                     ),
                   ),
                 ],

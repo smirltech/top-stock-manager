@@ -86,21 +86,22 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
                       ),
                       Row(
                         children: [
-                          OutlinedButton(
+                          OutlinedButton.icon(
                             onPressed: () {
                               Get.toNamed(PurchasesScreen.route);
                             },
                             style: OutlinedButton.styleFrom(
                                 foregroundColor: kWhite,
                                 backgroundColor: kSecondary),
-                            child: Text(
+                            label: Text(
                               'Back'.tr,
                             ),
+                            icon: const Icon(Icons.arrow_back),
                           ),
                           const SizedBox(
                             width: 20.0,
                           ),
-                          OutlinedButton(
+                          OutlinedButton.icon(
                             onPressed: () {
                               log('save purchase');
                               if (!_purchaseAddFormKey.currentState!
@@ -121,9 +122,10 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
                             style: OutlinedButton.styleFrom(
                                 foregroundColor: kWhite,
                                 backgroundColor: kPrimary),
-                            child: Text(
-                              'Save Purchase'.tr,
+                            label: Text(
+                              'Save'.tr,
                             ),
+                            icon: const Icon(Icons.save),
                           ),
                         ],
                       )
@@ -279,22 +281,24 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
-                                        ElevatedButton(
+                                        ElevatedButton.icon(
                                           onPressed: null,
                                           style: ElevatedButton.styleFrom(
                                               foregroundColor: kWhite,
                                               backgroundColor: kWarning),
-                                          child: Text('Edit'.tr),
+                                          label: Text('Edit'.tr),
+                                          icon: const Icon(Icons.edit),
                                         ),
                                         const SizedBox(
                                           width: 5.0,
                                         ),
-                                        ElevatedButton(
+                                        ElevatedButton.icon(
                                           onPressed: null,
                                           style: ElevatedButton.styleFrom(
                                               foregroundColor: kWhite,
                                               backgroundColor: kDanger),
-                                          child: Text('Delete'.tr),
+                                          label: Text('Delete'.tr),
+                                          icon: const Icon(Icons.clear),
                                         ),
                                       ],
                                     ),

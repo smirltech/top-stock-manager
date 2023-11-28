@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:top_stock_manager/application/database/offline/models/client_model.dart';
-import 'package:top_stock_manager/application/ui/purchases/purchases_screen.dart';
+import 'package:top_stock_manager/application/ui/sales/sales_screen.dart';
 import 'package:top_stock_manager/system/configs/theming.dart';
 
 import '../../core/controllers/clients_controller.dart';
@@ -76,25 +76,26 @@ class _SaleAddEditScreenState extends State<SaleAddEditScreen> {
                       ),
                       Row(
                         children: [
-                          OutlinedButton(
+                          OutlinedButton.icon(
                             onPressed: () {
-                              Get.toNamed(PurchasesScreen.route);
+                              Get.toNamed(SalesScreen.route);
                             },
                             style: OutlinedButton.styleFrom(
                                 foregroundColor: kWhite,
                                 backgroundColor: kSecondary),
-                            child: Text(
+                            label: Text(
                               'Back'.tr,
                             ),
+                            icon: const Icon(Icons.arrow_back),
                           ),
                           const SizedBox(
                             width: 20.0,
                           ),
-                          OutlinedButton(
+                          OutlinedButton.icon(
                             onPressed: () {
-                              log('save purchase');
+                              //  log('save purchase');
                               if (!_saleAddFormKey.currentState!.validate()) {
-                                log('failed');
+                                // log('failed');
                                 return;
                               }
                               _saleAddFormKey.currentState!.save();
@@ -109,9 +110,10 @@ class _SaleAddEditScreenState extends State<SaleAddEditScreen> {
                             style: OutlinedButton.styleFrom(
                                 foregroundColor: kWhite,
                                 backgroundColor: kPrimary),
-                            child: Text(
-                              'Save Sale'.tr,
+                            label: Text(
+                              'Save'.tr,
                             ),
+                            icon: const Icon(Icons.save),
                           ),
                         ],
                       )
@@ -276,22 +278,24 @@ class _SaleAddEditScreenState extends State<SaleAddEditScreen> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  ElevatedButton(
+                                  ElevatedButton.icon(
                                     onPressed: null,
                                     style: ElevatedButton.styleFrom(
                                         foregroundColor: kWhite,
                                         backgroundColor: kWarning),
-                                    child: Text('Edit'.tr),
+                                    label: Text('Edit'.tr),
+                                    icon: const Icon(Icons.edit),
                                   ),
                                   const SizedBox(
                                     width: 5.0,
                                   ),
-                                  ElevatedButton(
+                                  ElevatedButton.icon(
                                     onPressed: null,
                                     style: ElevatedButton.styleFrom(
                                         foregroundColor: kWhite,
                                         backgroundColor: kDanger),
-                                    child: Text('Delete'.tr),
+                                    label: Text('Delete'.tr),
+                                    icon: const Icon(Icons.clear),
                                   ),
                                 ],
                               ),
