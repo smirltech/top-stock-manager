@@ -18,114 +18,117 @@ class _ClientsScreenState extends State<ClientsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Clients Screen'.tr,
-                  style: const TextStyle(
-                      fontSize: 30, fontWeight: FontWeight.bold),
-                ),
-                OutlinedButton(
-                  onPressed: () {
-                    clientAdd();
-                  },
-                  style: OutlinedButton.styleFrom(
-                      foregroundColor: kWhite, backgroundColor: kPrimary),
-                  child: Text(
-                    'Add Client'.tr,
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Clients Screen'.tr,
+                    style: const TextStyle(
+                        fontSize: 30, fontWeight: FontWeight.bold),
                   ),
-                )
-              ],
+                  OutlinedButton(
+                    onPressed: () {
+                      clientAdd();
+                    },
+                    style: OutlinedButton.styleFrom(
+                        foregroundColor: kWhite, backgroundColor: kPrimary),
+                    child: Text(
+                      'Add Client'.tr,
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
-          Obx(() {
-            return SingleChildScrollView(
-              child: SizedBox(
-                width: Get.width - 50,
-                child: DataTable(
-                  sortAscending: true,
-                  sortColumnIndex: 0,
-                  showBottomBorder: true,
-                  columns: [
-                    DataColumn(
-                      label: Text('#'.tr),
-                    ),
-                    DataColumn(
-                      label: Text('Name'.tr),
-                    ),
-                    DataColumn(
-                      label: Text('Sex'.tr),
-                      numeric: true,
-                    ),
-                    DataColumn(
-                      label: Text('Contact'.tr),
-                      numeric: true,
-                    ),
-                    DataColumn(
-                      label: Text('Description'.tr),
-                    ),
-                    DataColumn(
-                      label: Text(''.tr),
-                    ),
-                  ],
-                  rows: ClientsController.to.clients.mapIndexed((i, cl) {
-                    return DataRow(
-                      cells: [
-                        DataCell(Text("${i + 1}")),
-                        DataCell(Text(cl.name)),
-                        DataCell(Text(cl.sex)),
-                        DataCell(Text(cl.contact)),
-                        DataCell(Text(cl.description ?? '')),
-                        DataCell(
-                          SizedBox(
-                            width: 200.0,
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      ClientsController.to.client.value =
-                                          cl.client;
-                                      clientAdd(title: cl.client.name);
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                        foregroundColor: kWhite,
-                                        backgroundColor: kWarning),
-                                    child: Text('Edit'.tr),
+          SliverFillRemaining(
+            child: Obx(() {
+              return SingleChildScrollView(
+                child: SizedBox(
+                  width: Get.width - 50,
+                  child: DataTable(
+                    sortAscending: true,
+                    sortColumnIndex: 0,
+                    showBottomBorder: true,
+                    columns: [
+                      DataColumn(
+                        label: Text('#'.tr),
+                      ),
+                      DataColumn(
+                        label: Text('Name'.tr),
+                      ),
+                      DataColumn(
+                        label: Text('Sex'.tr),
+                        numeric: true,
+                      ),
+                      DataColumn(
+                        label: Text('Contact'.tr),
+                        numeric: true,
+                      ),
+                      DataColumn(
+                        label: Text('Description'.tr),
+                      ),
+                      DataColumn(
+                        label: Text(''.tr),
+                      ),
+                    ],
+                    rows: ClientsController.to.clients.mapIndexed((i, cl) {
+                      return DataRow(
+                        cells: [
+                          DataCell(Text("${i + 1}")),
+                          DataCell(Text(cl.name)),
+                          DataCell(Text(cl.sex)),
+                          DataCell(Text(cl.contact)),
+                          DataCell(Text(cl.description ?? '')),
+                          DataCell(
+                            SizedBox(
+                              width: 200.0,
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        ClientsController.to.client.value =
+                                            cl.client;
+                                        clientAdd(title: cl.client.name);
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                          foregroundColor: kWhite,
+                                          backgroundColor: kWarning),
+                                      child: Text('Edit'.tr),
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(
-                                  width: 5.0,
-                                ),
-                                Expanded(
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      ClientsController.to
-                                          .deleteClient(cl.client);
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                        foregroundColor: kWhite,
-                                        backgroundColor: kDanger),
-                                    child: Text('Delete'.tr),
+                                  const SizedBox(
+                                    width: 5.0,
                                   ),
-                                ),
-                              ],
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        ClientsController.to
+                                            .deleteClient(cl.client);
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                          foregroundColor: kWhite,
+                                          backgroundColor: kDanger),
+                                      child: Text('Delete'.tr),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    );
-                  }).toList(),
+                        ],
+                      );
+                    }).toList(),
+                  ),
                 ),
-              ),
-            );
-          }),
+              );
+            }),
+          ),
         ],
       ),
     );

@@ -17,85 +17,87 @@ class _ProductsScreenState extends State<ProductsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Products Screen'.tr,
-                  style: const TextStyle(
-                      fontSize: 30, fontWeight: FontWeight.bold),
-                ),
-                OutlinedButton(
-                  onPressed: () {
-                    productAdd();
-                  },
-                  style: OutlinedButton.styleFrom(
-                      foregroundColor: kWhite, backgroundColor: kPrimary),
-                  child: Text(
-                    'Add Product'.tr,
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Products Screen'.tr,
+                    style: const TextStyle(
+                        fontSize: 30, fontWeight: FontWeight.bold),
                   ),
-                )
-              ],
+                  OutlinedButton(
+                    onPressed: () {
+                      productAdd();
+                    },
+                    style: OutlinedButton.styleFrom(
+                        foregroundColor: kWhite, backgroundColor: kPrimary),
+                    child: Text(
+                      'Add Product'.tr,
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
-          Obx(() {
-            return SingleChildScrollView(
-              child: SizedBox(
-                width: Get.width - 50,
-                child: DataTable(
-                  sortAscending: true,
-                  sortColumnIndex: 0,
-                  showBottomBorder: true,
-                  columns: [
-                    DataColumn(
-                      label: Text('#'.tr),
-                    ),
-                    DataColumn(
-                      label: Text('Name'.tr),
-                    ),
-                    DataColumn(
-                      label: Text('Description'.tr),
-                    ),
-                    DataColumn(
-                      label: Text('Min'.tr),
-                      numeric: true,
-                    ),
-                    DataColumn(
-                      label: Text('Max'.tr),
-                      numeric: true,
-                    ),
-                    DataColumn(
-                      label: Text('Stock'.tr),
-                      numeric: true,
-                    ),
-                    DataColumn(
-                      label: Text('Price'.tr),
-                      numeric: true,
-                    ),
-                    DataColumn(
-                      label: Text(''.tr),
-                    ),
-                  ],
-                  rows: DataServices.to.products.mapIndexed((i, prod) {
-                    return DataRow(
-                      cells: [
-                        DataCell(Text("${i + 1}")),
-                        DataCell(Text(prod.name)),
-                        DataCell(Text(prod.description ?? '')),
-                        DataCell(Text(prod.minStringed)),
-                        DataCell(Text(prod.maxStringed)),
-                        DataCell(Text(prod.quantityStringed)),
-                        DataCell(Text(prod.priceStringed)),
-                        DataCell(
-                          Row(
-                            children: [
-                              Expanded(
-                                child: ElevatedButton(
+          SliverFillRemaining(
+            child: Obx(() {
+              return SingleChildScrollView(
+                child: SizedBox(
+                  width: Get.width - 50,
+                  child: DataTable(
+                    sortAscending: true,
+                    sortColumnIndex: 0,
+                    showBottomBorder: true,
+                    columns: [
+                      DataColumn(
+                        label: Text('#'.tr),
+                      ),
+                      DataColumn(
+                        label: Text('Name'.tr),
+                      ),
+                      DataColumn(
+                        label: Text('Description'.tr),
+                      ),
+                      DataColumn(
+                        label: Text('Min'.tr),
+                        numeric: true,
+                      ),
+                      DataColumn(
+                        label: Text('Max'.tr),
+                        numeric: true,
+                      ),
+                      DataColumn(
+                        label: Text('Stock'.tr),
+                        numeric: true,
+                      ),
+                      DataColumn(
+                        label: Text('Price'.tr),
+                        numeric: true,
+                      ),
+                      DataColumn(
+                        label: Text(''.tr),
+                      ),
+                    ],
+                    rows: DataServices.to.products.mapIndexed((i, prod) {
+                      return DataRow(
+                        cells: [
+                          DataCell(Text("${i + 1}")),
+                          DataCell(Text(prod.name)),
+                          DataCell(Text(prod.description ?? '')),
+                          DataCell(Text(prod.minStringed)),
+                          DataCell(Text(prod.maxStringed)),
+                          DataCell(Text(prod.quantityStringed)),
+                          DataCell(Text(prod.priceStringed)),
+                          DataCell(
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                ElevatedButton(
                                   onPressed: () {
                                     DataServices.to.product.value =
                                         prod.product;
@@ -106,12 +108,10 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                       backgroundColor: kWarning),
                                   child: Text('Edit'.tr),
                                 ),
-                              ),
-                              const SizedBox(
-                                width: 5.0,
-                              ),
-                              Expanded(
-                                child: ElevatedButton(
+                                const SizedBox(
+                                  width: 5.0,
+                                ),
+                                ElevatedButton(
                                   onPressed: () {
                                     DataServices.to.deleteProduct(prod.product);
                                   },
@@ -120,17 +120,17 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                       backgroundColor: kDanger),
                                   child: Text('Delete'.tr),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
-                    );
-                  }).toList(),
+                        ],
+                      );
+                    }).toList(),
+                  ),
                 ),
-              ),
-            );
-          }),
+              );
+            }),
+          ),
         ],
       ),
     );

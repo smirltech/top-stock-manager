@@ -68,251 +68,247 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
         tooltip: "Add input".tr,
         child: const Icon(Icons.add),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Obx(() {
-            return Form(
-              key: _purchaseAddFormKey,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Purchase Screen'.tr,
-                          style: const TextStyle(
-                              fontSize: 30, fontWeight: FontWeight.bold),
-                        ),
-                        Row(
-                          children: [
-                            OutlinedButton(
-                              onPressed: () {
-                                Get.toNamed(PurchasesScreen.route);
-                              },
-                              style: OutlinedButton.styleFrom(
-                                  foregroundColor: kWhite,
-                                  backgroundColor: kSecondary),
-                              child: Text(
-                                'Back'.tr,
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 20.0,
-                            ),
-                            OutlinedButton(
-                              onPressed: () {
-                                log('save purchase');
-                                if (!_purchaseAddFormKey.currentState!
-                                    .validate()) {
-                                  log('failed');
-                                  return;
-                                }
-                                _purchaseAddFormKey.currentState!.save();
-                                Map<String, dynamic> purchase = {
-                                  'date': DateTime.parse(dateEC.text),
-                                  'supplierId':
-                                      PurchasesController.to.supplier.value?.id,
-                                  'description': descriptionEC.text,
-                                };
-                                // log(_purchase.toString());
-                                PurchasesController.to.savePurchase(purchase);
-                              },
-                              style: OutlinedButton.styleFrom(
-                                  foregroundColor: kWhite,
-                                  backgroundColor: kPrimary),
-                              child: Text(
-                                'Save Purchase'.tr,
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 30.0, vertical: 8.0),
-                      child: Column(
+      body: Form(
+        key: _purchaseAddFormKey,
+        child: Obx(() {
+          return CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Purchase Screen'.tr,
+                        style: const TextStyle(
+                            fontSize: 30, fontWeight: FontWeight.bold),
+                      ),
+                      Row(
                         children: [
-                          Row(children: [
-                            Flexible(
-                              child: TextFormField(
-                                controller: dateEC,
-                                readOnly: true,
-                                validator: (va) {
-                                  if (va!.isEmpty) {
-                                    return "Date must not be empty".tr;
-                                  }
-                                  return null;
-                                },
-                                decoration: InputDecoration(
-                                  hintText: "Date of purchase".tr,
-                                  labelText: "Date".tr,
-                                  border: const OutlineInputBorder(),
-                                ),
-                                onTap: () {
-                                  Get.dialog(
-                                    Center(
-                                      child: SizedBox(
-                                        width: Get.width / 3,
-                                        child: Card(
-                                          child: CalendarDatePicker(
-                                            initialDate: DateTime.tryParse(
-                                                    dateEC.text) ??
-                                                DateTime.now(),
-                                            firstDate: DateTime.now().subtract(
-                                                const Duration(days: 30)),
-                                            lastDate: DateTime.now(),
-                                            onDateChanged: (DateTime value) {
-                                              dateEC.text = value.toString();
-                                              Get.back();
-                                            },
-                                          ),
+                          OutlinedButton(
+                            onPressed: () {
+                              Get.toNamed(PurchasesScreen.route);
+                            },
+                            style: OutlinedButton.styleFrom(
+                                foregroundColor: kWhite,
+                                backgroundColor: kSecondary),
+                            child: Text(
+                              'Back'.tr,
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 20.0,
+                          ),
+                          OutlinedButton(
+                            onPressed: () {
+                              log('save purchase');
+                              if (!_purchaseAddFormKey.currentState!
+                                  .validate()) {
+                                log('failed');
+                                return;
+                              }
+                              _purchaseAddFormKey.currentState!.save();
+                              Map<String, dynamic> purchase = {
+                                'date': DateTime.parse(dateEC.text),
+                                'supplierId':
+                                    PurchasesController.to.supplier.value?.id,
+                                'description': descriptionEC.text,
+                              };
+                              // log(_purchase.toString());
+                              PurchasesController.to.savePurchase(purchase);
+                            },
+                            style: OutlinedButton.styleFrom(
+                                foregroundColor: kWhite,
+                                backgroundColor: kPrimary),
+                            child: Text(
+                              'Save Purchase'.tr,
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 30.0, vertical: 8.0),
+                    child: Column(
+                      children: [
+                        Row(children: [
+                          Flexible(
+                            child: TextFormField(
+                              controller: dateEC,
+                              readOnly: true,
+                              validator: (va) {
+                                if (va!.isEmpty) {
+                                  return "Date must not be empty".tr;
+                                }
+                                return null;
+                              },
+                              decoration: InputDecoration(
+                                hintText: "Date of purchase".tr,
+                                labelText: "Date".tr,
+                                border: const OutlineInputBorder(),
+                              ),
+                              onTap: () {
+                                Get.dialog(
+                                  Center(
+                                    child: SizedBox(
+                                      width: Get.width / 3,
+                                      child: Card(
+                                        child: CalendarDatePicker(
+                                          initialDate:
+                                              DateTime.tryParse(dateEC.text) ??
+                                                  DateTime.now(),
+                                          firstDate: DateTime.now().subtract(
+                                              const Duration(days: 30)),
+                                          lastDate: DateTime.now(),
+                                          onDateChanged: (DateTime value) {
+                                            dateEC.text = value.toString();
+                                            Get.back();
+                                          },
                                         ),
                                       ),
                                     ),
-                                  ).then((value) {
-                                    // setState(() {});
-                                  });
-                                },
+                                  ),
+                                ).then((value) {
+                                  // setState(() {});
+                                });
+                              },
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Flexible(
+                            child: DropdownButtonFormField(
+                              value: PurchasesController.to.supplier.value,
+                              items: suppliersDrop,
+                              onChanged: (SupplierModel? sup) {
+                                PurchasesController.to.supplier.value = sup;
+                              },
+                              decoration: InputDecoration(
+                                hintText: "Supplier".tr,
+                                labelText: "Supplier".tr,
+                                border: const OutlineInputBorder(),
                               ),
                             ),
-                            const SizedBox(
-                              width: 10,
-                            ),
+                          ),
+                        ]),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
                             Flexible(
-                              child: DropdownButtonFormField(
-                                value: PurchasesController.to.supplier.value,
-                                items: suppliersDrop,
-                                onChanged: (SupplierModel? sup) {
-                                  PurchasesController.to.supplier.value = sup;
-                                },
+                              child: TextFormField(
+                                controller: descriptionEC,
                                 decoration: InputDecoration(
-                                  hintText: "Supplier".tr,
-                                  labelText: "Supplier".tr,
+                                  hintText: "Description".tr,
+                                  labelText: "Description".tr,
                                   border: const OutlineInputBorder(),
                                 ),
                               ),
                             ),
-                          ]),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Flexible(
-                                child: TextFormField(
-                                  controller: descriptionEC,
-                                  decoration: InputDecoration(
-                                    hintText: "Description".tr,
-                                    labelText: "Description".tr,
-                                    border: const OutlineInputBorder(),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                        ],
-                      ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                      ],
                     ),
                   ),
-                ],
+                ),
               ),
-            );
-          }),
-          Center(
-            child: Text(
-              "Products".tr,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-          ),
-          Obx(() {
-            return SingleChildScrollView(
-              child: SizedBox(
-                width: Get.width - 50,
-                child: DataTable(
-                  sortAscending: true,
-                  sortColumnIndex: 0,
-                  showBottomBorder: true,
-                  columns: [
-                    DataColumn(
-                      label: Text('#'.tr),
-                    ),
-                    DataColumn(
-                      label: Text('Product'.tr),
-                    ),
-                    DataColumn(
-                      label: Text('Quantity'.tr),
-                    ),
-                    DataColumn(
-                      label: Text('Price'.tr),
-                    ),
-                    DataColumn(
-                      label: Text('Total'.tr),
-                    ),
-                    DataColumn(
-                      label: Text(''.tr),
-                    ),
-                  ],
-                  rows: PurchasesController.to.purchase.value == null
-                      ? []
-                      : PurchasesController.to.purchase.value!.inputs!
-                          .mapIndexed((i, ipt) {
-                          return DataRow(
-                            cells: [
-                              DataCell(Text("${i + 1}")),
-                              DataCell(Text("${ipt.productName}")),
-                              DataCell(Text("${ipt.quantity}")),
-                              DataCell(Text("${ipt.price}")),
-                              DataCell(Text("${ipt.total!}")),
-                              DataCell(
-                                SizedBox(
-                                  width: 200.0,
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: ElevatedButton(
+              SliverToBoxAdapter(
+                child: Center(
+                  child: Text(
+                    "Products".tr,
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              SliverFillRemaining(
+                child: SingleChildScrollView(
+                  child: SizedBox(
+                    width: Get.width - 50,
+                    child: DataTable(
+                      sortAscending: true,
+                      sortColumnIndex: 0,
+                      showBottomBorder: true,
+                      columns: [
+                        DataColumn(
+                          label: Text('#'.tr),
+                        ),
+                        DataColumn(
+                          label: Text('Product'.tr),
+                        ),
+                        DataColumn(
+                          label: Text('Quantity'.tr),
+                        ),
+                        DataColumn(
+                          label: Text('Price'.tr),
+                        ),
+                        DataColumn(
+                          label: Text('Total'.tr),
+                        ),
+                        DataColumn(
+                          label: Text(''.tr),
+                        ),
+                      ],
+                      rows: PurchasesController.to.purchase.value == null
+                          ? []
+                          : PurchasesController.to.purchase.value!.inputs!
+                              .mapIndexed((i, ipt) {
+                              return DataRow(
+                                cells: [
+                                  DataCell(Text("${i + 1}")),
+                                  DataCell(Text("${ipt.productName}")),
+                                  DataCell(Text("${ipt.quantity}")),
+                                  DataCell(Text("${ipt.price}")),
+                                  DataCell(Text("${ipt.total!}")),
+                                  DataCell(
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        ElevatedButton(
                                           onPressed: null,
                                           style: ElevatedButton.styleFrom(
                                               foregroundColor: kWhite,
                                               backgroundColor: kWarning),
                                           child: Text('Edit'.tr),
                                         ),
-                                      ),
-                                      const SizedBox(
-                                        width: 5.0,
-                                      ),
-                                      Expanded(
-                                        child: ElevatedButton(
+                                        const SizedBox(
+                                          width: 5.0,
+                                        ),
+                                        ElevatedButton(
                                           onPressed: null,
                                           style: ElevatedButton.styleFrom(
                                               foregroundColor: kWhite,
                                               backgroundColor: kDanger),
                                           child: Text('Delete'.tr),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ),
-                            ],
-                          );
-                        }).toList(),
+                                ],
+                              );
+                            }).toList(),
+                    ),
+                  ),
                 ),
               ),
-            );
-          }),
-        ],
+            ],
+          );
+        }),
       ),
     );
   }

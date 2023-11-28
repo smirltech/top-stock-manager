@@ -17,114 +17,111 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Suppliers Screen'.tr,
-                  style: const TextStyle(
-                      fontSize: 30, fontWeight: FontWeight.bold),
-                ),
-                OutlinedButton(
-                  onPressed: () {
-                    supplierAdd();
-                  },
-                  style: OutlinedButton.styleFrom(
-                      foregroundColor: kWhite, backgroundColor: kPrimary),
-                  child: Text(
-                    'Add Supplier'.tr,
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Suppliers Screen'.tr,
+                    style: const TextStyle(
+                        fontSize: 30, fontWeight: FontWeight.bold),
                   ),
-                )
-              ],
+                  OutlinedButton(
+                    onPressed: () {
+                      supplierAdd();
+                    },
+                    style: OutlinedButton.styleFrom(
+                        foregroundColor: kWhite, backgroundColor: kPrimary),
+                    child: Text(
+                      'Add Supplier'.tr,
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
-          Obx(() {
-            return SingleChildScrollView(
-              child: SizedBox(
-                width: Get.width - 50,
-                child: DataTable(
-                  sortAscending: true,
-                  sortColumnIndex: 0,
-                  showBottomBorder: true,
-                  columns: [
-                    DataColumn(
-                      label: Text('#'.tr),
-                    ),
-                    DataColumn(
-                      label: Text('Name'.tr),
-                    ),
-                    DataColumn(
-                      label: Text('Sex'.tr),
-                      numeric: true,
-                    ),
-                    DataColumn(
-                      label: Text('Contact'.tr),
-                      numeric: true,
-                    ),
-                    DataColumn(
-                      label: Text('Description'.tr),
-                    ),
-                    DataColumn(
-                      label: Text(''.tr),
-                    ),
-                  ],
-                  rows: SuppliersController.to.suppliers.mapIndexed((i, sup) {
-                    return DataRow(
-                      cells: [
-                        DataCell(Text("${i + 1}")),
-                        DataCell(Text(sup.name)),
-                        DataCell(Text(sup.sex)),
-                        DataCell(Text(sup.contact)),
-                        DataCell(Text(sup.description ?? '')),
-                        DataCell(
-                          SizedBox(
-                            width: 200.0,
-                            child: Row(
+          SliverFillRemaining(
+            child: Obx(() {
+              return SingleChildScrollView(
+                child: SizedBox(
+                  width: Get.width - 50,
+                  child: DataTable(
+                    sortAscending: true,
+                    sortColumnIndex: 0,
+                    showBottomBorder: true,
+                    columns: [
+                      DataColumn(
+                        label: Text('#'.tr),
+                      ),
+                      DataColumn(
+                        label: Text('Name'.tr),
+                      ),
+                      DataColumn(
+                        label: Text('Sex'.tr),
+                        numeric: true,
+                      ),
+                      DataColumn(
+                        label: Text('Contact'.tr),
+                        numeric: true,
+                      ),
+                      DataColumn(
+                        label: Text('Description'.tr),
+                      ),
+                      DataColumn(
+                        label: Text(''.tr),
+                      ),
+                    ],
+                    rows: SuppliersController.to.suppliers.mapIndexed((i, sup) {
+                      return DataRow(
+                        cells: [
+                          DataCell(Text("${i + 1}")),
+                          DataCell(Text(sup.name)),
+                          DataCell(Text(sup.sex)),
+                          DataCell(Text(sup.contact)),
+                          DataCell(Text(sup.description ?? '')),
+                          DataCell(
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                Expanded(
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      SuppliersController.to.supplier.value =
-                                          sup.supplier;
-                                      supplierAdd(title: sup.supplier.name);
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                        foregroundColor: kWhite,
-                                        backgroundColor: kWarning),
-                                    child: Text('Edit'.tr),
-                                  ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    SuppliersController.to.supplier.value =
+                                        sup.supplier;
+                                    supplierAdd(title: sup.supplier.name);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                      foregroundColor: kWhite,
+                                      backgroundColor: kWarning),
+                                  child: Text('Edit'.tr),
                                 ),
                                 const SizedBox(
                                   width: 5.0,
                                 ),
-                                Expanded(
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      SuppliersController.to
-                                          .deleteSupplier(sup.supplier);
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                        foregroundColor: kWhite,
-                                        backgroundColor: kDanger),
-                                    child: Text('Delete'.tr),
-                                  ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    SuppliersController.to
+                                        .deleteSupplier(sup.supplier);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                      foregroundColor: kWhite,
+                                      backgroundColor: kDanger),
+                                  child: Text('Delete'.tr),
                                 ),
                               ],
                             ),
                           ),
-                        ),
-                      ],
-                    );
-                  }).toList(),
+                        ],
+                      );
+                    }).toList(),
+                  ),
                 ),
-              ),
-            );
-          }),
+              );
+            }),
+          ),
         ],
       ),
     );

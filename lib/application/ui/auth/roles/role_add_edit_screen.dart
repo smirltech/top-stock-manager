@@ -185,36 +185,31 @@ class _RoleAddEditScreenState extends State<RoleAddEditScreen> {
                           DataCell(
                               Text("${rolePermission.permissionDescription}")),
                           DataCell(
-                            SizedBox(
-                              width: 200.0,
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: ElevatedButton(
-                                      onPressed: null,
-                                      style: ElevatedButton.styleFrom(
-                                          foregroundColor: kWhite,
-                                          backgroundColor: kWarning),
-                                      child: Text('Edit'.tr),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 5.0,
-                                  ),
-                                  Expanded(
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        AuthServices.to.deleteRoleHasPermission(
-                                            rolePermission);
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                          foregroundColor: kWhite,
-                                          backgroundColor: kDanger),
-                                      child: Text('Delete'.tr),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                //Spacer(),
+                                ElevatedButton(
+                                  onPressed: null,
+                                  style: ElevatedButton.styleFrom(
+                                      foregroundColor: kWhite,
+                                      backgroundColor: kWarning),
+                                  child: Text('Edit'.tr),
+                                ),
+                                const SizedBox(
+                                  width: 5.0,
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    AuthServices.to.deleteRoleHasPermission(
+                                        rolePermission);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                      foregroundColor: kWhite,
+                                      backgroundColor: kDanger),
+                                  child: Text('Delete'.tr),
+                                ),
+                              ],
                             ),
                           ),
                         ]);

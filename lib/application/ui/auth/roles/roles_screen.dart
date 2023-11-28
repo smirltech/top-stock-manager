@@ -19,37 +19,37 @@ class _RolesScreenState extends State<RolesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Roles Screen'.tr,
-                  style: const TextStyle(
-                      fontSize: 30, fontWeight: FontWeight.bold),
-                ),
-                OutlinedButton(
-                  onPressed: () {
-                    AuthServices.to.selectRole(null);
-                    Get.toNamed(RoleAddEditScreen.route);
-                  },
-                  style: OutlinedButton.styleFrom(
-                      foregroundColor: kWhite, backgroundColor: kPrimary),
-                  child: Text(
-                    'Add Role'.tr,
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Roles Screen'.tr,
+                    style: const TextStyle(
+                        fontSize: 30, fontWeight: FontWeight.bold),
                   ),
-                )
-              ],
+                  OutlinedButton(
+                    onPressed: () {
+                      AuthServices.to.selectRole(null);
+                      Get.toNamed(RoleAddEditScreen.route);
+                    },
+                    style: OutlinedButton.styleFrom(
+                        foregroundColor: kWhite, backgroundColor: kPrimary),
+                    child: Text(
+                      'Add Role'.tr,
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
-          Obx(() {
-            return SingleChildScrollView(
-              child: SizedBox(
-                width: Get.width - 50,
+          SliverFillRemaining(
+            child: Obx(() {
+              return SingleChildScrollView(
                 child: DataTable(
                   sortAscending: true,
                   sortColumnIndex: 0,
@@ -80,49 +80,43 @@ class _RolesScreenState extends State<RolesScreen> {
                         DataCell(Text(rol.description ?? '')),
                         DataCell(PermissionsView(permissions: rol.permissions)),
                         DataCell(
-                          SizedBox(
-                            width: 200.0,
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      //AuthServices.to.role.value = rol.role;
-                                      AuthServices.to.selectRole(rol.role);
-                                      Get.toNamed(RoleAddEditScreen.route);
-                                      // roleAdd(title: rol.role.name);
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                        foregroundColor: kWhite,
-                                        backgroundColor: kWarning),
-                                    child: Text('Edit'.tr),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 5.0,
-                                ),
-                                Expanded(
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      AuthServices.to.deleteRole(rol.role);
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                        foregroundColor: kWhite,
-                                        backgroundColor: kDanger),
-                                    child: Text('Delete'.tr),
-                                  ),
-                                ),
-                              ],
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  //AuthServices.to.role.value = rol.role;
+                                  AuthServices.to.selectRole(rol.role);
+                                  Get.toNamed(RoleAddEditScreen.route);
+                                  // roleAdd(title: rol.role.name);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    foregroundColor: kWhite,
+                                    backgroundColor: kWarning),
+                                child: Text('Edit'.tr),
+                              ),
+                              const SizedBox(
+                                width: 5.0,
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  AuthServices.to.deleteRole(rol.role);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    foregroundColor: kWhite,
+                                    backgroundColor: kDanger),
+                                child: Text('Delete'.tr),
+                              ),
+                            ],
                           ),
                         ),
                       ],
                     );
                   }).toList(),
                 ),
-              ),
-            );
-          }),
+              );
+            }),
+          ),
         ],
       ),
     );
