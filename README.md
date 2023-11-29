@@ -28,11 +28,11 @@ One role will be preset and cannot be modified nor deleted, and permissions atta
 This will generally be the role of `Manager`.
 
 - [x] View all roles ;
-- [ ] View one role ;
+- [x] View one role ;
 - [x] Create a role ;
 - [x] Update a role ;
 - [x] Delete a role ;
-- [ ] Attach or detach permissions to a role ;
+- [x] Attach or detach permissions to a role ;
 
 ### 3. Users
 
@@ -85,10 +85,11 @@ A purchase is a set of different products purchased at once, usually from the sa
 supplier if that is not necessary
 
 - [x] View all purchases ;
-- [ ] View one purchase ;
+- [ ] View one purchase : Printable display ;
 - [x] Create a purchase ;
 - [x] Update a purchase ;
 - [x] Delete a purchase ;
+- [x] Add, edit and remove items to a purchase list ;
 
 ### 8. Sales
 
@@ -97,9 +98,9 @@ necessary
 
 - [x] View all sales ;
 - [ ] View one sale ;
-- [x] Create a sale ;
-- [x] Update a sale ;
-- [x] Delete a sale ;
+- [ ] Create a sale : en cours ;
+- [ ] Update a sale : en cours ;
+- [ ] Delete a sale : en cours ;
 
 ### 9. Inputs
 
@@ -108,9 +109,9 @@ from the same supplier will constitute a purchase.
 A purchase may have only a single input, and that single input can be constituted of one item of one product.
 
 - [ ] View all inputs ;
-- [ ] Create a input ;
-- [ ] Update a input ;
-- [ ] Delete a input ;
+- [x] Create a input ;
+- [x] Update a input ;
+- [x] Delete a input ;
 
 ### 10. Outputs
 

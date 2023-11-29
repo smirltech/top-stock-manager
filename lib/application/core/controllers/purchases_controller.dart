@@ -1,9 +1,6 @@
-import 'dart:developer';
-
 import 'package:drift/drift.dart' as d;
 import 'package:get/get.dart';
 import 'package:top_stock_manager/application/core/controllers/suppliers_controller.dart';
-import 'package:top_stock_manager/application/core/services/data_services.dart';
 import 'package:top_stock_manager/application/database/offline/app_database.dart';
 import 'package:top_stock_manager/application/database/offline/models/product_model.dart';
 import 'package:top_stock_manager/application/database/offline/models/supplier_model.dart';
@@ -30,17 +27,23 @@ class PurchasesController extends GetxController {
   var inputs = <Input>[].obs;
   var inputsList = <Input>[].obs;
 
-  openPurchase(PurchaseModel pur) async {
-    purchase.value = await DB.purchasesDao.getPurchase(pur.id);
-    supplier.value = SuppliersController.to.suppliers.firstWhereOrNull((element) => element.id == pur.supplierId);
-
+  openPurchase({PurchaseModel? pur}) async {
+    if (pur == null) {
+      purchase.value = null;
+      supplier.value = null;
+    } else {
+      purchase.value = await DB.purchasesDao.getPurchase(pur!.id);
+      supplier.value = SuppliersController.to.suppliers
+          .firstWhereOrNull((element) => element.id == pur!.supplierId);
+    }
     Get.toNamed(PurchaseAddEditScreen.route);
   }
 
   savePurchase(Map<String, dynamic> data) async {
     if (purchase.value == null) {
-      await DB.purchasesDao.insertPurchase(data);
-     // Get.back();
+      int pid = await DB.purchasesDao.insertPurchase(data);
+      purchase.value = await DB.purchasesDao.getPurchase(pid);
+      // Get.back();
       Get.snackbar('Purchase'.tr, 'Purchase added successfully'.tr,
           snackPosition: SnackPosition.BOTTOM);
     } else {
@@ -54,13 +57,13 @@ class PurchasesController extends GetxController {
           .toCompanion(true);
 
       await DB.purchasesDao.updatePurchase(c);
-     // Get.back();
+      // Get.back();
       Get.snackbar('Purchase'.tr, 'Purchase updated successfully'.tr,
           snackPosition: SnackPosition.BOTTOM);
     }
-    //
-   // purchase.value = null;
-  //  supplier.value = null;
+    purchase.refresh();
+    // purchase.value = null;
+    //  supplier.value = null;
     //  purchase = Rxn<Purchase>();
   }
 
@@ -103,8 +106,8 @@ class PurchasesController extends GetxController {
       buttonColor: kDanger,
       onConfirm: () async {
         await DB.inputsDao.deleteInput(input);
-        purchase.value!.inputs =
-            await DB.inputsDao.getInputsWithProductByPurchase(purchase.value!.id);
+        purchase.value!.inputs = await DB.inputsDao
+            .getInputsWithProductByPurchase(purchase.value!.id);
         purchase.refresh();
         Get.back();
         Get.snackbar('Item'.tr, 'Item removed successfully'.tr,

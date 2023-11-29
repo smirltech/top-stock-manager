@@ -150,116 +150,151 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
     Get.bottomSheet(
       Container(
         margin: const EdgeInsets.symmetric(horizontal: 5.0),
-        child: Form(
-            key: supplierAddFormKey,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Center(
-                    child: Text(
-                      title.tr,
-                      style: const TextStyle(
-                          fontSize: 30, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    initialValue: supplier['name'],
-                    validator: (va) {
-                      if (va!.isEmpty) {
-                        return "Name must not be empty".tr;
-                      } else if (va.length < 3) {
-                        return "Length of name must be 3 characters and above";
-                      }
-                      return null;
-                    },
-                    onSaved: (String? value) {
-                      supplier['name'] = value.toString();
-                    },
-                    decoration: InputDecoration(
-                      hintText: "Supplier Name".tr,
-                      labelText: "Name".tr,
-                      border: const OutlineInputBorder(),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextFormField(
-                    initialValue: supplier['description'],
-                    onSaved: (String? value) {
-                      supplier['description'] = value.toString();
-                    },
-                    decoration: InputDecoration(
-                      hintText: "Supplier Description".tr,
-                      labelText: "Description".tr,
-                      border: const OutlineInputBorder(),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        child: Wrap(
+          children: [
+            Form(
+                key: supplierAddFormKey,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
                     children: [
-                      Flexible(
-                        child: TextFormField(
-                          initialValue: supplier['sex'].toString(),
-                          onSaved: (String? value) {
-                            supplier['sex'] = value.toString();
-                          },
-                          decoration: InputDecoration(
-                            hintText: "Sex".tr,
-                            labelText: "Sex".tr,
-                            border: const OutlineInputBorder(),
-                          ),
+                      Center(
+                        child: Text(
+                          title.tr,
+                          style: const TextStyle(
+                              fontSize: 30, fontWeight: FontWeight.bold),
                         ),
                       ),
                       const SizedBox(
-                        width: 10.0,
+                        height: 20,
                       ),
-                      Flexible(
-                        child: TextFormField(
-                          initialValue: supplier['contact'],
-                          onSaved: (String? value) {
-                            supplier['contact'] = value.toString();
-                          },
-                          decoration: InputDecoration(
-                            hintText: "Contact".tr,
-                            labelText: "Contact".tr,
-                            border: const OutlineInputBorder(),
+                      TextFormField(
+                        initialValue: supplier['name'],
+                        validator: (va) {
+                          if (va!.isEmpty) {
+                            return "Name must not be empty".tr;
+                          } else if (va.length < 3) {
+                            return "Length of name must be 3 characters and above";
+                          }
+                          return null;
+                        },
+                        onSaved: (String? value) {
+                          supplier['name'] = value.toString();
+                        },
+                        decoration: InputDecoration(
+                          hintText: "Supplier Name".tr,
+                          labelText: "Name".tr,
+                          border: const OutlineInputBorder(),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextFormField(
+                        initialValue: supplier['description'],
+                        onSaved: (String? value) {
+                          supplier['description'] = value.toString();
+                        },
+                        decoration: InputDecoration(
+                          hintText: "Supplier Description".tr,
+                          labelText: "Description".tr,
+                          border: const OutlineInputBorder(),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Flexible(
+                            child: DropdownButtonFormField(
+                              value: supplier['sex'].toString(),
+                              decoration: InputDecoration(
+                                hintText: "Sex".tr,
+                                labelText: "Sex".tr,
+                                border: const OutlineInputBorder(),
+                              ),
+                              items: [
+                                DropdownMenuItem(
+                                  value: "",
+                                  child: Text(
+                                    "UNDEFINED".tr,
+                                  ),
+                                ),
+                                DropdownMenuItem(
+                                  value: "M",
+                                  child: Text(
+                                    "Male".tr,
+                                  ),
+                                ),
+                                DropdownMenuItem(
+                                  value: "F",
+                                  child: Text(
+                                    "Female".tr,
+                                  ),
+                                ),
+                              ],
+                              onChanged: (value) {
+                                supplier['sex'] = value.toString();
+                              },
+                            ),
+                            /*  TextFormField(
+                              initialValue: supplier['sex'].toString(),
+                              onSaved: (String? value) {
+                                supplier['sex'] = value.toString();
+                              },
+                              decoration: InputDecoration(
+                                hintText: "Sex".tr,
+                                labelText: "Sex".tr,
+                                border: const OutlineInputBorder(),
+                              ),
+                            ),*/
                           ),
+                          const SizedBox(
+                            width: 10.0,
+                          ),
+                          Flexible(
+                            child: TextFormField(
+                              initialValue: supplier['contact'],
+                              onSaved: (String? value) {
+                                supplier['contact'] = value.toString();
+                              },
+                              decoration: InputDecoration(
+                                hintText: "Contact".tr,
+                                labelText: "Contact".tr,
+                                border: const OutlineInputBorder(),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Center(
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            if (!supplierAddFormKey.currentState!.validate()) {
+                              return;
+                            }
+                            supplierAddFormKey.currentState!.save();
+                            SuppliersController.to.saveSupplier(supplier);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: kWhite,
+                            backgroundColor: kWarning,
+                          ),
+                          label: Text('Save'.tr),
+                          icon: const Icon(Icons.save),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Center(
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        if (!supplierAddFormKey.currentState!.validate()) {
-                          return;
-                        }
-                        supplierAddFormKey.currentState!.save();
-                        SuppliersController.to.saveSupplier(supplier);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: kWhite,
-                        backgroundColor: kWarning,
-                      ),
-                      label: Text('Save'.tr),
-                      icon: const Icon(Icons.save),
-                    ),
-                  ),
-                ],
-              ),
-            )),
+                )),
+          ],
+        ),
       ),
       backgroundColor: kWhite,
       ignoreSafeArea: true,

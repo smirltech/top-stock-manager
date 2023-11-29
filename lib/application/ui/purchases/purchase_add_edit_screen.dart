@@ -37,6 +37,9 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
 
       descriptionEC.text =
           PurchasesController.to.purchase.value!.description.toString();
+      PurchasesController.to.supplier.value = SuppliersController.to.suppliers
+          .singleWhere((element) =>
+              element.id == PurchasesController.to.purchase.value!.supplierId);
     }
 
     suppliersDrop = SuppliersController.to.suppliers
@@ -61,19 +64,21 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          PurchasesController.to.product.value = null;
-          inputAdd();
-        },
-        tooltip: "Add Item".tr,
-        child: const Icon(Icons.add),
-      ),
-      body: Form(
-        key: _purchaseAddFormKey,
-        child: Obx(() {
-          return CustomScrollView(
+    return Obx(() {
+      return Scaffold(
+        floatingActionButton: PurchasesController.to.purchase.value == null
+            ? const SizedBox()
+            : FloatingActionButton(
+                onPressed: () {
+                  PurchasesController.to.product.value = null;
+                  inputAdd();
+                },
+                tooltip: "Add Item".tr,
+                child: const Icon(Icons.add),
+              ),
+        body: Form(
+          key: _purchaseAddFormKey,
+          child: CustomScrollView(
             slivers: [
               SliverToBoxAdapter(
                 child: Padding(
@@ -86,10 +91,26 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
                         style: const TextStyle(
                             fontSize: 30, fontWeight: FontWeight.bold),
                       ),
+                      if (PurchasesController.to.purchase.value != null)
+                        Text.rich(
+                          TextSpan(
+                            text: '${'Total'.tr} : ',
+                            children: [
+                              TextSpan(
+                                text:
+                                    "${PurchasesController.to.purchase.value?.priceStringed ?? ''}",
+                              ),
+                            ],
+                          ),
+                          style: const TextStyle(
+                              fontSize: 30, fontWeight: FontWeight.bold),
+                        ),
                       Row(
                         children: [
                           OutlinedButton.icon(
                             onPressed: () {
+                              PurchasesController.to.purchase.value = null;
+                              PurchasesController.to.supplier.value = null;
                               Get.toNamed(PurchasesScreen.route);
                             },
                             style: OutlinedButton.styleFrom(
@@ -105,10 +126,10 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
                           ),
                           OutlinedButton.icon(
                             onPressed: () {
-                              log('save purchase');
+                              // log('save purchase');
                               if (!_purchaseAddFormKey.currentState!
                                   .validate()) {
-                                log('failed');
+                                //  log('failed');
                                 return;
                               }
                               _purchaseAddFormKey.currentState!.save();
@@ -195,6 +216,8 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
                               items: suppliersDrop,
                               onChanged: (SupplierModel? sup) {
                                 PurchasesController.to.supplier.value = sup;
+                                log(PurchasesController.to.supplier.value
+                                    .toString());
                               },
                               decoration: InputDecoration(
                                 hintText: "Supplier".tr,
@@ -276,9 +299,9 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
                                 cells: [
                                   DataCell(Text("${i + 1}")),
                                   DataCell(Text("${ipt.productName}")),
-                                  DataCell(Text("${ipt.quantity}")),
-                                  DataCell(Text("${ipt.price}")),
-                                  DataCell(Text("${ipt.total!}")),
+                                  DataCell(Text("${ipt.quantityStringed}")),
+                                  DataCell(Text("${ipt.priceStringed}")),
+                                  DataCell(Text("${ipt.totalStringed}")),
                                   DataCell(
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
@@ -320,10 +343,10 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
                 ),
               ),
             ],
-          );
-        }),
-      ),
-    );
+          ),
+        ),
+      );
+    });
   }
 
   inputAdd({String title = "Add an item", Input? input}) {

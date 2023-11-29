@@ -190,18 +190,6 @@ class _RoleAddEditScreenState extends State<RoleAddEditScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                //Spacer(),
-                                ElevatedButton.icon(
-                                  onPressed: null,
-                                  style: ElevatedButton.styleFrom(
-                                      foregroundColor: kWhite,
-                                      backgroundColor: kWarning),
-                                  label: Text('Edit'.tr),
-                                  icon: const Icon(Icons.edit),
-                                ),
-                                const SizedBox(
-                                  width: 5.0,
-                                ),
                                 ElevatedButton.icon(
                                   onPressed: () {
                                     AuthServices.to.deleteRoleHasPermission(

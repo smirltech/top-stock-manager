@@ -1,7 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:top_stock_manager/application/ui/purchases/purchase_add_edit_screen.dart';
 import 'package:top_stock_manager/system/configs/theming.dart';
 
 import '../../core/controllers/purchases_controller.dart';
@@ -34,7 +33,7 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
                   ),
                   OutlinedButton.icon(
                     onPressed: () {
-                      Get.toNamed(PurchaseAddEditScreen.route);
+                      PurchasesController.to.openPurchase();
                     },
                     style: OutlinedButton.styleFrom(
                         foregroundColor: kWhite, backgroundColor: kPrimary),
@@ -90,7 +89,8 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
                               children: [
                                 ElevatedButton.icon(
                                   onPressed: () {
-                                    PurchasesController.to.openPurchase(pur);
+                                    PurchasesController.to
+                                        .openPurchase(pur: pur);
                                   },
                                   style: ElevatedButton.styleFrom(
                                       foregroundColor: kWhite,
