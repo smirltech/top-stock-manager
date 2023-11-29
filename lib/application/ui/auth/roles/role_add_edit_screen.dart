@@ -40,7 +40,7 @@ class _RoleAddEditScreenState extends State<RoleAddEditScreen> {
             ? const SizedBox()
             : FloatingActionButton(
                 onPressed: () {
-                  inputAdd();
+                  permissionAdd();
                 },
                 tooltip: "Add permission".tr,
                 child: const Icon(Icons.add),
@@ -353,7 +353,7 @@ class _RoleAddEditScreenState extends State<RoleAddEditScreen> {
     );
   }
 
-  inputAdd({String title = "Add permission"}) {
+  permissionAdd({String title = "Add permission"}) {
     final inputAddFormKey = GlobalKey<FormState>();
     late Map<String, dynamic> rolePerm = {
       'permissionId': null,
@@ -380,61 +380,68 @@ class _RoleAddEditScreenState extends State<RoleAddEditScreen> {
     Get.bottomSheet(
       Container(
         margin: const EdgeInsets.symmetric(horizontal: 5.0),
-        child: Form(
-            key: inputAddFormKey,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Center(
-                    child: Text(
-                      title.tr,
-                      style: const TextStyle(
-                          fontSize: 30, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Flexible(
-                    child: DropdownButtonFormField<Permission>(
-                      value: AuthServices.to.permission.value,
-                      items: permissionsDrop,
-                      onChanged: (Permission? sup) {
-                        AuthServices.to.permission.value = sup;
-                        rolePerm['permissionId'] =
-                            AuthServices.to.permission.value?.id;
-                      },
-                      decoration: InputDecoration(
-                        hintText: "Permission".tr,
-                        labelText: "Permission".tr,
-                        border: const OutlineInputBorder(),
+        child: Wrap(
+          children: [
+            Form(
+              key: inputAddFormKey,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Center(
+                      child: Text(
+                        title.tr,
+                        style: const TextStyle(
+                            fontSize: 30, fontWeight: FontWeight.bold),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Center(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (!inputAddFormKey.currentState!.validate()) {
-                          return;
-                        }
-                        inputAddFormKey.currentState!.save();
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    SizedBox(
+                      height: 60,
+                      child: DropdownButtonFormField<Permission>(
+                        value: AuthServices.to.permission.value,
+                        items: permissionsDrop,
+                        onChanged: (Permission? sup) {
+                          AuthServices.to.permission.value = sup;
+                          rolePerm['permissionId'] =
+                              AuthServices.to.permission.value?.id;
+                        },
+                        decoration: InputDecoration(
+                          hintText: "Permission".tr,
+                          labelText: "Permission".tr,
+                          border: const OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Center(
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          if (!inputAddFormKey.currentState!.validate()) {
+                            return;
+                          }
+                          inputAddFormKey.currentState!.save();
 
-                        AuthServices.to.saveRoleHasPermission(rolePerm);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: kWhite,
-                        backgroundColor: kWarning,
+                          AuthServices.to.saveRoleHasPermission(rolePerm);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: kWhite,
+                          backgroundColor: kWarning,
+                        ),
+                        label: Text('Save'.tr),
+                        icon: const Icon(Icons.save),
                       ),
-                      child: Text('Save'.tr),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            )),
+            ),
+          ],
+        ),
       ),
       backgroundColor: kWhite,
       ignoreSafeArea: true,
@@ -444,67 +451,3 @@ class _RoleAddEditScreenState extends State<RoleAddEditScreen> {
     );
   }
 }
-
-/* DataTable(
-                          sortAscending: true,
-                          sortColumnIndex: 0,
-                          showBottomBorder: true,
-                          columns: [
-                            DataColumn(
-                              label: Text('#'.tr),
-                            ),
-                            DataColumn(
-                              label: Text('Permission'.tr),
-                            ),
-                            DataColumn(
-                              label: Text('Description'.tr),
-                            ),
-                            DataColumn(
-                              label: Text(''.tr),
-                            ),
-                          ],
-                          rows: AuthServices.to.rolePermissions
-                              .mapIndexed((i, rolePermission) {
-                            return DataRow(cells: [
-                              DataCell(Text("${i + 1}")),
-                              DataCell(
-                                  Text("${rolePermission.permissionName}")),
-                              DataCell(Text(
-                                  "${rolePermission.permissionDescription}")),
-                              DataCell(
-                                SizedBox(
-                                  width: 200.0,
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: ElevatedButton(
-                                          onPressed: null,
-                                          style: ElevatedButton.styleFrom(
-                                              foregroundColor: kWhite,
-                                              backgroundColor: kWarning),
-                                          child: Text('Edit'.tr),
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 5.0,
-                                      ),
-                                      Expanded(
-                                        child: ElevatedButton(
-                                          onPressed: () {
-                                            AuthServices.to
-                                                .deleteRoleHasPermission(
-                                                    rolePermission);
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                              foregroundColor: kWhite,
-                                              backgroundColor: kDanger),
-                                          child: Text('Delete'.tr),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ]);
-                          }).toList(),
-                        ),*/

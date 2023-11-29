@@ -144,102 +144,106 @@ class _UsersScreenState extends State<UsersScreen> {
     Get.bottomSheet(
       Container(
         margin: const EdgeInsets.symmetric(horizontal: 5.0),
-        child: Form(
-            key: userAddFormKey,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Center(
-                    child: Text(
-                      title.tr,
-                      style: const TextStyle(
-                          fontSize: 30, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    initialValue: user['name'],
-                    validator: (va) {
-                      if (va!.isEmpty) {
-                        return "Name must not be empty".tr;
-                      } else if (va.length < 3) {
-                        return "Length of name must be 3 characters and above";
-                      }
-                      return null;
-                    },
-                    onSaved: (String? value) {
-                      user['name'] = value.toString();
-                    },
-                    decoration: InputDecoration(
-                      hintText: "Name".tr,
-                      labelText: "Name".tr,
-                      border: const OutlineInputBorder(),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextFormField(
-                    initialValue: user['username'],
-                    onSaved: (String? value) {
-                      user['username'] = value.toString();
-                    },
-                    decoration: InputDecoration(
-                      hintText: "User identifier".tr,
-                      labelText: "Username".tr,
-                      border: const OutlineInputBorder(),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  if (AuthServices.to.user.value == null)
-                    TextFormField(
-                      initialValue: user['password'],
-                      onSaved: (String? value) {
-                        user['password'] = value.toString();
-                      },
-                      validator: (va) {
-                        if (va!.isEmpty) {
-                          return "Password must not be empty".tr;
-                        } else if (va.length < 4) {
-                          return "Length of password must be 4 characters and above";
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                        hintText: "User password".tr,
-                        labelText: "Password".tr,
-                        border: const OutlineInputBorder(),
+        child: Wrap(
+          children: [
+            Form(
+                key: userAddFormKey,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      Center(
+                        child: Text(
+                          title.tr,
+                          style: const TextStyle(
+                              fontSize: 30, fontWeight: FontWeight.bold),
+                        ),
                       ),
-                    ),
-                  if (AuthServices.to.user.value == null)
-                    const SizedBox(
-                      height: 10,
-                    ),
-                  Center(
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        if (!userAddFormKey.currentState!.validate()) {
-                          return;
-                        }
-                        userAddFormKey.currentState!.save();
-                        AuthServices.to.saveUser(user);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: kWhite,
-                        backgroundColor: kWarning,
+                      const SizedBox(
+                        height: 20,
                       ),
-                      label: Text('Save'.tr),
-                      icon: const Icon(Icons.save),
-                    ),
+                      TextFormField(
+                        initialValue: user['name'],
+                        validator: (va) {
+                          if (va!.isEmpty) {
+                            return "Name must not be empty".tr;
+                          } else if (va.length < 3) {
+                            return "Length of name must be 3 characters and above";
+                          }
+                          return null;
+                        },
+                        onSaved: (String? value) {
+                          user['name'] = value.toString();
+                        },
+                        decoration: InputDecoration(
+                          hintText: "Name".tr,
+                          labelText: "Name".tr,
+                          border: const OutlineInputBorder(),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextFormField(
+                        initialValue: user['username'],
+                        onSaved: (String? value) {
+                          user['username'] = value.toString();
+                        },
+                        decoration: InputDecoration(
+                          hintText: "User identifier".tr,
+                          labelText: "Username".tr,
+                          border: const OutlineInputBorder(),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      if (AuthServices.to.user.value == null)
+                        TextFormField(
+                          initialValue: user['password'],
+                          onSaved: (String? value) {
+                            user['password'] = value.toString();
+                          },
+                          validator: (va) {
+                            if (va!.isEmpty) {
+                              return "Password must not be empty".tr;
+                            } else if (va.length < 4) {
+                              return "Length of password must be 4 characters and above";
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            hintText: "User password".tr,
+                            labelText: "Password".tr,
+                            border: const OutlineInputBorder(),
+                          ),
+                        ),
+                      if (AuthServices.to.user.value == null)
+                        const SizedBox(
+                          height: 10,
+                        ),
+                      Center(
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            if (!userAddFormKey.currentState!.validate()) {
+                              return;
+                            }
+                            userAddFormKey.currentState!.save();
+                            AuthServices.to.saveUser(user);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: kWhite,
+                            backgroundColor: kWarning,
+                          ),
+                          label: Text('Save'.tr),
+                          icon: const Icon(Icons.save),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            )),
+                )),
+          ],
+        ),
       ),
       backgroundColor: kWhite,
       ignoreSafeArea: true,
