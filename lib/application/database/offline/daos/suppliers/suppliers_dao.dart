@@ -17,6 +17,11 @@ class SuppliersDao extends DatabaseAccessor<AppDatabase>
       .map((supplier) => SupplierModel(supplier: supplier))
       .watch();
 
+  Future<SupplierModel> getSupplier(int id) =>
+      (select(suppliers)..where((tbl) => tbl.id.equals(id)))
+          .map((supplier) => SupplierModel(supplier: supplier))
+          .getSingle();
+
   Future<int> insertSupplier(Map<String, dynamic> supplier) =>
       into(suppliers).insert(
         SuppliersCompanion(

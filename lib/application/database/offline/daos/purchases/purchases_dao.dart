@@ -15,6 +15,29 @@ class PurchasesDao extends DatabaseAccessor<AppDatabase>
 
   PurchasesDao(this.db) : super(db);
 
+  Future<PurchaseModel> getPurchase(int id) async {
+    final purch =
+        await (select(purchases)..where((tbl) => tbl.id.equals(id))).join(
+      [
+        leftOuterJoin(
+          db.suppliers,
+          db.suppliers.id.equalsExp(purchases.supplierId),
+        ),
+      ],
+    ).map(
+      (row) {
+        return PurchaseModel(
+          purchase: row.readTable(purchases),
+          supplier: row.readTableOrNull(db.suppliers),
+        );
+      },
+    ).getSingle();
+
+    purch.inputs = await db.inputsDao.getInputsWithProductByPurchase(purch.id);
+
+    return purch;
+  }
+
   Stream<List<PurchaseModel>> watchAllPurchases() {
     final purchs = select(purchases).join(
       [

@@ -47,6 +47,24 @@ class InputsDao extends DatabaseAccessor<AppDatabase> with _$InputsDaoMixin {
   Future<List<Input>> getInputsByPurchase(int id) =>
       (select(inputs)..where((t) => t.purchaseId.equals(id))).get();
 
+  Future<List<InputProductModel>> getInputsWithProductByPurchase(int id) =>
+      (select(inputs)..where((t) => t.purchaseId.equals(id)))
+          .join(
+            [
+              leftOuterJoin(
+                db.products,
+                db.products.id.equalsExp(inputs.productId),
+              ),
+            ],
+          )
+          .map(
+            (row) => InputProductModel(
+              input: row.readTable(inputs),
+              product: row.readTableOrNull(db.products),
+            ),
+          )
+          .get();
+
   Future<int> insertInput(Map<String, dynamic> input) => into(inputs).insert(
         InputsCompanion(
           productId: Value(input['productId']),

@@ -11,6 +11,7 @@ import 'package:top_stock_manager/application/ui/purchases/purchases_screen.dart
 import 'package:top_stock_manager/system/configs/theming.dart';
 
 import '../../core/controllers/purchases_controller.dart';
+import '../../database/offline/app_database.dart';
 
 class PurchaseAddEditScreen extends StatefulWidget {
   const PurchaseAddEditScreen({super.key});
@@ -63,9 +64,10 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          PurchasesController.to.product.value = null;
           inputAdd();
         },
-        tooltip: "Add input".tr,
+        tooltip: "Add Item".tr,
         child: const Icon(Icons.add),
       ),
       body: Form(
@@ -232,7 +234,7 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
               SliverToBoxAdapter(
                 child: Center(
                   child: Text(
-                    "Products".tr,
+                    "Items".tr,
                     style: const TextStyle(
                         fontSize: 20, fontWeight: FontWeight.bold),
                   ),
@@ -282,7 +284,11 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
                                         ElevatedButton.icon(
-                                          onPressed: null,
+                                          onPressed: () {
+                                            inputAdd(
+                                                title: "Edit item".tr,
+                                                input: ipt.input);
+                                          },
                                           style: ElevatedButton.styleFrom(
                                               foregroundColor: kWhite,
                                               backgroundColor: kWarning),
@@ -293,7 +299,10 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
                                           width: 5.0,
                                         ),
                                         ElevatedButton.icon(
-                                          onPressed: null,
+                                          onPressed: () {
+                                            PurchasesController.to
+                                                .deleteInput(ipt.input);
+                                          },
                                           style: ElevatedButton.styleFrom(
                                               foregroundColor: kWhite,
                                               backgroundColor: kDanger),
@@ -317,14 +326,25 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
     );
   }
 
-  inputAdd({String title = "Add a new input"}) {
+  inputAdd({String title = "Add an item", Input? input}) {
     final inputAddFormKey = GlobalKey<FormState>();
-    late Map<String, dynamic> input = {
+    late Map<String, dynamic> item = {
       'productId': null,
       'purchaseId': null,
       'quantity': 0.0,
       'price': 0.0,
     };
+    if (input != null) {
+      item = {
+        'id': input.id,
+        'productId': input.productId,
+        'purchaseId': input.purchaseId,
+        'quantity': input.quantity,
+        'price': input.price,
+      };
+      PurchasesController.to.product.value = DataServices.to.products
+          .firstWhereOrNull((element) => element.id == input.productId);
+    }
     late List<DropdownMenuItem<ProductModel>> productsDrop;
 
     productsDrop = DataServices.to.products
@@ -347,100 +367,107 @@ class _PurchaseAddEditScreenState extends State<PurchaseAddEditScreen> {
     Get.bottomSheet(
       Container(
         margin: const EdgeInsets.symmetric(horizontal: 5.0),
-        child: Form(
-            key: inputAddFormKey,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Center(
-                    child: Text(
-                      title.tr,
-                      style: const TextStyle(
-                          fontSize: 30, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Flexible(
-                    child: DropdownButtonFormField<ProductModel>(
-                      value: PurchasesController.to.product.value,
-                      items: productsDrop,
-                      onChanged: (ProductModel? sup) {
-                        PurchasesController.to.product.value = sup;
-                        input['productId'] =
-                            PurchasesController.to.product.value?.id;
-                      },
-                      decoration: InputDecoration(
-                        hintText: "Product".tr,
-                        labelText: "Product".tr,
-                        border: const OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        child: Wrap(
+          children: [
+            Form(
+                key: inputAddFormKey,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
                     children: [
-                      Flexible(
-                        child: TextFormField(
-                          initialValue: input['quantity'].toString(),
-                          onSaved: (String? value) {
-                            input['quantity'] =
-                                double.tryParse(value.toString());
+                      Center(
+                        child: Text(
+                          title.tr,
+                          style: const TextStyle(
+                              fontSize: 30, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      SizedBox(
+                        height: 60,
+                        child: DropdownButtonFormField<ProductModel>(
+                          value: PurchasesController.to.product.value,
+                          items: productsDrop,
+                          onChanged: (ProductModel? sup) {
+                            PurchasesController.to.product.value = sup;
+                            item['productId'] =
+                                PurchasesController.to.product.value?.id;
                           },
                           decoration: InputDecoration(
-                            hintText: "Quantity".tr,
-                            labelText: "Quantity".tr,
+                            hintText: "Product".tr,
+                            labelText: "Product".tr,
                             border: const OutlineInputBorder(),
                           ),
                         ),
                       ),
                       const SizedBox(
-                        width: 10.0,
+                        height: 10,
                       ),
-                      Flexible(
-                        child: TextFormField(
-                          initialValue: input['price'].toString(),
-                          onSaved: (String? value) {
-                            input['price'] = double.tryParse(value.toString());
-                          },
-                          decoration: InputDecoration(
-                            hintText: "Price".tr,
-                            labelText: "Price".tr,
-                            border: const OutlineInputBorder(),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Flexible(
+                            child: TextFormField(
+                              initialValue: item['quantity'].toString(),
+                              onSaved: (String? value) {
+                                item['quantity'] =
+                                    double.tryParse(value.toString());
+                              },
+                              decoration: InputDecoration(
+                                hintText: "Quantity".tr,
+                                labelText: "Quantity".tr,
+                                border: const OutlineInputBorder(),
+                              ),
+                            ),
                           ),
+                          const SizedBox(
+                            width: 10.0,
+                          ),
+                          Flexible(
+                            child: TextFormField(
+                              initialValue: item['price'].toString(),
+                              onSaved: (String? value) {
+                                item['price'] =
+                                    double.tryParse(value.toString());
+                              },
+                              decoration: InputDecoration(
+                                hintText: "Price".tr,
+                                labelText: "Price".tr,
+                                border: const OutlineInputBorder(),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Center(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (!inputAddFormKey.currentState!.validate()) {
+                              return;
+                            }
+                            inputAddFormKey.currentState!.save();
+
+                            PurchasesController.to
+                                .appendToInputs(data: item, input: input);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: kWhite,
+                            backgroundColor: kWarning,
+                          ),
+                          child: Text('Save'.tr),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Center(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (!inputAddFormKey.currentState!.validate()) {
-                          return;
-                        }
-                        inputAddFormKey.currentState!.save();
-
-                        PurchasesController.to.appendToInputs(input);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: kWhite,
-                        backgroundColor: kWarning,
-                      ),
-                      child: Text('Save'.tr),
-                    ),
-                  ),
-                ],
-              ),
-            )),
+                )),
+          ],
+        ),
       ),
       backgroundColor: kWhite,
       ignoreSafeArea: true,

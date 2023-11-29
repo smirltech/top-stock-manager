@@ -1,5 +1,9 @@
+import 'dart:developer';
+
 import 'package:drift/drift.dart' as d;
 import 'package:get/get.dart';
+import 'package:top_stock_manager/application/core/controllers/suppliers_controller.dart';
+import 'package:top_stock_manager/application/core/services/data_services.dart';
 import 'package:top_stock_manager/application/database/offline/app_database.dart';
 import 'package:top_stock_manager/application/database/offline/models/product_model.dart';
 import 'package:top_stock_manager/application/database/offline/models/supplier_model.dart';
@@ -27,15 +31,16 @@ class PurchasesController extends GetxController {
   var inputsList = <Input>[].obs;
 
   openPurchase(PurchaseModel pur) async {
-    purchase.value = pur;
-    inputs.value = await DB.inputsDao.getInputsByPurchase(pur.id);
+    purchase.value = await DB.purchasesDao.getPurchase(pur.id);
+    supplier.value = SuppliersController.to.suppliers.firstWhereOrNull((element) => element.id == pur.supplierId);
+
     Get.toNamed(PurchaseAddEditScreen.route);
   }
 
   savePurchase(Map<String, dynamic> data) async {
     if (purchase.value == null) {
       await DB.purchasesDao.insertPurchase(data);
-      Get.back();
+     // Get.back();
       Get.snackbar('Purchase'.tr, 'Purchase added successfully'.tr,
           snackPosition: SnackPosition.BOTTOM);
     } else {
@@ -49,28 +54,63 @@ class PurchasesController extends GetxController {
           .toCompanion(true);
 
       await DB.purchasesDao.updatePurchase(c);
-      Get.back();
+     // Get.back();
       Get.snackbar('Purchase'.tr, 'Purchase updated successfully'.tr,
           snackPosition: SnackPosition.BOTTOM);
     }
     //
-    purchase.value = null;
-    supplier.value = null;
+   // purchase.value = null;
+  //  supplier.value = null;
     //  purchase = Rxn<Purchase>();
   }
 
-  appendToInputs(Map<String, dynamic> data) async {
-    data['createdAt'] = DateTime.now();
-    data['updatedAt'] = DateTime.now();
-    data['id'] = DateTime.now().millisecondsSinceEpoch * -1;
-    // ic = InputsCompanion.insert({});
-    inputs.add(
-      Input.fromJson(data),
+  appendToInputs({required Map<String, dynamic> data, Input? input}) async {
+    if (input == null) {
+      data['updatedAt'] = DateTime.now();
+      data['createdAt'] = DateTime.now();
+      data['purchaseId'] = purchase.value!.id;
+      await DB.inputsDao.insertInput(data);
+      Get.back();
+      Get.snackbar('Item'.tr, 'Item added successfully'.tr,
+          snackPosition: SnackPosition.BOTTOM);
+    } else {
+      InputsCompanion c = input
+          .copyWith(
+            productId: d.Value(data['productId']),
+            purchaseId: d.Value(data['purchaseId']),
+            quantity: d.Value(data['quantity']),
+            price: d.Value(data['price']),
+            updatedAt: d.Value(DateTime.now()),
+          )
+          .toCompanion(true);
+
+      await DB.inputsDao.updateInput(c);
+      Get.back();
+      Get.snackbar('Item'.tr, 'Item updated successfully'.tr,
+          snackPosition: SnackPosition.BOTTOM);
+    }
+    purchase.value!.inputs =
+        await DB.inputsDao.getInputsWithProductByPurchase(purchase.value!.id);
+    purchase.refresh();
+  }
+
+  deleteInput(Input input) {
+    Get.defaultDialog(
+      title: "Remove Item".tr,
+      middleText:
+          "${"Are you sure you want to remove item".tr} : \"${input.id}\"",
+      textConfirm: "Remove".tr,
+      buttonColor: kDanger,
+      onConfirm: () async {
+        await DB.inputsDao.deleteInput(input);
+        purchase.value!.inputs =
+            await DB.inputsDao.getInputsWithProductByPurchase(purchase.value!.id);
+        purchase.refresh();
+        Get.back();
+        Get.snackbar('Item'.tr, 'Item removed successfully'.tr,
+            snackPosition: SnackPosition.BOTTOM);
+      },
     );
-    //log(inputs.string);
-    Get.back();
-    // Get.snackbar('Input'.tr, 'Input added successfully'.tr,
-    //     snackPosition: SnackPosition.BOTTOM);
   }
 
   deletePurchase(Purchase pur) {

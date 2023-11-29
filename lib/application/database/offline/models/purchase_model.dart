@@ -1,7 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:top_stock_manager/application/database/offline/app_database.dart';
 import 'package:top_stock_manager/application/database/offline/models/Input_product_model.dart';
-import 'package:top_stock_manager/system/configs/constants.dart';
 
 class PurchaseModel {
   final Purchase purchase;
@@ -20,7 +19,15 @@ class PurchaseModel {
 
   get supplierName => supplier?.name ?? '';
 
-  get price => RANDOM_DOUBLE * 10000;
+  get inputsCount => inputs!.length.toString();
+
+  get price {
+    double amount = 0;
+    for (var element in inputs!) {
+      amount += element.total;
+    }
+    return amount;
+  }
 
   get priceStringed =>
       NumberFormat.currency(symbol: "Fc", locale: 'fr_CD', decimalDigits: 0)
