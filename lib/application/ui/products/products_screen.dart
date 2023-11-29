@@ -32,6 +32,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                   ),
                   OutlinedButton.icon(
                     onPressed: () {
+                      DataServices.to.product.value = null;
                       productAdd();
                     },
                     style: OutlinedButton.styleFrom(
@@ -163,140 +164,146 @@ class _ProductsScreenState extends State<ProductsScreen> {
     Get.bottomSheet(
       Container(
         margin: const EdgeInsets.symmetric(horizontal: 5.0),
-        child: Form(
-            key: productAddFormKey,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Center(
-                    child: Text(
-                      title.tr,
-                      style: const TextStyle(
-                          fontSize: 30, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    initialValue: product['name'],
-                    validator: (va) {
-                      if (va!.isEmpty) {
-                        return "Name must not be empty".tr;
-                      } else if (va.length < 3) {
-                        return "Length of name must be 3 characters and above";
-                      }
-                      return null;
-                    },
-                    onSaved: (String? value) {
-                      product['name'] = value.toString();
-                    },
-                    decoration: InputDecoration(
-                      hintText: "Product Name".tr,
-                      labelText: "Name".tr,
-                      border: const OutlineInputBorder(),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextFormField(
-                    initialValue: product['description'],
-                    onSaved: (String? value) {
-                      product['description'] = value.toString();
-                    },
-                    decoration: InputDecoration(
-                      hintText: "Product Description".tr,
-                      labelText: "Description".tr,
-                      border: const OutlineInputBorder(),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        child: Wrap(
+          children: [
+            Form(
+                key: productAddFormKey,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
                     children: [
-                      Flexible(
-                        child: TextFormField(
-                          initialValue: product['minimum'].toString(),
-                          onSaved: (String? value) {
-                            product['minimum'] = double.parse(value.toString());
-                          },
-                          decoration: InputDecoration(
-                            hintText: "Minimum Quantity".tr,
-                            labelText: "Min".tr,
-                            border: const OutlineInputBorder(),
-                          ),
+                      Center(
+                        child: Text(
+                          title.tr,
+                          style: const TextStyle(
+                              fontSize: 30, fontWeight: FontWeight.bold),
                         ),
                       ),
                       const SizedBox(
-                        width: 10.0,
+                        height: 20,
                       ),
-                      Flexible(
-                        child: TextFormField(
-                          initialValue: product['maximum'].toString(),
-                          onSaved: (String? value) {
-                            product['maximum'] = double.parse(value.toString());
-                          },
-                          decoration: InputDecoration(
-                            hintText: "Maximum Quantity".tr,
-                            labelText: "Max".tr,
-                            border: const OutlineInputBorder(),
-                          ),
+                      TextFormField(
+                        initialValue: product['name'],
+                        validator: (va) {
+                          if (va!.isEmpty) {
+                            return "Name must not be empty".tr;
+                          } else if (va.length < 3) {
+                            return "Length of name must be 3 characters and above";
+                          }
+                          return null;
+                        },
+                        onSaved: (String? value) {
+                          product['name'] = value.toString();
+                        },
+                        decoration: InputDecoration(
+                          hintText: "Product Name".tr,
+                          labelText: "Name".tr,
+                          border: const OutlineInputBorder(),
                         ),
                       ),
                       const SizedBox(
-                        width: 10.0,
+                        height: 10,
                       ),
-                      Flexible(
-                        child: TextFormField(
-                          initialValue: product['unit'],
-                          validator: (va) {
-                            if (va!.isEmpty) {
-                              return "Unit must not be empty".tr;
-                            } else if (va.length < 2) {
-                              return "Length of unit must be 2 characters and above";
+                      TextFormField(
+                        initialValue: product['description'],
+                        onSaved: (String? value) {
+                          product['description'] = value.toString();
+                        },
+                        decoration: InputDecoration(
+                          hintText: "Product Description".tr,
+                          labelText: "Description".tr,
+                          border: const OutlineInputBorder(),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Flexible(
+                            child: TextFormField(
+                              initialValue: product['minimum'].toString(),
+                              onSaved: (String? value) {
+                                product['minimum'] =
+                                    double.parse(value.toString());
+                              },
+                              decoration: InputDecoration(
+                                hintText: "Minimum Quantity".tr,
+                                labelText: "Min".tr,
+                                border: const OutlineInputBorder(),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 10.0,
+                          ),
+                          Flexible(
+                            child: TextFormField(
+                              initialValue: product['maximum'].toString(),
+                              onSaved: (String? value) {
+                                product['maximum'] =
+                                    double.parse(value.toString());
+                              },
+                              decoration: InputDecoration(
+                                hintText: "Maximum Quantity".tr,
+                                labelText: "Max".tr,
+                                border: const OutlineInputBorder(),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 10.0,
+                          ),
+                          Flexible(
+                            child: TextFormField(
+                              initialValue: product['unit'],
+                              validator: (va) {
+                                if (va!.isEmpty) {
+                                  return "Unit must not be empty".tr;
+                                } else if (va.length < 2) {
+                                  return "Length of unit must be 2 characters and above";
+                                }
+                                return null;
+                              },
+                              onSaved: (String? value) {
+                                product['unit'] = value.toString();
+                              },
+                              decoration: InputDecoration(
+                                hintText: "Unit of Measure".tr,
+                                labelText: "Unit".tr,
+                                border: const OutlineInputBorder(),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Center(
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            if (!productAddFormKey.currentState!.validate()) {
+                              return;
                             }
-                            return null;
+                            productAddFormKey.currentState!.save();
+                            DataServices.to.saveProduct(product);
                           },
-                          onSaved: (String? value) {
-                            product['unit'] = value.toString();
-                          },
-                          decoration: InputDecoration(
-                            hintText: "Unit of Measure".tr,
-                            labelText: "Unit".tr,
-                            border: const OutlineInputBorder(),
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: kWhite,
+                            backgroundColor: kWarning,
                           ),
+                          label: Text('Save'.tr),
+                          icon: const Icon(Icons.save),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Center(
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        if (!productAddFormKey.currentState!.validate()) {
-                          return;
-                        }
-                        productAddFormKey.currentState!.save();
-                        DataServices.to.saveProduct(product);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: kWhite,
-                        backgroundColor: kWarning,
-                      ),
-                      label: Text('Save'.tr),
-                      icon: const Icon(Icons.save),
-                    ),
-                  ),
-                ],
-              ),
-            )),
+                )),
+          ],
+        ),
       ),
       backgroundColor: kWhite,
       ignoreSafeArea: true,
