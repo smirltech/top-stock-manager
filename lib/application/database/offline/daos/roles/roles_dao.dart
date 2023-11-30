@@ -32,6 +32,11 @@ class RolesDao extends DatabaseAccessor<AppDatabase> with _$RolesDaoMixin {
     });
   }
 
+  Future<RoleModel> getRoleModel(int id) =>
+      (select(roles)..where((tbl) => tbl.id.equals(id)))
+          .map((role) => RoleModel(role: role))
+          .getSingle();
+
   Future<Role> getRole(int id) =>
       (select(roles)..where((tbl) => tbl.id.equals(id))).getSingle();
 

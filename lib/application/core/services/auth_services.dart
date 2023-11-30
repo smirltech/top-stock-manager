@@ -27,6 +27,7 @@ class AuthServices extends GetxService {
   var users = <UserModel>[].obs;
 
   var role = Rxn<Role>();
+  var roleModel = Rxn<RoleModel>();
   var roles = <RoleModel>[].obs;
   final _isLogin = false.obs;
   var rolePermission = Rxn<RolePermissionModel>();
@@ -39,6 +40,16 @@ class AuthServices extends GetxService {
   selectRole(Role? role) async {
     this.role.value = role;
     _refreshRolePermissions();
+  }
+
+  selectUser({UserModel? userModel}) async {
+    if (userModel == null) {
+      user.value = null;
+      roleModel.value = null;
+    } else {
+      user.value = userModel!.user;
+      roleModel.value = await userModel.roleModel;
+    }
   }
 
   _refreshRolePermissions() async {
@@ -144,7 +155,11 @@ class AuthServices extends GetxService {
       Get.snackbar('User'.tr, 'User updated successfully'.tr,
           snackPosition: SnackPosition.BOTTOM);
     }
+    if (roleModel.value != null) {
+      DB.userHasRolesDao.insertData(data);
+    }
     user.value = null;
+    roleModel.value = null;
   }
 
   deleteUser(User usr) {

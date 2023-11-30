@@ -14,7 +14,7 @@ class RoleModel {
   get description => role.description;
 
   List<Permission> get permissions =>
-      rolePermissions!.map((e) => e.permission).toList();
+      rolePermissions?.map((e) => e.permission).toList() ?? [];
 
   //  rolePermissions?.forEach((rolePermission) => rolePermission.permission);
 

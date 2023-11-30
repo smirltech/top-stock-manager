@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:top_stock_manager/application/core/services/auth_services.dart';
+import 'package:top_stock_manager/application/database/offline/models/role_model.dart';
 import 'package:top_stock_manager/system/configs/theming.dart';
 
 class UsersScreen extends StatefulWidget {
@@ -32,7 +33,7 @@ class _UsersScreenState extends State<UsersScreen> {
                   ),
                   OutlinedButton.icon(
                     onPressed: () {
-                      AuthServices.to.user.value = null;
+                      AuthServices.to.selectUser();
                       userAdd();
                     },
                     style: OutlinedButton.styleFrom(
@@ -79,14 +80,14 @@ class _UsersScreenState extends State<UsersScreen> {
                           DataCell(Text("${i + 1}")),
                           DataCell(Text(usr.name)),
                           DataCell(Text(usr.username ?? '')),
-                          DataCell(Text(usr.role)),
+                          DataCell(Text(usr.role?.name ?? '')),
                           DataCell(
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 ElevatedButton.icon(
                                   onPressed: () {
-                                    AuthServices.to.user.value = usr.user;
+                                    AuthServices.to.selectUser(userModel: usr);
                                     userAdd(title: usr.user.name);
                                   },
                                   style: ElevatedButton.styleFrom(
@@ -128,11 +129,34 @@ class _UsersScreenState extends State<UsersScreen> {
 
   userAdd({String title = "Add a new user"}) {
     final userAddFormKey = GlobalKey<FormState>();
+    late List<DropdownMenuItem<RoleModel>> rolesDrop;
+
     late Map<String, dynamic> user = {
       'name': '',
       'username': '',
       'password': '',
     };
+
+    late Map<String, dynamic> userRol = {
+      'roleId': null,
+    };
+
+    rolesDrop = AuthServices.to.roles
+        .map(
+          (sup) => DropdownMenuItem<RoleModel>(
+            value: sup,
+            child: Text("${sup.name!} [ ${sup.description!} ]"),
+          ),
+        )
+        .toList();
+
+    rolesDrop.insert(
+      0,
+      const DropdownMenuItem<RoleModel>(
+        value: null,
+        child: Text("== SELECT ROLE =="),
+      ),
+    );
 
     if (AuthServices.to.user.value != null) {
       user = {
@@ -140,7 +164,10 @@ class _UsersScreenState extends State<UsersScreen> {
         'username': AuthServices.to.user.value?.username,
         'password': '',
       };
+      userRol['userId'] = AuthServices.to.user.value?.id;
+      // userRol['roleId'] = AuthServices.to.user.value?.roleId;
     }
+
     Get.bottomSheet(
       Container(
         margin: const EdgeInsets.symmetric(horizontal: 5.0),
@@ -222,6 +249,26 @@ class _UsersScreenState extends State<UsersScreen> {
                         const SizedBox(
                           height: 10,
                         ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      SizedBox(
+                        height: 60,
+                        child: DropdownButtonFormField<RoleModel>(
+                          value: AuthServices.to.roleModel.value,
+                          items: rolesDrop,
+                          onChanged: (RoleModel? sup) {
+                            AuthServices.to.roleModel.value = sup;
+                            userRol['roleId'] =
+                                AuthServices.to.roleModel.value?.id;
+                          },
+                          decoration: InputDecoration(
+                            hintText: "Role".tr,
+                            labelText: "Role".tr,
+                            border: const OutlineInputBorder(),
+                          ),
+                        ),
+                      ),
                       Center(
                         child: ElevatedButton.icon(
                           onPressed: () {
