@@ -1,5 +1,6 @@
 import 'package:drift/drift.dart' as d;
 import 'package:get/get.dart';
+import 'package:top_stock_manager/application/database/offline/models/user_role_model.dart';
 import 'package:top_stock_manager/main.dart';
 
 import '../../../system/configs/theming.dart';
@@ -19,6 +20,9 @@ class RolesController extends GetxController {
   var role = Rxn<Role>();
   var roleModel = Rxn<RoleModel>();
   var roles = <RoleModel>[].obs;
+
+  // var userRole = Rxn<UserRoleModel>();
+  var userRoles = <UserRoleModel>[].obs;
 
   var rolePermission = Rxn<RolePermissionModel>();
   var rolePermissions = <RolePermissionModel>[].obs;
@@ -134,6 +138,11 @@ class RolesController extends GetxController {
   void onReady() {
     DB.rolesDao.watchAllRolesWithPermissions().listen((event) {
       roles.value = event;
+      // log(event.toString());
+    });
+
+    DB.userHasRolesDao.watchAllUserRoles().listen((event) {
+      userRoles.value = event;
       // log(event.toString());
     });
 

@@ -129,7 +129,7 @@ class _UsersScreenState extends State<UsersScreen> {
     );
   }
 
-  userAdd({String title = "Add a new user"}) {
+  userAdd({String title = "Add a new user"}) async {
     final userAddFormKey = GlobalKey<FormState>();
     late List<DropdownMenuItem<RoleModel>> rolesDrop;
 
@@ -167,7 +167,11 @@ class _UsersScreenState extends State<UsersScreen> {
         'password': '',
       };
       userRol['userId'] = AuthServices.to.user.value?.id;
-      // userRol['roleId'] = AuthServices.to.user.value?.roleId;
+      userRol['roleId'] = RolesController.to.userRoles
+          .firstWhereOrNull(
+              (element) => element.userId == AuthServices.to.user.value?.id)
+          ?.roleId;
+      RolesController.to.roleModel.value = userRol['userRol'];
     }
 
     Get.bottomSheet(

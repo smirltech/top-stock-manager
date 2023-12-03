@@ -31,8 +31,8 @@ class UserHasRolesDao extends DatabaseAccessor<AppDatabase>
       .map(
         (row) => UserRoleModel(
           userHasRole: row.readTable(userHasRoles),
-          user: row.readTable(db.users),
-          role: row.readTable(db.roles),
+          user: row.readTableOrNull(db.users),
+          role: row.readTableOrNull(db.roles),
         ),
       )
       .watch();
