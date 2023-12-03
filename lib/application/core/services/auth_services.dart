@@ -3,16 +3,13 @@ import 'dart:convert';
 import 'package:drift/drift.dart' as d;
 import 'package:get/get.dart';
 import 'package:top_stock_manager/application/core/controllers/roles_controller.dart';
-import 'package:top_stock_manager/application/core/controllers/roles_controller.dart';
 import 'package:top_stock_manager/application/database/offline/app_database.dart';
-import 'package:top_stock_manager/application/database/offline/models/role_permission_model.dart';
 import 'package:top_stock_manager/application/ui/auth/login/login_screen.dart';
 import 'package:top_stock_manager/application/ui/home/home_screen.dart';
 import 'package:top_stock_manager/main.dart';
 import 'package:window_manager/window_manager.dart';
 
 import '../../../system/configs/theming.dart';
-import '../../database/offline/models/role_model.dart';
 import '../../database/offline/models/user_model.dart';
 
 class AuthServices extends GetxService {
@@ -37,7 +34,7 @@ class AuthServices extends GetxService {
       user.value = null;
       RolesController.to.roleModel.value = null;
     } else {
-      user.value = userModel!.user;
+      user.value = userModel.user;
       RolesController.to.roleModel.value = await userModel.roleModel;
     }
   }
@@ -174,12 +171,6 @@ class AuthServices extends GetxService {
       users.value = event;
       // log(event.toString());
     });
-
-    DB.rolesDao.watchAllRolesWithPermissions().listen((event) {
-      roles.value = event;
-      // log(event.toString());
-    });
-
     super.onReady();
   }
 }
