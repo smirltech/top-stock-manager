@@ -1,10 +1,11 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:top_stock_manager/application/core/services/auth_services.dart';
 import 'package:top_stock_manager/application/ui/auth/roles/role_add_edit_screen.dart';
 import 'package:top_stock_manager/system/configs/theming.dart';
 import 'package:top_stock_manager/system/widgets/permissions_views/permissions_view.dart';
+
+import '../../../core/controllers/roles_controller.dart';
 
 class RolesScreen extends StatefulWidget {
   const RolesScreen({super.key});
@@ -34,7 +35,7 @@ class _RolesScreenState extends State<RolesScreen> {
                   ),
                   OutlinedButton.icon(
                     onPressed: () {
-                      AuthServices.to.selectRole(null);
+                      RolesController.to.selectRole(null);
                       Get.toNamed(RoleAddEditScreen.route);
                     },
                     style: OutlinedButton.styleFrom(
@@ -73,7 +74,7 @@ class _RolesScreenState extends State<RolesScreen> {
                       label: Text(''.tr),
                     ),
                   ],
-                  rows: AuthServices.to.roles.mapIndexed((i, rol) {
+                  rows: RolesController.to.roles.mapIndexed((i, rol) {
                     return DataRow(
                       cells: [
                         DataCell(Text("${i + 1}")),
@@ -87,7 +88,7 @@ class _RolesScreenState extends State<RolesScreen> {
                               ElevatedButton.icon(
                                 onPressed: () {
                                   //AuthServices.to.role.value = rol.role;
-                                  AuthServices.to.selectRole(rol.role);
+                                  RolesController.to.selectRole(rol.role);
                                   Get.toNamed(RoleAddEditScreen.route);
                                   // roleAdd(title: rol.role.name);
                                 },
@@ -102,7 +103,7 @@ class _RolesScreenState extends State<RolesScreen> {
                               ),
                               ElevatedButton.icon(
                                 onPressed: () {
-                                  AuthServices.to.deleteRole(rol.role);
+                                  RolesController.to.deleteRole(rol.role);
                                 },
                                 style: ElevatedButton.styleFrom(
                                     foregroundColor: kWhite,
@@ -132,10 +133,10 @@ class _RolesScreenState extends State<RolesScreen> {
       'description': '',
     };
 
-    if (AuthServices.to.role.value != null) {
+    if (RolesController.to.role.value != null) {
       role = {
-        'name': AuthServices.to.role.value?.name,
-        'description': AuthServices.to.role.value?.description,
+        'name': RolesController.to.role.value?.name,
+        'description': RolesController.to.role.value?.description,
       };
     }
     Get.bottomSheet(
@@ -200,7 +201,7 @@ class _RolesScreenState extends State<RolesScreen> {
                           return;
                         }
                         roleAddFormKey.currentState!.save();
-                        AuthServices.to.saveRole(role);
+                        RolesController.to.saveRole(role);
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: kWhite,

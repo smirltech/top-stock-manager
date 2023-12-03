@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:top_stock_manager/application/core/services/auth_services.dart';
+import 'package:top_stock_manager/application/core/controllers/roles_controller.dart';
 import 'package:top_stock_manager/application/database/offline/app_database.dart';
 import 'package:top_stock_manager/application/ui/auth/roles/roles_screen.dart';
 
@@ -24,10 +24,11 @@ class _RoleAddEditScreenState extends State<RoleAddEditScreen> {
 
   @override
   void initState() {
-    if (AuthServices.to.role.value != null) {
-      nameEC.text = AuthServices.to.role.value!.name.toString();
+    if (RolesController.to.role.value != null) {
+      nameEC.text = RolesController.to.role.value!.name.toString();
 
-      descriptionEC.text = AuthServices.to.role.value!.description.toString();
+      descriptionEC.text =
+          RolesController.to.role.value!.description.toString();
     }
     super.initState();
   }
@@ -36,7 +37,7 @@ class _RoleAddEditScreenState extends State<RoleAddEditScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: Obx(() {
-        return AuthServices.to.role.value == null
+        return RolesController.to.role.value == null
             ? const SizedBox()
             : FloatingActionButton(
                 onPressed: () {
@@ -91,7 +92,7 @@ class _RoleAddEditScreenState extends State<RoleAddEditScreen> {
                               'description': descriptionEC.text,
                             };
                             // log(_purchase.toString());
-                            AuthServices.to.saveRole(role);
+                            RolesController.to.saveRole(role);
                           },
                           style: OutlinedButton.styleFrom(
                               foregroundColor: kWhite,
@@ -158,57 +159,60 @@ class _RoleAddEditScreenState extends State<RoleAddEditScreen> {
             SliverFillRemaining(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: SingleChildScrollView(
-                  child: SizedBox(
-                    width: Get.width - 50,
-                    child: DataTable(
-                      sortAscending: true,
-                      sortColumnIndex: 0,
-                      showBottomBorder: true,
-                      columns: [
-                        DataColumn(
-                          label: Text('#'.tr),
-                        ),
-                        DataColumn(
-                          label: Text('Permission'.tr),
-                        ),
-                        DataColumn(
-                          label: Text('Description'.tr),
-                        ),
-                        DataColumn(
-                          label: Text(''.tr),
-                        ),
-                      ],
-                      rows: AuthServices.to.rolePermissions
-                          .mapIndexed((i, rolePermission) {
-                        return DataRow(cells: [
-                          DataCell(Text("${i + 1}")),
-                          DataCell(Text("${rolePermission.permissionName}")),
-                          DataCell(
-                              Text("${rolePermission.permissionDescription}")),
-                          DataCell(
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                ElevatedButton.icon(
-                                  onPressed: () {
-                                    AuthServices.to.deleteRoleHasPermission(
-                                        rolePermission);
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                      foregroundColor: kWhite,
-                                      backgroundColor: kDanger),
-                                  label: Text('Delete'.tr),
-                                  icon: const Icon(Icons.clear),
-                                ),
-                              ],
-                            ),
+                child: Obx(() {
+                  return SingleChildScrollView(
+                    child: SizedBox(
+                      width: Get.width - 50,
+                      child: DataTable(
+                        sortAscending: true,
+                        sortColumnIndex: 0,
+                        showBottomBorder: true,
+                        columns: [
+                          DataColumn(
+                            label: Text('#'.tr),
                           ),
-                        ]);
-                      }).toList(),
+                          DataColumn(
+                            label: Text('Permission'.tr),
+                          ),
+                          DataColumn(
+                            label: Text('Description'.tr),
+                          ),
+                          DataColumn(
+                            label: Text(''.tr),
+                          ),
+                        ],
+                        rows: RolesController.to.rolePermissions
+                            .mapIndexed((i, rolePermission) {
+                          return DataRow(cells: [
+                            DataCell(Text("${i + 1}")),
+                            DataCell(Text("${rolePermission.permissionName}")),
+                            DataCell(Text(
+                                "${rolePermission.permissionDescription}")),
+                            DataCell(
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  ElevatedButton.icon(
+                                    onPressed: () {
+                                      RolesController.to
+                                          .deleteRoleHasPermission(
+                                              rolePermission);
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        foregroundColor: kWhite,
+                                        backgroundColor: kDanger),
+                                    label: Text('Delete'.tr),
+                                    icon: const Icon(Icons.clear),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ]);
+                        }).toList(),
+                      ),
                     ),
-                  ),
-                ),
+                  );
+                }),
               ),
             ),
           ],
@@ -348,7 +352,7 @@ class _RoleAddEditScreenState extends State<RoleAddEditScreen> {
     };
     late List<DropdownMenuItem<Permission>> permissionsDrop;
 
-    permissionsDrop = AuthServices.to.permissions
+    permissionsDrop = RolesController.to.permissions
         .map(
           (sup) => DropdownMenuItem<Permission>(
             value: sup,
@@ -389,12 +393,12 @@ class _RoleAddEditScreenState extends State<RoleAddEditScreen> {
                     SizedBox(
                       height: 60,
                       child: DropdownButtonFormField<Permission>(
-                        value: AuthServices.to.permission.value,
+                        value: RolesController.to.permission.value,
                         items: permissionsDrop,
                         onChanged: (Permission? sup) {
-                          AuthServices.to.permission.value = sup;
+                          RolesController.to.permission.value = sup;
                           rolePerm['permissionId'] =
-                              AuthServices.to.permission.value?.id;
+                              RolesController.to.permission.value?.id;
                         },
                         decoration: InputDecoration(
                           hintText: "Permission".tr,
@@ -414,7 +418,7 @@ class _RoleAddEditScreenState extends State<RoleAddEditScreen> {
                           }
                           inputAddFormKey.currentState!.save();
 
-                          AuthServices.to.saveRoleHasPermission(rolePerm);
+                          RolesController.to.saveRoleHasPermission(rolePerm);
                         },
                         style: ElevatedButton.styleFrom(
                           foregroundColor: kWhite,

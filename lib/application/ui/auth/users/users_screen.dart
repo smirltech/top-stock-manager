@@ -5,6 +5,8 @@ import 'package:top_stock_manager/application/core/services/auth_services.dart';
 import 'package:top_stock_manager/application/database/offline/models/role_model.dart';
 import 'package:top_stock_manager/system/configs/theming.dart';
 
+import '../../../core/controllers/roles_controller.dart';
+
 class UsersScreen extends StatefulWidget {
   const UsersScreen({super.key});
 
@@ -141,7 +143,7 @@ class _UsersScreenState extends State<UsersScreen> {
       'roleId': null,
     };
 
-    rolesDrop = AuthServices.to.roles
+    rolesDrop = RolesController.to.roles
         .map(
           (sup) => DropdownMenuItem<RoleModel>(
             value: sup,
@@ -255,12 +257,12 @@ class _UsersScreenState extends State<UsersScreen> {
                       SizedBox(
                         height: 60,
                         child: DropdownButtonFormField<RoleModel>(
-                          value: AuthServices.to.roleModel.value,
+                          value: RolesController.to.roleModel.value,
                           items: rolesDrop,
                           onChanged: (RoleModel? sup) {
-                            AuthServices.to.roleModel.value = sup;
+                            RolesController.to.roleModel.value = sup;
                             userRol['roleId'] =
-                                AuthServices.to.roleModel.value?.id;
+                                RolesController.to.roleModel.value?.id;
                           },
                           decoration: InputDecoration(
                             hintText: "Role".tr,
