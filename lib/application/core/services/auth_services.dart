@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:drift/drift.dart' as d;
 import 'package:get/get.dart';
+import 'package:top_stock_manager/application/core/controllers/roles_controller.dart';
+import 'package:top_stock_manager/application/core/controllers/roles_controller.dart';
 import 'package:top_stock_manager/application/database/offline/app_database.dart';
 import 'package:top_stock_manager/application/database/offline/models/role_permission_model.dart';
 import 'package:top_stock_manager/application/ui/auth/login/login_screen.dart';
@@ -26,41 +28,17 @@ class AuthServices extends GetxService {
   var user = Rxn<User>();
   var users = <UserModel>[].obs;
 
-  var role = Rxn<Role>();
-  var roleModel = Rxn<RoleModel>();
-  var roles = <RoleModel>[].obs;
   final _isLogin = false.obs;
-  var rolePermission = Rxn<RolePermissionModel>();
-  var rolePermissions = <RolePermissionModel>[].obs;
-  var permissions = <Permission>[].obs;
-  var permission = Rxn<Permission>();
 
   bool get isLogin => _isLogin.value;
-
-  selectRole(Role? role) async {
-    this.role.value = role;
-    _refreshRolePermissions();
-  }
 
   selectUser({UserModel? userModel}) async {
     if (userModel == null) {
       user.value = null;
-      roleModel.value = null;
+      RolesController.to.roleModel.value = null;
     } else {
       user.value = userModel!.user;
-      roleModel.value = await userModel.roleModel;
-    }
-  }
-
-  _refreshRolePermissions() async {
-    if (role.value == null) {
-      rolePermissions.clear();
-      permissions.value = await DB.permissionsDao.getPermissions();
-    } else {
-      rolePermissions.value =
-          await DB.roleHasPermissionsDao.rolePermissionsOfRole(role.value!.id);
-      permissions.value = await DB.permissionsDao.getPermissions();
-      // log(rolePermissions.value.toString());
+      RolesController.to.roleModel.value = await userModel.roleModel;
     }
   }
 
@@ -155,11 +133,11 @@ class AuthServices extends GetxService {
       Get.snackbar('User'.tr, 'User updated successfully'.tr,
           snackPosition: SnackPosition.BOTTOM);
     }
-    if (roleModel.value != null) {
+    if (RolesController.to.roleModel.value != null) {
       DB.userHasRolesDao.insertData(data);
     }
     user.value = null;
-    roleModel.value = null;
+    RolesController.to.roleModel.value = null;
   }
 
   deleteUser(User usr) {
@@ -175,94 +153,6 @@ class AuthServices extends GetxService {
         Get.back();
         Get.snackbar('User'.tr, 'User deleted successfully'.tr,
             snackPosition: SnackPosition.BOTTOM);
-      },
-    );
-  }
-
-  saveRole(Map<String, dynamic> data) async {
-    if (role.value == null) {
-      int id = await DB.rolesDao.insertRole(data);
-
-      role.value = await DB.rolesDao.getRole(id);
-      Get.snackbar('Role'.tr, 'Role added successfully'.tr,
-          snackPosition: SnackPosition.BOTTOM);
-    } else {
-      RolesCompanion c = role.value!
-          .copyWith(
-            name: data['name'],
-            description: d.Value(data['description']),
-            updatedAt: d.Value(DateTime.now()),
-          )
-          .toCompanion(true);
-
-      await DB.rolesDao.updateRole(c);
-      // Get.back();
-      Get.snackbar('Role'.tr, 'Role updated successfully'.tr,
-          snackPosition: SnackPosition.BOTTOM);
-    }
-    // role.value = null;
-    _refreshRolePermissions();
-  }
-
-  deleteRole(Role rol) {
-    Get.defaultDialog(
-      title: "Delete Role".tr,
-      middleText:
-          "${"Are you sure you want to delete role".tr} : \"${rol.name}\"",
-      textConfirm: "Delete".tr,
-      buttonColor: kDanger,
-      onConfirm: () {
-        DB.rolesDao.deleteRole(rol);
-        user.value = null;
-        Get.back();
-        Get.snackbar('Role'.tr, 'Role deleted successfully'.tr,
-            snackPosition: SnackPosition.BOTTOM);
-      },
-    );
-  }
-
-  // RoleHasPermissions
-  saveRoleHasPermission(Map<String, dynamic> data) async {
-    if (rolePermission.value == null) {
-      data['roleId'] = role.value!.id;
-      await DB.roleHasPermissionsDao.insertData(data);
-      Get.back();
-      Get.snackbar('Permission'.tr, 'Permission added successfully'.tr,
-          snackPosition: SnackPosition.BOTTOM);
-    } else {
-      RoleHasPermissionsCompanion c = rolePermission.value!.roleHasPermission
-          .copyWith(
-            permissionId: data['permissionId'],
-            updatedAt: d.Value(DateTime.now()),
-          )
-          .toCompanion(true);
-
-      await DB.roleHasPermissionsDao.updateData(c);
-      Get.back();
-      Get.snackbar('Permission'.tr, 'Permission updated successfully'.tr,
-          snackPosition: SnackPosition.BOTTOM);
-    }
-    rolePermission.value = null;
-    permission.value = null;
-    _refreshRolePermissions();
-  }
-
-  deleteRoleHasPermission(
-    RolePermissionModel perm,
-  ) {
-    Get.defaultDialog(
-      title: "Remove Permission".tr,
-      middleText:
-          "${"Are you sure you want to remove permission".tr} : \"${perm.permissionDescription}\"",
-      textConfirm: "Remove".tr,
-      buttonColor: kDanger,
-      onConfirm: () {
-        DB.roleHasPermissionsDao.deleteData(perm.roleHasPermission);
-        // user.value = null;
-        Get.back();
-        Get.snackbar('Permission'.tr, 'Permission removed successfully'.tr,
-            snackPosition: SnackPosition.BOTTOM);
-        _refreshRolePermissions();
       },
     );
   }

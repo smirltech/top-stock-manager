@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:top_stock_manager/application/core/controllers/clients_controller.dart';
+import 'package:top_stock_manager/application/core/controllers/roles_controller.dart';
 import 'package:top_stock_manager/application/core/controllers/sales_controller.dart';
 import 'package:top_stock_manager/application/core/controllers/suppliers_controller.dart';
 import 'package:top_stock_manager/application/core/services/auth_services.dart';
@@ -47,6 +48,7 @@ Future<void> _initServices() async {
 }
 
 Future<void> _initControllers() async {
+  await RolesController.init();
   await SuppliersController.init();
   await ClientsController.init();
   await PurchasesController.init();
