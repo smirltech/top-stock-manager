@@ -155,7 +155,7 @@ class AuthServices extends GetxService {
   }
 
   isMe(UserModel usr) {
-    return me.value!.id == usr.id;
+    return me.value?.id == usr.id;
   }
 
   @override
